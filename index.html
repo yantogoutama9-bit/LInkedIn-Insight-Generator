@@ -3,25 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LinkedIn Comment Generator — Yanto Goutama</title>
+    <title>LinkedIn Comment Generator - Yanto Goutama</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #1a1a2e;
             --secondary: #16213e;
             --accent: #0f3460;
-            --highlight: #e94560;
             --text: #2d2d2d;
             --text-light: #5a5a5a;
             --bg: #f8f9fa;
             --card: #ffffff;
             --border: #e1e4e8;
             --success: #28a745;
-            --warning: #f59e0b;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--bg);
@@ -29,33 +25,27 @@
             line-height: 1.6;
             min-height: 100vh;
         }
-
         .container {
             max-width: 900px;
             margin: 0 auto;
             padding: 40px 20px;
         }
-
         header {
             text-align: center;
             margin-bottom: 40px;
             padding-bottom: 30px;
             border-bottom: 2px solid var(--border);
         }
-
         header h1 {
             font-size: 1.8rem;
             font-weight: 700;
             color: var(--primary);
             margin-bottom: 8px;
         }
-
         header p {
             color: var(--text-light);
             font-size: 0.95rem;
-            font-weight: 400;
         }
-
         .profile-card {
             background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
             color: white;
@@ -64,22 +54,17 @@
             margin-bottom: 24px;
             box-shadow: 0 4px 12px rgba(26, 26, 46, 0.15);
         }
-
         .profile-card h3 {
             font-size: 1.1rem;
             font-weight: 600;
             margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
         }
-
         .profile-card p {
             font-size: 0.85rem;
             line-height: 1.7;
             opacity: 0.95;
+            margin-bottom: 10px;
         }
-
         .profile-card .tag {
             display: inline-block;
             background: rgba(255,255,255,0.15);
@@ -88,7 +73,6 @@
             font-size: 0.75rem;
             margin: 2px 4px 2px 0;
         }
-
         .card {
             background: var(--card);
             border-radius: 12px;
@@ -97,7 +81,6 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.06);
             border: 1px solid var(--border);
         }
-
         .card-title {
             font-size: 1rem;
             font-weight: 600;
@@ -107,7 +90,6 @@
             align-items: center;
             gap: 8px;
         }
-
         .card-title .icon {
             width: 24px;
             height: 24px;
@@ -120,7 +102,6 @@
             font-size: 0.85rem;
             font-weight: 600;
         }
-
         label {
             display: block;
             font-size: 0.875rem;
@@ -128,8 +109,7 @@
             color: var(--text);
             margin-bottom: 6px;
         }
-
-        textarea, select {
+        textarea {
             width: 100%;
             padding: 12px 14px;
             border: 1.5px solid var(--border);
@@ -140,32 +120,26 @@
             background: var(--card);
             transition: border-color 0.2s, box-shadow 0.2s;
             resize: vertical;
+            min-height: 160px;
+            line-height: 1.6;
         }
-
-        textarea:focus, select:focus {
+        textarea:focus {
             outline: none;
             border-color: var(--accent);
             box-shadow: 0 0 0 3px rgba(15, 52, 96, 0.08);
         }
-
-        textarea {
-            min-height: 160px;
-            line-height: 1.6;
-        }
-
-        .hint {
+        .char-count {
+            text-align: right;
             font-size: 0.8rem;
             color: var(--text-light);
-            margin-top: 6px;
+            margin-top: 4px;
         }
-
         .options-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 12px;
             margin-top: 12px;
         }
-
         .option-btn {
             padding: 10px 14px;
             border: 1.5px solid var(--border);
@@ -179,18 +153,15 @@
             transition: all 0.2s;
             text-align: left;
         }
-
         .option-btn:hover {
             border-color: var(--accent);
             background: rgba(15, 52, 96, 0.04);
         }
-
         .option-btn.active {
             border-color: var(--accent);
             background: rgba(15, 52, 96, 0.08);
             color: var(--accent);
         }
-
         .generate-btn {
             width: 100%;
             padding: 14px 24px;
@@ -205,26 +176,21 @@
             transition: all 0.2s;
             margin-top: 8px;
         }
-
         .generate-btn:hover {
             background: var(--secondary);
             transform: translateY(-1px);
             box-shadow: 0 4px 12px rgba(26, 26, 46, 0.2);
         }
-
         .generate-btn:active { transform: translateY(0); }
-
         .output-section { display: none; }
         .output-section.visible {
             display: block;
             animation: fadeIn 0.4s ease;
         }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
         .output-header {
             display: flex;
             justify-content: space-between;
@@ -233,18 +199,15 @@
             flex-wrap: wrap;
             gap: 10px;
         }
-
         .output-header h3 {
             font-size: 1rem;
             font-weight: 600;
             color: var(--primary);
         }
-
         .output-actions {
             display: flex;
             gap: 8px;
         }
-
         .action-btn {
             padding: 6px 14px;
             border: 1.5px solid var(--border);
@@ -257,18 +220,15 @@
             color: var(--text);
             transition: all 0.2s;
         }
-
         .action-btn:hover {
             border-color: var(--accent);
             color: var(--accent);
         }
-
         .action-btn.copied {
             background: var(--success);
             color: white;
             border-color: var(--success);
         }
-
         .output-content {
             background: #fafbfc;
             border: 1.5px solid var(--border);
@@ -280,7 +240,6 @@
             white-space: pre-wrap;
             word-wrap: break-word;
         }
-
         .output-meta {
             margin-top: 12px;
             padding-top: 12px;
@@ -291,22 +250,13 @@
             color: var(--text-light);
             flex-wrap: wrap;
         }
-
-        .output-meta span {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
         .template-section { margin-top: 20px; }
-
         .template-list {
             display: flex;
             flex-direction: column;
             gap: 10px;
             margin-top: 12px;
         }
-
         .template-item {
             padding: 12px 14px;
             background: #f8f9fa;
@@ -320,12 +270,10 @@
             align-items: center;
             justify-content: space-between;
         }
-
         .template-item:hover {
             border-color: var(--accent);
             background: rgba(15, 52, 96, 0.04);
         }
-
         .template-item .tag {
             font-size: 0.75rem;
             padding: 2px 8px;
@@ -334,22 +282,12 @@
             border-radius: 4px;
             font-weight: 500;
         }
-
-        .char-count {
-            text-align: right;
-            font-size: 0.8rem;
-            color: var(--text-light);
-            margin-top: 4px;
-        }
-
         .loading {
             display: none;
             text-align: center;
             padding: 40px;
         }
-
         .loading.visible { display: block; }
-
         .spinner {
             width: 40px;
             height: 40px;
@@ -359,33 +297,7 @@
             animation: spin 0.8s linear infinite;
             margin: 0 auto 16px;
         }
-
         @keyframes spin { to { transform: rotate(360deg); } }
-
-        .tips-box {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-left: 4px solid var(--accent);
-            padding: 16px 20px;
-            border-radius: 0 8px 8px 0;
-            margin-bottom: 24px;
-        }
-
-        .tips-box h4 {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 8px;
-        }
-
-        .tips-box ul {
-            margin: 0;
-            padding-left: 18px;
-            font-size: 0.85rem;
-            color: var(--text-light);
-        }
-
-        .tips-box li { margin-bottom: 4px; }
-
         .prompt-preview {
             background: #f0f4f8;
             border: 1.5px dashed var(--accent);
@@ -396,11 +308,9 @@
             color: var(--text);
             line-height: 1.6;
         }
-
         .prompt-preview strong {
             color: var(--accent);
         }
-
         @media (max-width: 600px) {
             .container { padding: 20px 16px; }
             header h1 { font-size: 1.4rem; }
@@ -413,12 +323,12 @@
     <div class="container">
         <header>
             <h1>LinkedIn Comment Generator</h1>
-            <p>Generate English comments from your POV — Yanto Goutama, CHCM, CPLC</p>
+            <p>Generate English comments from your POV - Yanto Goutama, CHCM, CPLC</p>
         </header>
 
         <div class="profile-card">
             <h3>Your Profile POV</h3>
-            <p style="margin-bottom: 10px;">
+            <p>
                 <strong>Yanto Goutama, CHCM, CPLC</strong><br>
                 Helping SMEs & Companies Scale Without HR & Legal Chaos | HR & Legal Consultant | System Builder | ISLA Framework
             </p>
@@ -432,35 +342,18 @@
             </div>
         </div>
 
-        <div class="tips-box">
-            <h4>How to Use:</h4>
-            <ul>
-                <li>Paste the LinkedIn post content below</li>
-                <li>Select the insight angle that fits the topic</li>
-                <li>Click "Generate Comment" to get a ready-to-post English comment</li>
-                <li>Edit the result if needed before posting</li>
-            </ul>
-        </div>
-
         <div class="card">
             <div class="card-title">
                 <div class="icon">1</div>
                 LinkedIn Post Content
             </div>
             <label for="inputContent">Paste the post content you want to comment on:</label>
-            <textarea 
-                id="inputContent" 
-                placeholder="Example:
-A post about mass layoffs at tech startups...
-Or:
-A discussion about employee retention strategies..."
-                oninput="updateCharCount()"
-            ></textarea>
+            <textarea id="inputContent" placeholder="Example: A post about mass layoffs at tech startups..." oninput="updateCharCount()"></textarea>
             <div class="char-count" id="charCount">0 characters</div>
 
             <div class="prompt-preview">
                 <strong>Prompt that will be used:</strong><br>
-                "Give a comment in <strong>English</strong> from the post below with <strong>POV according to Yanto Goutama's profile</strong> — HR & Legal Consultant, System Builder, ISLA Framework, focused on helping SMEs scale without HR & legal chaos."
+                "Give a comment in <strong>English</strong> from the post below with <strong>POV according to Yanto Goutama's profile</strong> - HR & Legal Consultant, System Builder, ISLA Framework, focused on helping SMEs scale without HR & legal chaos."
             </div>
         </div>
 
@@ -523,7 +416,7 @@ A discussion about employee retention strategies..."
 
             <div class="card template-section">
                 <div class="card-title">
-                    <div class="icon">💡</div>
+                    <div class="icon">&#128161;</div>
                     Quick Templates (Click to Use)
                 </div>
                 <div class="template-list">
@@ -586,10 +479,10 @@ A discussion about employee retention strategies..."
 
         function useTemplate(type) {
             const templates = {
-                phk: "Tech startups in Indonesia are starting mass layoffs. Many say it's because funding dried up, but is that the only reason? What about the legal obligations companies have toward employees being laid off?",
-                turnover: "Our company is experiencing high turnover in the sales division. We've tried raising salaries, but employees still leave. Is the problem really about money, or is there something more fundamental?",
-                compliance: "Many SMEs still don't understand the importance of PKB (Collective Labor Agreement) and HR SOPs. Is this really important, or just a formality?",
-                performance: "Our employees look busy from morning to night, but targets aren't met. How do we distinguish between busy-productive and busy-creating an illusion of work?",
+                phk: "Tech startups in Indonesia are starting mass layoffs. Many say it is because funding dried up, but is that the only reason? What about the legal obligations companies have toward employees being laid off?",
+                turnover: "Our company is experiencing high turnover in the sales division. We have tried raising salaries, but employees still leave. Is the problem really about money, or is there something more fundamental?",
+                compliance: "Many SMEs still do not understand the importance of PKB (Collective Labor Agreement) and HR SOPs. Is this really important, or just a formality?",
+                performance: "Our employees look busy from morning to night, but targets are not met. How do we distinguish between busy-productive and busy-creating an illusion of work?",
                 remote: "After the pandemic, our company implemented hybrid work. But coordination became chaotic, and some employees are hard to reach. Is remote work really effective for all types of businesses?",
                 startup: "Our startup grew from 5 to 50 people in a year. Suddenly there are many internal conflicts, unclear communication, and the founder feels losing control. Is this normal?"
             };
@@ -663,57 +556,57 @@ A discussion about employee retention strategies..."
         }
 
         // ============================================
-        // CORE INSIGHT ENGINE — Yanto Goutama POV
+        // CORE DATA
         // ============================================
 
         const patterns = {
             'root-cause': [
-                "The real issue is rarely {surface}. It's usually {root}.",
-                "Many businesses think {perception}, but what's actually happening is {reality}.",
-                "What you see on the surface is {visible}. But what's really driving this is {hidden}.",
+                "The real issue is rarely {surface}. It is usually {root}.",
+                "Many businesses think {perception}, but what is actually happening is {reality}.",
+                "What you see on the surface is {visible}. But what is really driving this is {hidden}.",
                 "We spend too much time fixing {symptom}, while {cause} remains untouched."
             ],
             'hidden-cost': [
-                "The most expensive thing isn't {obvious_cost}. It's {hidden_cost} that keeps growing unnoticed.",
-                "The hidden cost of {issue} is usually 3x larger than what's visible.",
+                "The most expensive thing is not {obvious_cost}. It is {hidden_cost} that keeps growing unnoticed.",
+                "The hidden cost of {issue} is usually 3x larger than what is visible.",
                 "Many owners focus on {visible_expense}, while {invisible_drain} quietly erodes margins.",
-                "Messy HR isn't just about {surface_issue}. It's also about {hidden_impact} that keeps compounding."
+                "Messy HR is not just about {surface_issue}. It is also about {hidden_impact} that keeps compounding."
             ],
             'system-gap': [
                 "Strategy without {system} is a plan that stays on presentation slides.",
-                "The most expensive mistake isn't bad strategy. It's executing strategy without a clear system.",
+                "The most expensive mistake is not bad strategy. It is executing strategy without a clear system.",
                 "Many companies have {policy} on paper, but lack {mechanism} to run it.",
                 "The gap between {intention} and {execution} is where big problems are born."
             ],
             'scalability': [
-                "A business that grows without {foundation} will hit a bottleneck that's far more expensive later.",
-                "Scalability isn't about {quantity}. It's about {capability} to absorb growth.",
-                "What kills a startup's scale isn't the market. It's {internal_limitation} that never gets fixed.",
+                "A business that grows without {foundation} will hit a bottleneck that is far more expensive later.",
+                "Scalability is not about {quantity}. It is about {capability} to absorb growth.",
+                "What kills a startup's scale is not the market. It is {internal_limitation} that never gets fixed.",
                 "Growth without {structure} is a fast track to operational chaos."
             ],
             'legal-compliance': [
                 "Legal compliance ignored today usually becomes a massive problem down the road.",
-                "Many businesses treat {compliance} as a formality — until {consequence} arrives.",
+                "Many businesses treat {compliance} as a formality - until {consequence} arrives.",
                 "The cost of preventing {legal_aspect} is far cheaper than handling it after it happens.",
                 "What looks like {bureaucracy} is actually {protection} for both the business and the people."
             ],
             'turnover': [
-                "High turnover isn't just about {surface_reason}. It's also about {deeper_issue} that never gets addressed.",
-                "Employees don't leave because of {stated_reason}. They leave because of {actual_reason} that keeps being ignored.",
-                "The real cost of turnover isn't {recruitment_cost}. It's {knowledge_loss} that's hard to measure.",
+                "High turnover is not just about {surface_reason}. It is also about {deeper_issue} that never gets addressed.",
+                "Employees do not leave because of {stated_reason}. They leave because of {actual_reason} that keeps being ignored.",
+                "The real cost of turnover is not {recruitment_cost}. It is {knowledge_loss} that is hard to measure.",
                 "Many companies focus on {retention_tactic}, when what they actually need is {root_solution}."
             ],
             'productivity': [
-                "Productivity isn't about {hours}. It's about {output_quality} delivered.",
-                "Busy and productive are two different things. What looks {busy} isn't necessarily {effective}.",
+                "Productivity is not about {hours}. It is about {output_quality} delivered.",
+                "Busy and productive are two different things. What looks {busy} is not necessarily {effective}.",
                 "Many teams get trapped in {activity_trap}, while {value_creation} falls behind.",
-                "Good performance management isn't about {monitoring}. It's about {enablement}."
+                "Good performance management is not about {monitoring}. It is about {enablement}."
             ],
             'strategic-hr': [
-                "Strategic HR isn't about {admin_task}. It's about {business_alignment}.",
-                "Businesses don't fail because of {external_factor}. They fail because {people_factor} isn't managed properly.",
-                "HR isn't a cost center when {function} is directly tied to {business_outcome}.",
-                "What separates sustainable businesses from those that aren't is {people_practice}, not just {market_condition}."
+                "Strategic HR is not about {admin_task}. It is about {business_alignment}.",
+                "Businesses do not fail because of {external_factor}. They fail because {people_factor} is not managed properly.",
+                "HR is not a cost center when {function} is directly tied to {business_outcome}.",
+                "What separates sustainable businesses from those that are not is {people_practice}, not just {market_condition}."
             ]
         };
 
@@ -724,30 +617,30 @@ A discussion about employee retention strategies..."
             ],
             'hidden-cost': [
                 "Calculate the hidden costs. That number usually changes the perspective entirely.",
-                "What you don't see often damages more than what you do."
+                "What you do not see often damages more than what you do."
             ],
             'system-gap': [
                 "A good system makes average people deliver outstanding results. A bad system frustrates even the best people.",
-                "Don't build a business on a shaky foundation."
+                "Do not build a business on a shaky foundation."
             ],
             'scalability': [
                 "Scale with a strong foundation, or be prepared to pay a much higher price fixing the damage later.",
                 "Growth without readiness is an invitation to chaos."
             ],
             'legal-compliance': [
-                "Compliance isn't a burden. It's an investment in sleeping well at night.",
+                "Compliance is not a burden. It is an investment in sleeping well at night.",
                 "Better to prevent now than pay dearly later."
             ],
             'turnover': [
                 "Retention starts with understanding, not tactics.",
-                "Employees who are truly valued don't need to be forced to stay."
+                "Employees who are truly valued do not need to be forced to stay."
             ],
             'productivity': [
-                "Focus on outcome, not activity. That's the difference between busy and effective.",
+                "Focus on outcome, not activity. That is the difference between busy and effective.",
                 "True productivity is measured by results, not hours."
             ],
             'strategic-hr': [
-                "HR placed at the strategic level isn't a luxury. It's a necessity for any business that wants to sustain.",
+                "HR placed at the strategic level is not a luxury. It is a necessity for any business that wants to sustain.",
                 "People strategy IS business strategy."
             ]
         };
@@ -755,7 +648,7 @@ A discussion about employee retention strategies..."
         const topicKeywords = {
             phk: ['layoff', 'termination', 'fired', 'redundancy', 'PHK', 'pemutusan', 'pemecatan', 'downsizing', 'workforce reduction'],
             turnover: ['resign', 'turnover', 'quit', 'leave', 'exit', 'keluar', 'mundur', 'berhenti', 'attrition'],
-            compliance: ['UU', 'regulation', 'legal', 'law', 'compliance', 'PKB', 'PKWT', 'PKWTT', 'BPJS', 'peraturan', 'hukum'],
+            compliance: ['regulation', 'legal', 'law', 'compliance', 'PKB', 'PKWT', 'PKWTT', 'BPJS', 'peraturan', 'hukum'],
             performance: ['productivity', 'performance', 'KPI', 'target', 'output', 'kinerja', 'produktivitas', 'evaluasi'],
             remote: ['remote', 'WFH', 'hybrid', 'work from home', 'virtual', 'jarak jauh'],
             startup: ['startup', 'scale', 'growth', 'funding', 'investor', 'venture', 'pertumbuhan'],
@@ -767,7 +660,7 @@ A discussion about employee retention strategies..."
         function detectTopic(input) {
             const lower = input.toLowerCase();
             for (const [topic, keywords] of Object.entries(topicKeywords)) {
-                if (keywords.some(k => lower.includes(k))) {
+                if (keywords.some(k => lower.includes(k.toLowerCase()))) {
                     return topic;
                 }
             }
@@ -835,13 +728,13 @@ A discussion about employee retention strategies..."
                     surface: 'non-competitive salaries',
                     root: 'broken career development, recognition, and leadership systems that make employees feel undervalued',
                     perception: 'employees leave for money',
-                    reality: 'employees leave because they don't see a clear future and don't feel appreciated for their contribution',
+                    reality: 'employees leave because they do not see a clear future and do not feel appreciated for their contribution',
                     visible: 'high turnover rate',
-                    hidden: 'leadership that doesn't listen, unclear growth paths, and a work culture that emotionally exhausts people',
+                    hidden: 'leadership that does not listen, unclear growth paths, and a work culture that emotionally exhausts people',
                     symptom: 'chasing resigning employees with counter offers',
-                    cause: 'why they didn't want to stay in the first place',
+                    cause: 'why they did not want to stay in the first place',
                     obvious_cost: 'cost of hiring replacements',
-                    hidden_cost: 'knowledge loss, team disruption, and morale decline that's hard to quantify',
+                    hidden_cost: 'knowledge loss, team disruption, and morale decline that is hard to quantify',
                     visible_expense: 'job ad costs and agency fees',
                     invisible_drain: 'onboarding time, operational mistakes during learning curve, and overload on remaining team',
                     surface_issue: 'turnover numbers on the HR dashboard',
@@ -888,7 +781,7 @@ A discussion about employee retention strategies..."
                 },
                 compliance: {
                     surface: 'complete permits and documentation',
-                    root: 'management understanding that compliance isn't a burden but an operational foundation that allows business to run without disruption',
+                    root: 'management understanding that compliance is not a burden but an operational foundation that allows business to run without disruption',
                     perception: 'legal compliance is just administration and extra cost',
                     reality: 'good compliance is operational insurance that prevents far greater losses in the future',
                     visible: 'certificates and neatly organized documents',
@@ -944,7 +837,7 @@ A discussion about employee retention strategies..."
                 performance: {
                     surface: 'unmet targets and KPIs',
                     root: 'expectation clarity, adequate resources, and leadership capable of directing without micromanaging',
-                    perception: 'employees aren't working hard enough',
+                    perception: 'employees are not working hard enough',
                     reality: 'work systems, approval flows, and team structures that actually hinder productivity',
                     visible: 'output not matching targets',
                     hidden: 'inefficient work processes, endless distractions, and overly centralized decision-making',
@@ -972,7 +865,7 @@ A discussion about employee retention strategies..."
                     bureaucracy: 'lengthy evaluation process',
                     protection: 'protection for employees and company',
                     surface_reason: 'incompetent employees',
-                    deeper_issue: 'systems that don't allow competence to develop and contribute optimally',
+                    deeper_issue: 'systems that do not allow competence to develop and contribute optimally',
                     stated_reason: 'unrealistic targets',
                     actual_reason: 'misalignment between strategy, resources, and field expectations',
                     recruitment_cost: 'training costs',
@@ -1015,7 +908,7 @@ A discussion about employee retention strategies..."
                     policy: 'remote work policy in handbook',
                     mechanism: 'regular check-ins, decision documentation, and clear escalation paths',
                     intention: 'providing flexibility',
-                    execution: 'ensuring productivity isn't sacrificed',
+                    execution: 'ensuring productivity is not sacrificed',
                     foundation: 'trust and expectation clarity',
                     quantity: 'how many WFH days',
                     capability: 'management ability to lead without relying on presence',
@@ -1093,7 +986,7 @@ A discussion about employee retention strategies..."
                     output_quality: 'consistent value delivery',
                     busy: 'everyone is busy',
                     effective: 'everyone delivers impact',
-                    activity_trap: 'growth for growth's sake',
+                    activity_trap: 'growth for growth sake',
                     value_creation: 'sustainable business model',
                     monitoring: 'checking headcount growth',
                     enablement: 'building a strong foundation',
@@ -1108,7 +1001,7 @@ A discussion about employee retention strategies..."
                 },
                 general: {
                     surface: 'the visible problem',
-                    root: 'systems, structures, and foundations that haven't been fixed at the fundamental level',
+                    root: 'systems, structures, and foundations that have not been fixed at the fundamental level',
                     perception: 'this problem can be solved with a quick fix',
                     reality: 'this problem is a symptom of foundations that need strengthening',
                     visible: 'output or results not meeting expectations',
@@ -1178,34 +1071,84 @@ A discussion about employee retention strategies..."
             }
 
             const openings = [
-                `After reading this, one thing comes to mind: ${filled}`,
-                `Interesting point. But here's what needs attention: ${filled}`,
-                `I agree with much of this. But there's an angle worth adding: ${filled}`,
-                `This is a good perspective. From an HR & Legal standpoint, ${filled}`,
-                `Many focus on what's visible. Yet, ${filled}`
+                "After reading this, one thing comes to mind: " + filled,
+                "Interesting point. But here is what needs attention: " + filled,
+                "I agree with much of this. But there is an angle worth adding: " + filled,
+                "This is a good perspective. From an HR and Legal standpoint, " + filled,
+                "Many focus on what is visible. Yet, " + filled
             ];
             const opening = openings[Math.floor(Math.random() * openings.length)];
 
-            let body = '';
+            let body = "";
 
             if (length === 'short') {
                 const bodies = [
-                    `\n\nMany businesses think ${ctx.perception}, but what's actually happening is ${ctx.reality}.\n\n${ctx.obvious_cost} is visible, but ${ctx.hidden_cost} usually does far more damage long-term.`,
-                    `\n\nThe most expensive thing isn't ${ctx.obvious_cost}. It's ${ctx.hidden_cost} that keeps growing unnoticed.\n\nMany owners focus on ${ctx.visible_expense}, while ${ctx.invisible_drain} quietly erodes margins.`,
-                    `\n\nMessy HR isn't just about ${ctx.surface_issue}. It's also about ${ctx.hidden_impact} that keeps compounding.\n\n${ctx.system} is an investment, not a cost.`
+                    "
+
+Many businesses think " + ctx.perception + ", but what is actually happening is " + ctx.reality + ".
+
+" + ctx.obvious_cost + " is visible, but " + ctx.hidden_cost + " usually does far more damage long-term.",
+                    "
+
+The most expensive thing is not " + ctx.obvious_cost + ". It is " + ctx.hidden_cost + " that keeps growing unnoticed.
+
+Many owners focus on " + ctx.visible_expense + ", while " + ctx.invisible_drain + " quietly erodes margins.",
+                    "
+
+Messy HR is not just about " + ctx.surface_issue + ". It is also about " + ctx.hidden_impact + " that keeps compounding.
+
+" + ctx.system + " is an investment, not a cost."
                 ];
                 body = bodies[Math.floor(Math.random() * bodies.length)];
             } else if (length === 'medium') {
                 const bodies = [
-                    `\n\nMany businesses think ${ctx.perception}, but what's actually happening is ${ctx.reality}.\n\nWhat you see on the surface is ${ctx.visible}. But what's really driving this is ${ctx.hidden}.\n\n${ctx.obvious_cost} is visible, but ${ctx.hidden_cost} usually does far more damage long-term. Many owners focus on ${ctx.visible_expense}, while ${ctx.invisible_drain} quietly erodes margins.`,
-                    `\n\nThe most expensive thing isn't ${ctx.obvious_cost}. It's ${ctx.hidden_cost} that keeps growing unnoticed.\n\nWe spend too much time fixing ${ctx.symptom}, while ${ctx.cause} remains untouched.\n\n${ctx.system} isn't just policy on paper. It needs to become ${ctx.mechanism} that runs every day.`,
-                    `\n\nMessy HR isn't just about ${ctx.surface_issue}. It's also about ${ctx.hidden_impact} that keeps compounding.\n\nMany companies have ${ctx.policy} on paper, but lack ${ctx.mechanism} to run it. The gap between ${ctx.intention} and ${ctx.execution} is where big problems are born.\n\n${ctx.foundation} is a non-negotiable foundation.`
+                    "
+
+Many businesses think " + ctx.perception + ", but what is actually happening is " + ctx.reality + ".
+
+What you see on the surface is " + ctx.visible + ". But what is really driving this is " + ctx.hidden + ".
+
+" + ctx.obvious_cost + " is visible, but " + ctx.hidden_cost + " usually does far more damage long-term. Many owners focus on " + ctx.visible_expense + ", while " + ctx.invisible_drain + " quietly erodes margins.",
+                    "
+
+The most expensive thing is not " + ctx.obvious_cost + ". It is " + ctx.hidden_cost + " that keeps growing unnoticed.
+
+We spend too much time fixing " + ctx.symptom + ", while " + ctx.cause + " remains untouched.
+
+" + ctx.system + " is not just policy on paper. It needs to become " + ctx.mechanism + " that runs every day.",
+                    "
+
+Messy HR is not just about " + ctx.surface_issue + ". It is also about " + ctx.hidden_impact + " that keeps compounding.
+
+Many companies have " + ctx.policy + " on paper, but lack " + ctx.mechanism + " to run it. The gap between " + ctx.intention + " and " + ctx.execution + " is where big problems are born.
+
+" + ctx.foundation + " is a non-negotiable foundation."
                 ];
                 body = bodies[Math.floor(Math.random() * bodies.length)];
             } else {
                 const bodies = [
-                    `\n\nMany businesses think ${ctx.perception}, but what's actually happening is ${ctx.reality}.\n\nWhat you see on the surface is ${ctx.visible}. But what's really driving this is ${ctx.hidden}.\n\nWe spend too much time fixing ${ctx.symptom}, while ${ctx.cause} remains untouched.\n\nThe most expensive thing isn't ${ctx.obvious_cost}. It's ${ctx.hidden_cost} that keeps growing unnoticed. Many owners focus on ${ctx.visible_expense}, while ${ctx.invisible_drain} quietly erodes margins.\n\n${ctx.system} isn't just policy on paper. It needs to become ${ctx.mechanism} that runs every day. The gap between ${ctx.intention} and ${ctx.execution} is where big problems are born.`,
-                    `\n\nThe most expensive thing isn't ${ctx.obvious_cost}. It's ${ctx.hidden_cost} that keeps growing unnoticed.\n\nMany businesses think ${ctx.perception}, but what's actually happening is ${ctx.reality}. What you see on the surface is ${ctx.visible}. But what's really driving this is ${ctx.hidden}.\n\nWe spend too much time fixing ${ctx.symptom}, while ${ctx.cause} remains untouched.\n\nMany companies have ${ctx.policy} on paper, but lack ${ctx.mechanism} to run it.\n\n${ctx.foundation} is a non-negotiable foundation. A business that grows without ${ctx.foundation} will hit a bottleneck that's far more expensive later.`
+                    "
+
+Many businesses think " + ctx.perception + ", but what is actually happening is " + ctx.reality + ".
+
+What you see on the surface is " + ctx.visible + ". But what is really driving this is " + ctx.hidden + ".
+
+We spend too much time fixing " + ctx.symptom + ", while " + ctx.cause + " remains untouched.
+
+The most expensive thing is not " + ctx.obvious_cost + ". It is " + ctx.hidden_cost + " that keeps growing unnoticed. Many owners focus on " + ctx.visible_expense + ", while " + ctx.invisible_drain + " quietly erodes margins.
+
+" + ctx.system + " is not just policy on paper. It needs to become " + ctx.mechanism + " that runs every day. The gap between " + ctx.intention + " and " + ctx.execution + " is where big problems are born.",
+                    "
+
+The most expensive thing is not " + ctx.obvious_cost + ". It is " + ctx.hidden_cost + " that keeps growing unnoticed.
+
+Many businesses think " + ctx.perception + ", but what is actually happening is " + ctx.reality + ". What you see on the surface is " + ctx.visible + ". But what is really driving this is " + ctx.hidden + ".
+
+We spend too much time fixing " + ctx.symptom + ", while " + ctx.cause + " remains untouched.
+
+Many companies have " + ctx.policy + " on paper, but lack " + ctx.mechanism + " to run it.
+
+" + ctx.foundation + " is a non-negotiable foundation. A business that grows without " + ctx.foundation + " will hit a bottleneck that is far more expensive later."
                 ];
                 body = bodies[Math.floor(Math.random() * bodies.length)];
             }
@@ -1213,7 +1156,9 @@ A discussion about employee retention strategies..."
             const angleClosings = closings[angle] || closings['root-cause'];
             const closing = angleClosings[Math.floor(Math.random() * angleClosings.length)];
 
-            return opening + body + `\n\n` + closing;
+            return opening + body + "
+
+" + closing;
         }
     </script>
 </body>
