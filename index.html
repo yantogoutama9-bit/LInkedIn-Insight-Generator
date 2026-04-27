@@ -3,1175 +3,543 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LinkedIn Insight Generator — HR & Legal Consultant</title>
+    <title>LinkedIn Insight Generator - Yanto Goutama</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"></script>
     <style>
-        :root {
-            --primary: #1a1a2e;
-            --secondary: #16213e;
-            --accent: #0f3460;
-            --highlight: #e94560;
-            --text: #2d2d2d;
-            --text-light: #5a5a5a;
-            --bg: #f8f9fa;
-            --card: #ffffff;
-            --border: #e1e4e8;
-            --success: #28a745;
+        body { font-family: 'Inter', sans-serif; }
+        .gradient-bg { background: linear-gradient(135deg, #1e3a5f 0%, #2d5a87 50%, #1e3a5f 100%); }
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        .profile-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
         }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            min-height: 100vh;
+        .btn-primary {
+            background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+            transition: all 0.3s ease;
         }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 40px 20px;
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
         }
-
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding-bottom: 30px;
-            border-bottom: 2px solid var(--border);
+        .comment-output {
+            background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+            border-left: 4px solid #22c55e;
         }
-
-        header h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 8px;
-        }
-
-        header p {
-            color: var(--text-light);
-            font-size: 0.95rem;
-            font-weight: 400;
-        }
-
-        .card {
-            background: var(--card);
-            border-radius: 12px;
-            padding: 28px;
-            margin-bottom: 24px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            border: 1px solid var(--border);
-        }
-
-        .card-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .card-title .icon {
+        .loading-spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #2563eb;
+            border-radius: 50%;
             width: 24px;
             height: 24px;
-            background: var(--accent);
-            color: white;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.85rem;
+            animation: spin 1s linear infinite;
         }
-
-        label {
-            display: block;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--text);
-            margin-bottom: 6px;
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
-
-        textarea, select {
-            width: 100%;
-            padding: 12px 14px;
-            border: 1.5px solid var(--border);
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 0.9rem;
-            color: var(--text);
-            background: var(--card);
-            transition: border-color 0.2s, box-shadow 0.2s;
-            resize: vertical;
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
         }
-
-        textarea:focus, select:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(15, 52, 96, 0.08);
-        }
-
-        textarea {
-            min-height: 140px;
-            line-height: 1.6;
-        }
-
-        .hint {
-            font-size: 0.8rem;
-            color: var(--text-light);
-            margin-top: 6px;
-        }
-
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 12px;
-            margin-top: 12px;
-        }
-
-        .option-btn {
-            padding: 10px 14px;
-            border: 1.5px solid var(--border);
-            border-radius: 8px;
-            background: var(--card);
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: var(--text);
-            transition: all 0.2s;
-            text-align: left;
-        }
-
-        .option-btn:hover {
-            border-color: var(--accent);
-            background: rgba(15, 52, 96, 0.04);
-        }
-
-        .option-btn.active {
-            border-color: var(--accent);
-            background: rgba(15, 52, 96, 0.08);
-            color: var(--accent);
-        }
-
-        .generate-btn {
-            width: 100%;
-            padding: 14px 24px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-top: 8px;
-        }
-
-        .generate-btn:hover {
-            background: var(--secondary);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(26, 26, 46, 0.2);
-        }
-
-        .generate-btn:active {
-            transform: translateY(0);
-        }
-
-        .output-section {
-            display: none;
-        }
-
-        .output-section.visible {
-            display: block;
-            animation: fadeIn 0.4s ease;
-        }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        .output-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .output-header h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        .output-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .action-btn {
-            padding: 6px 14px;
-            border: 1.5px solid var(--border);
-            border-radius: 6px;
-            background: var(--card);
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: var(--text);
-            transition: all 0.2s;
-        }
-
-        .action-btn:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-
-        .action-btn.copied {
-            background: var(--success);
-            color: white;
-            border-color: var(--success);
-        }
-
-        .output-content {
-            background: #fafbfc;
-            border: 1.5px solid var(--border);
-            border-radius: 8px;
-            padding: 20px;
-            font-size: 0.9rem;
-            line-height: 1.7;
-            color: var(--text);
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-
-        .output-meta {
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            gap: 16px;
-            font-size: 0.8rem;
-            color: var(--text-light);
-        }
-
-        .output-meta span {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .template-section {
-            margin-top: 20px;
-        }
-
-        .template-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 12px;
-        }
-
-        .template-item {
-            padding: 12px 14px;
-            background: #f8f9fa;
-            border: 1.5px solid var(--border);
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            color: var(--text);
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .template-item:hover {
-            border-color: var(--accent);
-            background: rgba(15, 52, 96, 0.04);
-        }
-
-        .template-item .tag {
+        .tag {
+            background: rgba(37, 99, 235, 0.1);
+            color: #1d4ed8;
+            padding: 4px 12px;
+            border-radius: 20px;
             font-size: 0.75rem;
-            padding: 2px 8px;
-            background: var(--accent);
-            color: white;
-            border-radius: 4px;
             font-weight: 500;
         }
-
-        .char-count {
-            text-align: right;
-            font-size: 0.8rem;
-            color: var(--text-light);
-            margin-top: 4px;
+        textarea:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
-
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 40px;
+        .copy-btn {
+            transition: all 0.2s ease;
         }
-
-        .loading.visible {
-            display: block;
+        .copy-btn:hover {
+            background: #2563eb;
+            color: white;
         }
-
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--border);
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 16px;
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        .tips-box {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-left: 4px solid var(--accent);
-            padding: 16px 20px;
-            border-radius: 0 8px 8px 0;
-            margin-bottom: 24px;
-        }
-
-        .tips-box h4 {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 8px;
-        }
-
-        .tips-box ul {
-            margin: 0;
-            padding-left: 18px;
-            font-size: 0.85rem;
-            color: var(--text-light);
-        }
-
-        .tips-box li {
-            margin-bottom: 4px;
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                padding: 20px 16px;
-            }
-            header h1 {
-                font-size: 1.4rem;
-            }
-            .options-grid {
-                grid-template-columns: 1fr;
-            }
+        .copy-btn.copied {
+            background: #22c55e;
+            color: white;
         }
     </style>
 <base target="_blank">
 </head>
-<body>
-    <div class="container">
-        <header>
-            <h1>LinkedIn Insight Generator</h1>
-            <p>HR & Legal Consultant Style — Praktis, Strategis, Insight-Driven</p>
-        </header>
-
-        <div class="tips-box">
-            <h4>Cara Penggunaan:</h4>
-            <ul>
-                <li>Masukkan isi postingan atau konteks komentar LinkedIn di kolom bawah</li>
-                <li>Pilih angle insight yang sesuai dengan topik</li>
-                <li>Klik "Generate Insight" untuk mendapatkan komentar yang siap diposting</li>
-                <li>Edit hasil jika diperlukan sebelum diposting</li>
-            </ul>
-        </div>
-
-        <div class="card">
-            <div class="card-title">
-                <div class="icon">1</div>
-                Konten LinkedIn
-            </div>
-            <label for="inputContent">Tempel isi postingan atau topik yang ingin dikomentari:</label>
-            <textarea 
-                id="inputContent" 
-                placeholder="Contoh:
-Postingan tentang karyawan resign massal di startup...
-Atau:
-Diskusi tentang UU Cipta Kerja dan PHK..."
-                oninput="updateCharCount()"
-            ></textarea>
-            <div class="char-count" id="charCount">0 karakter</div>
-        </div>
-
-        <div class="card">
-            <div class="card-title">
-                <div class="icon">2</div>
-                Pilih Angle Insight
-            </div>
-            <label>Pilih sudut pandang yang paling relevan:</label>
-            <div class="options-grid" id="angleOptions">
-                <button class="option-btn active" data-angle="root-cause">Root Cause Analysis</button>
-                <button class="option-btn" data-angle="hidden-cost">Hidden Cost & Risk</button>
-                <button class="option-btn" data-angle="system-gap">System & Process Gap</button>
-                <button class="option-btn" data-angle="scalability">Scalability & Growth</button>
-                <button class="option-btn" data-angle="legal-compliance">Legal Compliance</button>
-                <button class="option-btn" data-angle="turnover">Turnover & Retention</button>
-                <button class="option-btn" data-angle="productivity">Productivity & Performance</button>
-                <button class="option-btn" data-angle="strategic-hr">Strategic HR Alignment</button>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-title">
-                <div class="icon">3</div>
-                Panjang Komentar
-            </div>
-            <label>Pilih panjang komentar:</label>
-            <div class="options-grid" id="lengthOptions">
-                <button class="option-btn active" data-length="short">Singkat & Tajam (2-3 paragraf)</button>
-                <button class="option-btn" data-length="medium">Sedang & Berbobot (3-5 paragraf)</button>
-                <button class="option-btn" data-length="long">Mendalam & Komprehensif (5+ paragraf)</button>
-            </div>
-        </div>
-
-        <button class="generate-btn" onclick="generateInsight()">
-            Generate Insight
-        </button>
-
-        <div class="loading" id="loadingSection">
-            <div class="spinner"></div>
-            <p style="color: var(--text-light); font-size: 0.9rem;">Menyusun insight...</p>
-        </div>
-
-        <div class="output-section" id="outputSection">
-            <div class="card">
-                <div class="output-header">
-                    <h3>Hasil Insight</h3>
-                    <div class="output-actions">
-                        <button class="action-btn" onclick="copyOutput()" id="copyBtn">Salin</button>
-                        <button class="action-btn" onclick="regenerate()">Generate Ulang</button>
-                    </div>
+<body class="gradient-bg min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-6xl">
+        <!-- Header -->
+        <div class="text-center mb-8">
+            <div class="inline-flex items-center gap-3 mb-4">
+                <div class="w-12 h-12 bg-white rounded-xl flex items-center justify-center shadow-lg">
+                    <i class="fab fa-linkedin text-2xl text-blue-600"></i>
                 </div>
-                <div class="output-content" id="outputContent"></div>
-                <div class="output-meta">
-                    <span id="metaAngle">Angle: Root Cause</span>
-                    <span id="metaLength">Panjang: Singkat</span>
-                    <span id="metaWords">~0 kata</span>
-                </div>
+                <h1 class="text-3xl font-bold text-white">LinkedIn Insight Generator</h1>
             </div>
+            <p class="text-blue-100 text-lg">Generate professional English comments from any LinkedIn post</p>
+        </div>
 
-            <div class="card template-section">
-                <div class="card-title">
-                    <div class="icon">💡</div>
-                    Template Cepat (Klik untuk Gunakan)
-                </div>
-                <div class="template-list">
-                    <div class="template-item" onclick="useTemplate('phk')">
-                        <span>Topik: PHK, Pemutusan Hubungan Kerja</span>
-                        <span class="tag">PHK</span>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Left Panel: Profile Info -->
+            <div class="lg:col-span-1">
+                <div class="glass-panel rounded-2xl p-6 shadow-xl">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-700 rounded-full flex items-center justify-center text-white text-2xl font-bold shadow-lg">
+                            YG
+                        </div>
+                        <div>
+                            <h2 class="font-bold text-gray-800 text-lg">Yanto Goutama</h2>
+                            <p class="text-sm text-gray-500">CHCM, CPLC</p>
+                        </div>
                     </div>
-                    <div class="template-item" onclick="useTemplate('turnover')">
-                        <span>Topik: Turnover Tinggi, Karyawan Resign</span>
-                        <span class="tag">Turnover</span>
+
+                    <div class="profile-card rounded-xl p-4 mb-4">
+                        <p class="text-sm text-gray-700 leading-relaxed">
+                            <strong>Helping SMEs & Companies Scale Without HR & Legal Chaos</strong><br>
+                            HR & Legal Consultant | System Builder | ISLA Framework
+                        </p>
                     </div>
-                    <div class="template-item" onclick="useTemplate('compliance')">
-                        <span>Topik: Legal Compliance, Peraturan Ketenagakerjaan</span>
-                        <span class="tag">Legal</span>
+
+                    <div class="space-y-3 mb-4">
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <i class="fas fa-map-marker-alt text-blue-500 w-5"></i>
+                            <span>Area DKI Jakarta</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <i class="fas fa-envelope text-blue-500 w-5"></i>
+                            <span>y.goutama9@gmail.com</span>
+                        </div>
+                        <div class="flex items-center gap-2 text-sm text-gray-600">
+                            <i class="fas fa-briefcase text-blue-500 w-5"></i>
+                            <span>CEO & Founder, Forisa Impact</span>
+                        </div>
                     </div>
-                    <div class="template-item" onclick="useTemplate('performance')">
-                        <span>Topik: Produktivitas, Performance Management</span>
-                        <span class="tag">Produktivitas</span>
+
+                    <div class="border-t pt-4">
+                        <h3 class="font-semibold text-gray-700 mb-3 text-sm uppercase tracking-wide">Expertise</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="tag">Manajemen Kinerja</span>
+                            <span class="tag">Manajemen Bakat</span>
+                            <span class="tag">Business Strategy</span>
+                            <span class="tag">HR Systems</span>
+                            <span class="tag">Legal Compliance</span>
+                            <span class="tag">SOP Development</span>
+                            <span class="tag">KPI Framework</span>
+                            <span class="tag">Organizational Development</span>
+                        </div>
                     </div>
-                    <div class="template-item" onclick="useTemplate('remote')">
-                        <span>Topik: Remote Work, Hybrid, Work From Home</span>
-                        <span class="tag">Remote</span>
+
+                    <div class="border-t pt-4 mt-4">
+                        <h3 class="font-semibold text-gray-700 mb-3 text-sm uppercase tracking-wide">Certifications</h3>
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-2 text-sm text-gray-600">
+                                <i class="fas fa-certificate text-yellow-500 w-5"></i>
+                                <span>Certified Human Capital Manager (CHCM)</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600">
+                                <i class="fas fa-certificate text-yellow-500 w-5"></i>
+                                <span>Certified Professional Life Coach (CPLC)</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600">
+                                <i class="fas fa-certificate text-yellow-500 w-5"></i>
+                                <span>Certified Hypnotherapist</span>
+                            </div>
+                            <div class="flex items-center gap-2 text-sm text-gray-600">
+                                <i class="fas fa-certificate text-yellow-500 w-5"></i>
+                                <span>AAJI Certified</span>
+                            </div>
+                        </div>
                     </div>
-                    <div class="template-item" onclick="useTemplate('startup')">
-                        <span>Topik: Startup, Scale-up, Pertumbuhan Bisnis</span>
-                        <span class="tag">Startup</span>
+
+                    <div class="mt-4 p-3 bg-blue-50 rounded-lg border border-blue-100">
+                        <p class="text-xs text-blue-700">
+                            <i class="fas fa-info-circle mr-1"></i>
+                            <strong>POV Focus:</strong> HR systems, legal compliance, SME scaling, reducing turnover, structured growth, and operational clarity.
+                        </p>
                     </div>
                 </div>
             </div>
+
+            <!-- Right Panel: Input & Output -->
+            <div class="lg:col-span-2 space-y-6">
+                <!-- Input Section -->
+                <div class="glass-panel rounded-2xl p-6 shadow-xl">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-xl font-bold text-gray-800">
+                            <i class="fas fa-pen-fancy text-blue-600 mr-2"></i>
+                            Paste LinkedIn Post
+                        </h2>
+                        <div class="flex gap-2">
+                            <button onclick="clearInput()" class="text-sm text-gray-500 hover:text-red-500 transition-colors">
+                                <i class="fas fa-trash-alt mr-1"></i>Clear
+                            </button>
+                        </div>
+                    </div>
+
+                    <textarea 
+                        id="postInput" 
+                        class="w-full h-48 p-4 rounded-xl border-2 border-gray-200 resize-none text-gray-700 leading-relaxed"
+                        placeholder="Paste the LinkedIn post content here... The app will generate a professional English comment from Yanto Goutama's perspective as an HR & Legal Consultant."
+                    ></textarea>
+
+                    <div class="flex items-center justify-between mt-4">
+                        <div class="text-sm text-gray-500">
+                            <span id="charCount">0</span> characters
+                        </div>
+                        <button 
+                            onclick="generateComment()" 
+                            id="generateBtn"
+                            class="btn-primary text-white px-8 py-3 rounded-xl font-semibold flex items-center gap-2 shadow-lg"
+                        >
+                            <i class="fas fa-magic"></i>
+                            Generate Comment
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Output Section -->
+                <div id="outputSection" class="hidden">
+                    <div class="glass-panel rounded-2xl p-6 shadow-xl">
+                        <div class="flex items-center justify-between mb-4">
+                            <h2 class="text-xl font-bold text-gray-800">
+                                <i class="fas fa-comment-dots text-green-600 mr-2"></i>
+                                Generated Comment
+                            </h2>
+                            <div class="flex gap-2">
+                                <button onclick="copyComment()" id="copyBtn" class="copy-btn px-4 py-2 rounded-lg border-2 border-gray-200 text-gray-600 text-sm font-medium flex items-center gap-2">
+                                    <i class="fas fa-copy"></i>
+                                    <span id="copyText">Copy</span>
+                                </button>
+                                <button onclick="regenerateComment()" class="px-4 py-2 rounded-lg border-2 border-blue-200 text-blue-600 text-sm font-medium hover:bg-blue-50 transition-colors flex items-center gap-2">
+                                    <i class="fas fa-redo"></i>
+                                    Regenerate
+                                </button>
+                            </div>
+                        </div>
+
+                        <div id="commentOutput" class="comment-output rounded-xl p-6 text-gray-800 leading-relaxed whitespace-pre-wrap">
+                        </div>
+
+                        <div class="mt-4 flex items-center gap-2 text-sm text-gray-500">
+                            <i class="fas fa-lightbulb text-yellow-500"></i>
+                            <span>Tip: You can edit the comment before posting to LinkedIn.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Loading State -->
+                <div id="loadingState" class="hidden">
+                    <div class="glass-panel rounded-2xl p-12 shadow-xl text-center">
+                        <div class="loading-spinner mx-auto mb-4"></div>
+                        <p class="text-gray-600 font-medium">Analyzing post and generating insight...</p>
+                        <p class="text-sm text-gray-400 mt-2">Crafting comment from HR & Legal Consultant perspective</p>
+                    </div>
+                </div>
+
+                <!-- Tips Section -->
+                <div class="glass-panel rounded-2xl p-6 shadow-xl">
+                    <h3 class="font-bold text-gray-800 mb-4">
+                        <i class="fas fa-lightbulb text-yellow-500 mr-2"></i>
+                        How to Use
+                    </h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="p-4 bg-gray-50 rounded-xl">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
+                                <span class="text-blue-600 font-bold">1</span>
+                            </div>
+                            <h4 class="font-semibold text-gray-700 mb-1">Copy Post</h4>
+                            <p class="text-sm text-gray-500">Copy the text from any LinkedIn post you want to comment on.</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded-xl">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
+                                <span class="text-blue-600 font-bold">2</span>
+                            </div>
+                            <h4 class="font-semibold text-gray-700 mb-1">Paste Here</h4>
+                            <p class="text-sm text-gray-500">Paste the post content into the text area above.</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded-xl">
+                            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mb-3">
+                                <span class="text-blue-600 font-bold">3</span>
+                            </div>
+                            <h4 class="font-semibold text-gray-700 mb-1">Generate & Post</h4>
+                            <p class="text-sm text-gray-500">Get a professional comment and post it on LinkedIn.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="text-center mt-8 text-blue-200 text-sm">
+            <p>LinkedIn Insight Generator for Yanto Goutama, CHCM, CPLC</p>
         </div>
     </div>
 
     <script>
-        // State
-        let selectedAngle = 'root-cause';
-        let selectedLength = 'short';
+        // Character counter
+        const textarea = document.getElementById('postInput');
+        const charCount = document.getElementById('charCount');
 
-        // Angle selection
-        document.getElementById('angleOptions').addEventListener('click', function(e) {
-            if (e.target.classList.contains('option-btn')) {
-                document.querySelectorAll('#angleOptions .option-btn').forEach(btn => btn.classList.remove('active'));
-                e.target.classList.add('active');
-                selectedAngle = e.target.dataset.angle;
-            }
+        textarea.addEventListener('input', function() {
+            charCount.textContent = this.value.length;
         });
 
-        // Length selection
-        document.getElementById('lengthOptions').addEventListener('click', function(e) {
-            if (e.target.classList.contains('option-btn')) {
-                document.querySelectorAll('#lengthOptions .option-btn').forEach(btn => btn.classList.remove('active'));
-                e.target.classList.add('active');
-                selectedLength = e.target.dataset.length;
-            }
-        });
-
-        function updateCharCount() {
-            const count = document.getElementById('inputContent').value.length;
-            document.getElementById('charCount').textContent = count + ' karakter';
+        function clearInput() {
+            textarea.value = '';
+            charCount.textContent = '0';
+            document.getElementById('outputSection').classList.add('hidden');
         }
 
-        function useTemplate(type) {
-            const templates = {
-                phk: "Startup di Indonesia mulai melakukan PHK massal. Banyak yang bilang ini karena funding kering, tapi apakah itu satu-satunya alasan? Bagaimana dengan kewajiban hukum perusahaan terhadap karyawan yang di-PHK?",
-                turnover: "Perusahaan kami mengalami turnover tinggi di divisi sales. Sudah coba naikkan gaji, tapi karyawan tetap pergi. Apakah masalahnya memang soal uang, atau ada yang lebih fundamental?",
-                compliance: "Banyak UMKM yang belum memahami pentingnya PKB (Perjanjian Kerja Bersama) dan SOP ketenagakerjaan. Apakah ini benar-benar penting, atau hanya formalitas belaka?",
-                performance: "Karyawan kami terlihat sibuk dari pagi sampai malam, tapi target tidak tercapai. Bagaimana membedakan antara sibuk yang produktif dan sibuk yang hanya menciptakan ilusi kerja?",
-                remote: "Setelah pandemi, perusahaan kami menerapkan hybrid work. Tapi koordinasi jadi berantakan, dan beberapa karyawan sulit dihubungi. Apakah remote work benar-benar efektif untuk semua jenis bisnis?",
-                startup: "Startup kami tumbuh dari 5 orang menjadi 50 orang dalam setahun. Tiba-tiba banyak konflik internal, komunikasi tidak jelas, dan founder merasa kehilangan kendali. Apakah ini normal?"
-            };
-            document.getElementById('inputContent').value = templates[type];
-            updateCharCount();
-            document.getElementById('inputContent').focus();
-        }
-
-        function generateInsight() {
-            const input = document.getElementById('inputContent').value.trim();
-            if (!input) {
-                alert('Silakan masukkan konten LinkedIn terlebih dahulu.');
-                return;
-            }
-
-            // Show loading
-            document.getElementById('loadingSection').classList.add('visible');
-            document.getElementById('outputSection').classList.remove('visible');
-
-            // Simulate processing
-            setTimeout(() => {
-                const result = composeInsight(input, selectedAngle, selectedLength);
-                document.getElementById('outputContent').textContent = result;
-                document.getElementById('metaAngle').textContent = 'Angle: ' + getAngleLabel(selectedAngle);
-                document.getElementById('metaLength').textContent = 'Panjang: ' + getLengthLabel(selectedLength);
-                document.getElementById('metaWords').textContent = '~' + result.split(/\s+/).length + ' kata';
-
-                document.getElementById('loadingSection').classList.remove('visible');
-                document.getElementById('outputSection').classList.add('visible');
-                document.getElementById('copyBtn').textContent = 'Salin';
-                document.getElementById('copyBtn').classList.remove('copied');
-            }, 1200);
-        }
-
-        function regenerate() {
-            generateInsight();
-        }
-
-        function copyOutput() {
-            const text = document.getElementById('outputContent').textContent;
-            navigator.clipboard.writeText(text).then(() => {
-                const btn = document.getElementById('copyBtn');
-                btn.textContent = 'Tersalin!';
-                btn.classList.add('copied');
-                setTimeout(() => {
-                    btn.textContent = 'Salin';
-                    btn.classList.remove('copied');
-                }, 2000);
-            });
-        }
-
-        function getAngleLabel(angle) {
-            const labels = {
-                'root-cause': 'Root Cause',
-                'hidden-cost': 'Hidden Cost',
-                'system-gap': 'System Gap',
-                'scalability': 'Scalability',
-                'legal-compliance': 'Legal Compliance',
-                'turnover': 'Turnover',
-                'productivity': 'Productivity',
-                'strategic-hr': 'Strategic HR'
-            };
-            return labels[angle] || angle;
-        }
-
-        function getLengthLabel(length) {
-            const labels = {
-                'short': 'Singkat',
-                'medium': 'Sedang',
-                'long': 'Mendalam'
-            };
-            return labels[length] || length;
-        }
-
-        // ============================================
-        // CORE INSIGHT ENGINE
-        // ============================================
-
-        const patterns = {
-            'root-cause': [
-                "Masalahnya sering kali bukan pada {surface}, tetapi pada {root}.",
-                "Banyak bisnis merasa {perception}, padahal yang sebenarnya terjadi adalah {reality}.",
-                "Yang terlihat di permukaan adalah {visible}. Tapi yang sebenarnya memicu ini adalah {hidden}.",
-                "Kita terlalu sibuk memperbaiki {symptom}, sementara {cause} tidak pernah disentuh."
+        // Profile context for generating comments
+        const profileContext = {
+            name: "Yanto Goutama",
+            title: "HR & Legal Consultant, System Builder",
+            expertise: [
+                "HR systems and processes",
+                "Legal compliance",
+                "SME scaling",
+                "Reducing employee turnover",
+                "KPI and SOP development",
+                "Business strategy alignment",
+                "Organizational development",
+                "Performance management"
             ],
-            'hidden-cost': [
-                "Yang paling mahal bukan {obvious_cost}, tetapi {hidden_cost} yang terus membesar tanpa disadari.",
-                "Biaya tersembunyi dari {issue} biasanya 3x lebih besar dari biaya yang terlihat.",
-                "Banyak owner fokus pada {visible_expense}, padahal {invisible_drain} justru menggerus margin lebih dalam.",
-                "HR yang berantakan bukan hanya soal {surface_issue}, tetapi juga {hidden_impact} yang terus berlanjut."
+            certifications: ["CHCM", "CPLC", "Certified Hypnotherapist"],
+            company: "Forisa Impact",
+            framework: "ISLA Framework",
+            location: "DKI Jakarta",
+            tone: "professional, insightful, practical, supportive"
+        };
+
+        // Sample comment templates based on post topics
+        const commentTemplates = {
+            hr: [
+                "Great insights on {topic}! From my experience helping SMEs scale, I've seen how {insight}. At Forisa Impact, we often use the ISLA Framework to {action}. Would love to hear your thoughts on {question}?",
+                "This resonates deeply with my work in HR systems. {topic} is crucial because {insight}. I've helped companies reduce turnover by {action}. The key is {key_point}. What's your experience with this?",
+                "Excellent point about {topic}! Many SMEs I work with struggle with this exact challenge. {insight}. Through structured HR systems and clear KPIs, we've been able to {action}."
             ],
-            'system-gap': [
-                "Strategi tanpa {system} adalah rencana yang hanya tinggal di slide presentasi.",
-                "Yang paling mahal bukan kesalahan strategi, tetapi menjalankan strategi tanpa sistem yang jelas.",
-                "Banyak perusahaan punya {policy}, tapi tidak punya {mechanism} untuk menjalankannya.",
-                "Gap antara {intention} dan {execution} adalah tempat di mana masalah-masalah besar lahir."
+            leadership: [
+                "Strong perspective on {topic}! Leadership in growing organizations requires {insight}. I always emphasize to my clients that {action}. The ISLA Framework helps leaders {benefit}.",
+                "Couldn't agree more about {topic}. In my practice at Forisa Impact, I've observed that {insight}. Effective leadership starts with {action}. What's one strategy that's worked for you?"
             ],
-            'scalability': [
-                "Bisnis yang tumbuh tanpa {foundation} akan menghadapi bottleneck yang lebih mahal di kemudian hari.",
-                "Scalability bukan soal {quantity}, tapi soal {capability} untuk menyerap pertumbuhan.",
-                "Yang membuat startup gagal scale bukan pasar, tetapi {internal_limitation} yang tidak diperbaiki.",
-                "Pertumbuhan tanpa {structure} adalah jalan cepat menuju chaos operasional."
+            business: [
+                "This is spot on regarding {topic}. Scaling a business without solid HR and legal foundations is like building on sand. {insight}. I help SMEs {action} within 60-90 days. Would love to connect and share more!",
+                "Valuable share on {topic}! Business growth and HR systems must go hand in hand. {insight}. My approach with the ISLA Framework focuses on {action}. What challenges are you facing in this area?"
             ],
-            'legal-compliance': [
-                "Legal compliance yang diabaikan hari ini biasanya menjadi masalah besar di kemudian hari.",
-                "Banyak bisnis merasa {compliance} hanya formalitas, sampai {consequence} datang.",
-                "Biaya pencegahan {legal_aspect} jauh lebih murah dibanding biaya penanganan ketika sudah terjadi.",
-                "Yang terlihat sebagai {bureaucracy} sebenarnya adalah {protection} untuk bisnis dan karyawan."
+            legal: [
+                "Important reminder about {topic}! Legal compliance is often overlooked until it's too late. {insight}. I advise SMEs to {action} before issues arise. Prevention is always better than cure.",
+                "Absolutely critical point on {topic}. Many business owners don't realize that {insight}. Having proper legal foundations allows companies to {action}. Have you reviewed your compliance lately?"
             ],
-            'turnover': [
-                "Turnover tinggi bukan hanya soal {surface_reason}, tetapi juga {deeper_issue} yang tidak teratasi.",
-                "Karyawan resign bukan karena {stated_reason}, tapi karena {actual_reason} yang terus terabaikan.",
-                "Biaya turnover sebenarnya bukan {recruitment_cost} semata, tapi {knowledge_loss} yang sulit diukur.",
-                "Banyak perusahaan fokus pada {retention_tactic}, padahal yang dibutuhkan adalah {root_solution}."
-            ],
-            'productivity': [
-                "Produktivitas bukan soal {hours}, tapi soal {output_quality} yang dihasilkan.",
-                "Sibuk dan produktif adalah dua hal berbeda. Yang terlihat {busy} belum tentu {effective}.",
-                "Banyak tim terjebak dalam {activity_trap}, sementara {value_creation} tertinggal.",
-                "Performance management yang baik bukan soal {monitoring}, tapi soal {enablement}."
-            ],
-            'strategic-hr': [
-                "HR yang strategis bukan soal {admin_task}, tapi soal {business_alignment}.",
-                "Bisnis gagal bukan karena {external_factor}, tapi karena {people_factor} tidak dikelola dengan benar.",
-                "HR bukan cost center ketika {function} dihubungkan langsung dengan {business_outcome}.",
-                "Yang membedakan bisnis yang sustain dan yang tidak adalah {people_practice}, bukan {market_condition} semata."
+            general: [
+                "Thank you for sharing this! {insight}. As someone who helps SMEs scale without HR & legal chaos, I find that {action}. Would be great to exchange ideas on this topic.",
+                "Really appreciate this perspective on {topic}. {insight}. At Forisa Impact, we believe that {action}. Looking forward to learning more from your experiences!",
+                "Well said on {topic}! {insight}. My work with SMEs across DKI Jakarta has shown that {action}. Always happy to discuss how structured systems can drive sustainable growth."
             ]
         };
 
-        const closings = {
-            'root-cause': [
-                "Identifikasi akar masalah lebih penting daripada solusi cepat yang hanya menutupi gejala.",
-                "Perbaiki fondasinya. Sisanya akan mengikuti."
-            ],
-            'hidden-cost': [
-                "Hitung biaya tersembunyinya. Angka itu biasanya mengubah perspektif.",
-                "Yang tidak terlihat seringkali lebih merusak daripada yang terlihat."
-            ],
-            'system-gap': [
-                "Sistem yang baik membuat orang biasa bisa menghasilkan has luar biasa. Sistem yang buruk membuat orang hebat frustrasi.",
-                "Jangan bangun bisnis di atas fondasi yang rapuh."
-            ],
-            'scalability': [
-                "Scale dengan fondasi yang kuat, atau siap-siap memperbaiki kerusakan yang lebih mahal nanti.",
-                "Pertumbuhan tanpa kesiapan adalah undangan untuk chaos."
-            ],
-            'legal-compliance': [
-                "Compliance bukan beban. Itu investasi untuk tidur nyenyak di malam hari.",
-                "Lebih baik mencegah sekarang daripada membayar mahal nanti."
-            ],
-            'turnover': [
-                "Retention dimulai dari pemahaman, bukan dari taktik.",
-                "Karyawan yang dihargai dengan benar tidak perlu dipaksa untuk tinggal."
-            ],
-            'productivity': [
-                "Fokus pada outcome, bukan activity. Itu perbedaan antara busy dan effective.",
-                "Produktivitas sejati terlihat dari hasil, bukan dari jam kerja."
-            ],
-            'strategic-hr': [
-                "HR yang ditempatkan di level strategis bukan luxury. Itu necessity untuk bisnis yang mau sustain.",
-                "People strategy IS business strategy."
-            ]
-        };
-
-        const topicKeywords = {
-            phk: ['PHK', 'pemutusan hubungan kerja', 'pemecatan', 'layoff', 'redundancy'],
-            turnover: ['resign', 'turnover', 'keluar', 'mundur', 'berhenti', 'rotasi karyawan'],
-            compliance: ['UU', 'peraturan', 'legal', 'hukum', 'PKB', 'PKWT', 'PKWTT', 'BPJS', 'compliance'],
-            performance: ['produktivitas', 'kinerja', 'target', 'KPI', 'performance', 'evaluasi'],
-            remote: ['remote', 'WFH', 'hybrid', 'work from home', 'jarak jauh', 'virtual'],
-            startup: ['startup', 'scale', 'pertumbuhan', 'funding', 'investor', 'venture'],
-            salary: ['gaji', 'upah', 'kompensasi', 'remunerasi', 'benefit', 'payroll'],
-            culture: ['budaya', 'culture', 'nilai', 'value', 'lingkungan kerja', 'toxic'],
-            recruitment: ['rekrutmen', 'hiring', 'seleksi', 'interview', 'talent acquisition']
-        };
-
-        function detectTopic(input) {
-            const lower = input.toLowerCase();
-            for (const [topic, keywords] of Object.entries(topicKeywords)) {
-                if (keywords.some(k => lower.includes(k))) {
-                    return topic;
-                }
+        // Keyword detection for topic classification
+        function detectTopic(text) {
+            const lowerText = text.toLowerCase();
+            if (lowerText.includes('hr') || lowerText.includes('human resource') || lowerText.includes('employee') || lowerText.includes('hiring') || lowerText.includes('talent') || lowerText.includes('recruitment') || lowerText.includes('performance') || lowerText.includes('turnover') || lowerText.includes('retention')) {
+                return 'hr';
+            }
+            if (lowerText.includes('leader') || lowerText.includes('management') || lowerText.includes('manager') || lowerText.includes('ceo') || lowerText.includes('founder') || lowerText.includes('team')) {
+                return 'leadership';
+            }
+            if (lowerText.includes('legal') || lowerText.includes('compliance') || lowerText.includes('regulation') || lowerText.includes('law') || lowerText.includes('contract')) {
+                return 'legal';
+            }
+            if (lowerText.includes('business') || lowerText.includes('company') || lowerText.includes('startup') || lowerText.includes('scale') || lowerText.includes('growth') || lowerText.includes('sme')) {
+                return 'business';
             }
             return 'general';
         }
 
-        function getTopicContext(topic) {
-            const contexts = {
-                phk: {
-                    surface: 'karyawan yang kinerjanya buruk',
-                    root: 'sistem rekrutmen, onboarding, dan manajemen kinerja yang tidak berjalan',
-                    perception: 'PHK adalah solusi untuk masalah kinerja',
-                    reality: 'PHK adalah indikator bahwa sistem people management gagal di tahap sebelumnya',
-                    visible: 'karyawan yang tidak memenuhi ekspektasi',
-                    hidden: 'proses hiring yang tidak sesuai kebutuhan, job description yang kabur, dan ekspektasi yang tidak dikomunikasikan dengan jelas',
-                    symptom: 'konsekuensi di ujung (PHK)',
-                    cause: 'sumber masalah di awal (rekrutmen dan alignment)',
-                    obvious_cost: 'pesangon dan biaya administrasi PHK',
-                    hidden_cost: 'dampak moral pada tim yang tersisa, kehilangan institutional knowledge, dan reputasi employer brand',
-                    visible_expense: 'biaya rekrutmen pengganti',
-                    invisible_drain: 'waktu onboarding, learning curve, dan gangguan operasional selama transisi',
-                    surface_issue: 'proses administrasi pemutusan',
-                    hidden_impact: 'trauma psikologis tim, penurunan engagement, dan meningkatnya risk aversion dalam pengambilan keputusan',
-                    system: 'proses offboarding yang terstruktur dan dokumentasi yang lengkap',
-                    policy: 'kebijakan PHK di atas kertas',
-                    mechanism: 'proses coaching, peringatan tertulis, dan dokumentasi kinerja yang konsisten',
-                    intention: 'menjaga kualitas tim',
-                    execution: 'proses evaluasi dan perbaikan yang berkelanjutan',
-                    foundation: 'kebijakan ketenagakerjaan yang jelas dan konsisten',
-                    quantity: 'jumlah karyawan yang di-PHK',
-                    capability: 'kemampuan manajemen untuk mengidentifikasi masalah sejak dini',
-                    internal_limitation: 'keterbatasan sistem people management',
-                    structure: 'proses dokumentasi dan due diligence',
-                    compliance: 'mematuhi prosedur PHK sesuai UU',
-                    consequence: 'sengketa ketenagakerjaan, denda, dan reputasi buruk di industri',
-                    legal_aspect: 'proses PHK sesuai UU Cipta Kerja',
-                    bureaucracy: 'proses administrasi PHK yang panjang',
-                    protection: 'perlindungan hukum bagi perusahaan dan karyawan',
-                    surface_reason: 'gaji atau benefit yang tidak kompetitif',
-                    deeper_issue: 'kepemimpinan, growth path, dan rasa dihargai yang tidak terpenuhi',
-                    stated_reason: 'alasan pribadi atau gaji',
-                    actual_reason: 'kekecewaan terhadap manajemen, stagnasi karir, atau budaya kerja yang tidak sehat',
-                    recruitment_cost: 'biaya hire pengganti',
-                    knowledge_loss: 'kehilangan know-how, relasi klien, dan stabilitas tim',
-                    retention_tactic: 'naikkan gaji di detik terakhir',
-                    root_solution: 'memperbaiki pengalaman kerja sejak hari pertama',
-                    hours: 'berapa lama karyawan di kantor',
-                    output_quality: 'value yang dihasilkan bagi bisnis',
-                    busy: 'aktif dan responsif',
-                    effective: 'menyelesaikan masalah bisnis yang penting',
-                    activity_trap: 'meeting tanpa agenda jelas dan laporan tanpa action item',
-                    value_creation: 'penyelesaian masalah klien dan inovasi proses',
-                    monitoring: 'mengejar deadline dan mengisi timesheet',
-                    enablement: 'memberikan clarity, resources, dan autonomy',
-                    admin_task: 'mengurus absensi dan payroll',
-                    business_alignment: 'memastikan setiap keputusan people mendukung tujuan bisnis',
-                    external_factor: 'persaingan pasar',
-                    people_factor: 'kemampuan organisasi untuk menarik, mengembangkan, dan mempertahankan talenta',
-                    function: 'fungsi people and culture',
-                    business_outcome: 'revenue, retensi klien, dan operational excellence',
-                    people_practice: 'cara perusahaan mengelola orang',
-                    market_condition: 'kondisi pasar atau funding'
-                },
-                turnover: {
-                    surface: 'gaji yang tidak kompetitif',
-                    root: 'sistem pengembangan karir, recognition, dan kepemimpinan yang tidak membuat karyawan merasa dihargai',
-                    perception: 'karyawan resign karena uang',
-                    reality: 'karyawan resign karena tidak melihat masa depan yang jelas dan tidak merasa dihargai atas kontribusinya',
-                    visible: 'tingkat turnover yang tinggi',
-                    hidden: 'kepemimpinan yang tidak mendengarkan, growth path yang kabur, dan budaya kerja yang membuat orang lelah secara emosional',
-                    symptom: 'mengejar karyawan yang mau resign dengan counter offer',
-                    cause: 'mengapa mereka tidak ingin bertahan sejak awal',
-                    obvious_cost: 'biaya rekrutmen pengganti',
-                    hidden_cost: 'kehilangan knowledge, gangguan tim, dan penurunan morale yang sulit dihitung',
-                    visible_expense: 'biaya iklan lowongan dan agency fee',
-                    invisible_drain: 'waktu onboarding, kesalahan operasional selama learning curve, dan beban kerja berlebih pada tim yang tersisa',
-                    surface_issue: 'angka turnover di dashboard HR',
-                    hidden_impact: 'kehilangan trust pada leadership dan budaya kerja yang semakin terkikis',
-                    system: 'employee journey mapping dari hiring sampai exit interview yang benar-benar digunakan',
-                    policy: 'kebijakan retensi di handbook',
-                    mechanism: '1-on-1 rutin, career pathing, dan feedback loop yang berjalan',
-                    intention: 'mempertahankan talenta terbaik',
-                    execution: 'pengalaman kerja sehari-hari yang membuat orang ingin tinggal',
-                    foundation: 'employee value proposition yang jelas dan kepemimpinan yang konsisten',
-                    quantity: 'berapa banyak karyawan yang resign',
-                    capability: 'kemampuan manajemen untuk membaca tanda-tanda sejak dini',
-                    internal_limitation: 'keterbatasan people analytics dan exit interview yang hanya formalitas',
-                    structure: 'sistem feedback dan perbaikan berkelanjutan',
-                    compliance: 'memenuhi hak karyawan sesuai kontrak',
-                    consequence: 'sengketa, klaim, dan reputasi buruk sebagai tempat kerja',
-                    legal_aspect: 'pemenuhan hak karyawan yang resign',
-                    bureaucracy: 'proses administrasi resign yang panjang',
-                    protection: 'perlindungan data dan aset perusahaan',
-                    surface_reason: 'tawaran gaji lebih tinggi di luar',
-                    deeper_issue: 'kekosongan dalam growth, recognition, dan rasa memiliki',
-                    stated_reason: 'kesempatan lebih baik',
-                    actual_reason: 'kelelahan akibat beban kerja tidak proporsional, kepemimpinan yang tidak mendukung, atau stagnasi',
-                    recruitment_cost: 'biaya hire baru',
-                    knowledge_loss: 'kehilangan tacit knowledge dan relasi internal yang sudah dibangun bertahun-tahun',
-                    retention_tactic: 'memberikan kenaikan gaji mendadak',
-                    root_solution: 'membangun employee experience yang membuat orang tidak ingin mencari di luar',
-                    hours: 'berapa lama karyawan stay di kantor',
-                    output_quality: 'kontribusi berkelanjutan dan inovasi yang mereka bawa',
-                    busy: 'responsif dan selalu online',
-                    effective: 'menyelesaikan pekerjaan yang berdampak',
-                    activity_trap: 'meeting tanpa outcome dan email tanpa action',
-                    value_creation: 'penyelesaian masalah nyata bagi bisnis',
-                    monitoring: 'mengecek kehadiran dan jam kerja',
-                    enablement: 'memberikan clarity, resources, dan trust',
-                    admin_task: 'mengurus administrasi SDM',
-                    business_alignment: 'memastikan people strategy mendukung revenue dan growth',
-                    external_factor: 'pasar kerja yang kompetitif',
-                    people_factor: 'kemampuan perusahaan untuk membuat karyawan merasa berkembang',
-                    function: 'fungsi talent management',
-                    business_outcome: 'retention rate dan employee NPS',
-                    people_practice: 'cara perusahaan memperlakukan karyawan',
-                    market_condition: 'kondisi pasar kerja'
-                },
-                compliance: {
-                    surface: 'dokumen dan perizinan yang lengkap',
-                    root: 'pemahaman manajemen bahwa compliance bukan beban, tapi fondasi operasional yang memungkinkan bisnis berjalan tanpa gangguan',
-                    perception: 'legal compliance hanya soal administrasi dan biaya tambahan',
-                    reality: 'compliance yang baik adalah asuransi operasional yang mencegah kerugian jauh lebih besar di masa depan',
-                    visible: 'sertifikat dan dokumen yang tersusun rapi',
-                    hidden: 'budaya compliance di setiap level, pemahaman manajer akan konsekuensi hukum, dan sistem audit internal yang berjalan',
-                    symptom: 'memperbaiki dokumen ketika ada inspeksi',
-                    cause: 'tidak adanya sistem compliance yang terintegrasi dalam operasional sehari-hari',
-                    obvious_cost: 'biaya konsultan hukum dan perizinan',
-                    hidden_cost: 'downtime operasional, denda, dan reputasi ketika ada pelanggaran',
-                    visible_expense: 'biaya legal retainer',
-                    invisible_drain: 'waktu manajemen untuk menangani sengketa, investigasi, dan perbaikan darurat',
-                    surface_issue: 'kelengkapan dokumen',
-                    hidden_impact: 'kehilangan trust dari investor, klien, dan regulator',
-                    system: 'compliance framework yang terintegrasi dengan operasional',
-                    policy: 'kebijakan di atas kertas',
-                    mechanism: 'training berkala, audit internal, dan escalation path yang jelas',
-                    intention: 'memenuhi regulasi',
-                    execution: 'membangun budaya compliance di setiap level organisasi',
-                    foundation: 'pemahaman hukum ketenagakerjaan yang mendalam',
-                    quantity: 'berapa banyak peraturan yang dipatuhi',
-                    capability: 'kemampuan organisasi untuk mengadaptasi perubahan regulasi',
-                    internal_limitation: 'keterbatasan legal knowledge di internal',
-                    structure: 'legal framework dan SOP yang terdokumentasi',
-                    compliance: 'memenuhi UU Ketenagakerjaan dan peraturan turunannya',
-                    consequence: 'sengketa, denda, dan bahkan penghentian operasional',
-                    legal_aspect: 'ketenagakerjaan, perpajakan, dan perlindungan data',
-                    bureaucracy: 'proses perizinan dan pelaporan',
-                    protection: 'perlindungan hukum bagi perusahaan, karyawan, dan stakeholder',
-                    surface_reason: 'ketidaktahuan akan regulasi',
-                    deeper_issue: 'tidak adanya komitmen manajemen untuk investasi pada legal infrastructure',
-                    stated_reason: 'kompleksitas regulasi',
-                    actual_reason: 'prioritasi short-term cost cutting di atas long-term risk management',
-                    recruitment_cost: 'biaya legal officer',
-                    knowledge_loss: 'kehilangan kredibilitas dan kesempatan bisnis',
-                    retention_tactic: 'memperbaiki dokumen ketika terdesak',
-                    root_solution: 'membangun legal awareness sejak awal dan mengintegrasikannya dalam DNA bisnis',
-                    hours: 'berapa lama proses legal review',
-                    output_quality: 'kepastian hukum dan perlindungan risiko',
-                    busy: 'menyusun dokumen tanpa pemahaman konteks',
-                    effective: 'mencegah masalah sebelum terjadi',
-                    activity_trap: 'compliance untuk compliance, tanpa memahami why',
-                    value_creation: 'keamanan operasional dan trust dari stakeholder',
-                    monitoring: 'mengecek checklist dokumen',
-                    enablement: 'membangun kemampuan tim untuk mengidentifikasi risk sendiri',
-                    admin_task: 'mengurus perizinan',
-                    business_alignment: 'memastikan setiap keputusan legal mendukung tujuan bisnis',
-                    external_factor: 'perubahan regulasi',
-                    people_factor: 'legal literacy di seluruh organisasi',
-                    function: 'fungsi legal dan compliance',
-                    business_outcome: 'risk mitigation dan operational continuity',
-                    people_practice: 'cara perusahaan memahami dan menerapkan hukum',
-                    market_condition: 'lingkungan regulasi'
-                },
-                performance: {
-                    surface: 'target dan KPI yang tidak tercapai',
-                    root: 'clarity ekspektasi, resources yang memadai, dan kepemimpinan yang mampu mengarahkan tanpa micromanaging',
-                    perception: 'karyawan tidak bekerja cukup keras',
-                    reality: 'sistem kerja, alur approval, dan struktur tim yang justru menghambat produktivitas',
-                    visible: 'output yang tidak sesuai target',
-                    hidden: 'proses kerja yang tidak efisien, distraksi tanpa batas, dan keputusan yang terlalu terpusat',
-                    symptom: 'menambah jam kerja dan tekanan',
-                    cause: 'memperbaiki proses dan memberikan clarity',
-                    obvious_cost: 'waktu yang terbuang',
-                    hidden_cost: 'kelelahan karyawan, kreativitas yang terkikis, dan inovasi yang tidak pernah lahir',
-                    visible_expense: 'overtime pay',
-                    invisible_drain: 'burnout, turnover, dan opportunity cost dari ide-ide yang tidak pernah dieksekusi',
-                    surface_issue: 'angka produktivitas di laporan',
-                    hidden_impact: 'budaya kerja yang membuat orang hanya survive, bukan thrive',
-                    system: 'performance management yang berkelanjutan, bukan hanya evaluasi akhir tahun',
-                    policy: 'kebijakan KPI di handbook',
-                    mechanism: 'coaching rutin, feedback real-time, dan resource allocation yang responsif',
-                    intention: 'mencapai target bisnis',
-                    execution: 'memastikan setiap orang tahu prioritasnya dan punya wewenang untuk mengeksekusi',
-                    foundation: 'goal clarity dan role definition yang tepat',
-                    quantity: 'berapa banyak task yang diselesaikan',
-                    capability: 'kemampuan organisasi untuk memfokuskan energi pada hal yang benar-benar penting',
-                    internal_limitation: 'struktur organisasi yang membingungkan dan decision-making yang lambat',
-                    structure: 'clear accountability dan decision rights',
-                    compliance: 'memenuhi standar kerja yang ditetapkan',
-                    consequence: 'penurunan kualitas output dan kehilangan kompetitif',
-                    legal_aspect: 'pemenuhan kontrak kerja dan hak karyawan',
-                    bureaucracy: 'proses evaluasi yang panjang',
-                    protection: 'perlindungan bagi karyawan dan perusahaan',
-                    surface_reason: 'karyawan tidak kompeten',
-                    deeper_issue: 'sistem yang tidak memungkinkan kompetensi untuk berkembang dan berkontribusi optimal',
-                    stated_reason: 'target yang tidak realistis',
-                    actual_reason: 'misalignment antara strategi, resources, dan ekspektasi di lapangan',
-                    recruitment_cost: 'biaya training',
-                    knowledge_loss: 'potensi karyawan yang tidak pernah tergali',
-                    retention_tactic: 'memberikan insentif jangka pendek',
-                    root_solution: 'membangun sistem kerja yang memungkinkan orang untuk berkinerja terbaik',
-                    hours: 'berapa lama karyawan bekerja',
-                    output_quality: 'impact yang dihasilkan bagi bisnis',
-                    busy: 'penuh dengan aktivitas',
-                    effective: 'menyelesaikan hal yang benar-benar penting',
-                    activity_trap: 'meeting maraton dan laporan tanpa action',
-                    value_creation: 'solusi nyata bagi masalah klien dan bisnis',
-                    monitoring: 'mengecek jam kerja dan kehadiran',
-                    enablement: 'memberikan clarity, tools, dan autonomy',
-                    admin_task: 'mengurus timesheet dan laporan',
-                    business_alignment: 'memastikan setiap aktivitas mendukung tujuan strategis',
-                    external_factor: 'tekanan pasar',
-                    people_factor: 'kemampuan organisasi untuk memfokuskan energi',
-                    function: 'fungsi performance management',
-                    business_outcome: 'revenue dan customer satisfaction',
-                    people_practice: 'cara perusahaan mengelola kinerja',
-                    market_condition: 'tekanan kompetitif'
-                },
-                remote: {
-                    surface: 'karyawan yang sulit dihubungi atau koordinasi yang berantakan',
-                    root: 'sistem komunikasi, ekspektasi availability, dan outcome-based management yang belum dibangun dengan jelas',
-                    perception: 'remote work mengurangi produktivitas',
-                    reality: 'remote work memperlihatkan kelemahan sistem manajemen yang sebelumnya tertutupi oleh kehadiran fisik',
-                    visible: 'kesulitan koordinasi dan komunikasi',
-                    hidden: 'tidak adanya clarity tentang waktu respons, ekspektasi output, dan trust antara manajer dan tim',
-                    symptom: 'memaksa karyawan untuk kembali ke kantor',
-                    cause: 'membangun sistem manajemen jarak jauh yang efektif',
-                    obvious_cost: 'biaya infrastruktur teknologi',
-                    hidden_cost: 'kehilangan karyawan berbakat yang menginginkan fleksibilitas dan biaya rekrutmen pengganti',
-                    visible_expense: 'biaya software kolaborasi',
-                    invisible_drain: 'waktu yang terbuang karena komunikasi tidak efisien dan keputusan yang tertunda',
-                    surface_issue: 'karyawan yang tidak responsif',
-                    hidden_impact: 'budaya micromanagement yang muncul karena tidak adanya trust',
-                    system: 'async communication protocol dan outcome-based evaluation',
-                    policy: 'kebijakan remote work di handbook',
-                    mechanism: 'check-in rutin, dokumentasi keputusan, dan clear escalation path',
-                    intention: 'memberikan fleksibilitas',
-                    execution: 'memastikan produktivitas tidak terkorbankan',
-                    foundation: 'trust dan clarity ekspektasi',
-                    quantity: 'berapa banyak hari WFH',
-                    capability: 'kemampuan manajemen untuk memimpin tanpa mengandalkan presence',
-                    internal_limitation: 'kebiasaan manajemen tradisional yang mengandalkan visual supervision',
-                    structure: 'clear communication protocol dan documentation habit',
-                    compliance: 'memenuhi ketentuan keselamatan kerja dan jam kerja',
-                    consequence: 'penurunan produktivitas dan sengketa ketenagakerjaan',
-                    legal_aspect: 'pemenuhan hak karyawan remote dan keselamatan kerja',
-                    bureaucracy: 'proses approval remote work',
-                    protection: 'perlindungan data dan aset perusahaan',
-                    surface_reason: 'karyawan tidak disiplin',
-                    deeper_issue: 'tidak adanya sistem manajemen yang memungkinkan remote work untuk berhasil',
-                    stated_reason: 'kebutuhan kolaborasi tatap muka',
-                    actual_reason: 'ketidakmampuan manajemen untuk memimpin secara remote',
-                    recruitment_cost: 'biaya infrastruktur remote',
-                    knowledge_loss: 'kehilangan talenta yang memilih perusahaan dengan fleksibilitas lebih baik',
-                    retention_tactic: 'memaksa karyawan ke kantor',
-                    root_solution: 'membangun sistem manajemen yang berbasis outcome, bukan presence',
-                    hours: 'berapa lama karyawan online',
-                    output_quality: 'deliverable yang dihasilkan',
-                    busy: 'selalu responsif di chat',
-                    effective: 'menyelesaikan pekerjaan dengan kualitas tinggi',
-                    activity_trap: 'chat dan meeting tanpa outcome',
-                    value_creation: 'output yang berdampak',
-                    monitoring: 'mengecek status online',
-                    enablement: 'memberikan clarity dan trust',
-                    admin_task: 'mengatur jadwal WFH',
-                    business_alignment: 'memastikan remote work mendukung tujuan bisnis',
-                    external_factor: 'tren kerja global',
-                    people_factor: 'kemampuan organisasi untuk adaptasi',
-                    function: 'fungsi people operations',
-                    business_outcome: 'produktivitas dan retensi',
-                    people_practice: 'cara perusahaan mengelola kerja jarak jauh',
-                    market_condition: 'tren talent market'
-                },
-                startup: {
-                    surface: 'pertumbuhan tim yang cepat',
-                    root: 'readiness organisasi untuk menyerap pertumbuhan dalam bentuk struktur, proses, dan kepemimpinan',
-                    perception: 'pertumbuhan tim adalah tanda kesuksesan',
-                    reality: 'pertumbuhan tanpa fondasi adalah jalan cepat menuju chaos dan culture degradation',
-                    visible: 'jumlah karyawan yang bertambah',
-                    hidden: 'kompleksitas komunikasi, fragmentasi budaya, dan kehilangan agility yang sebelumnya menjadi kekuatan',
-                    symptom: 'menambah orang untuk menyelesaikan masalah',
-                    cause: 'memperbaiki proses dan struktur sebelum scale',
-                    obvious_cost: 'biaya payroll yang membengkak',
-                    hidden_cost: 'slow decision-making, loss of accountability, dan kultur yang terkikis',
-                    visible_expense: 'biaya rekrutmen dan office space',
-                    invisible_drain: 'waktu founder untuk menangani konflik internal dan proses yang tidak efisien',
-                    surface_issue: 'jumlah headcount',
-                    hidden_impact: 'kehilangan DNA perusahaan dan penurunan kualitas hiring',
-                    system: 'organizational design yang scalable',
-                    policy: 'kebijakan pertumbuhan di rencana bisnis',
-                    mechanism: 'hiring rubric, onboarding terstruktur, dan clear org chart',
-                    intention: 'mempercepat pertumbuhan',
-                    execution: 'memastikan setiap orang yang masuk memperkuat fondasi, bukan membebaninya',
-                    foundation: 'culture, values, dan sistem kerja yang jelas',
-                    quantity: 'berapa banyak karyawan baru',
-                    capability: 'kemampuan organisasi untuk menyerap pertumbuhan tanpa kehilangan dirinya',
-                    internal_limitation: 'founder yang masih terjebak dalam mode operasional',
-                    structure: 'clear hierarchy dan decision-making framework',
-                    compliance: 'memenuhi kewajiban ketenagakerjaan saat scale',
-                    consequence: 'sengketa, turnover massal, dan kehilangan investor trust',
-                    legal_aspect: 'pemenuhan regulasi ketenagakerjaan saat tim besar',
-                    bureaucracy: 'proses hiring dan onboarding',
-                    protection: 'perlindungan hukum dan aset intelektual',
-                    surface_reason: 'kebutuhan bisnis untuk tumbuh',
-                    deeper_issue: 'tidak adanya rencana organisasi yang matang sebelum scale',
-                    stated_reason: 'market demand',
-                    actual_reason: 'FOMO growth tanpa mempersiapkan organisasi',
-                    recruitment_cost: 'biaya hire',
-                    knowledge_loss: 'kehilangan culture dan agility',
-                    retention_tactic: 'menambah benefit',
-                    root_solution: 'membangun organisasi yang siap scale sebelum scale terjadi',
-                    hours: 'berapa lama tim bekerja',
-                    output_quality: 'value delivery yang konsisten',
-                    busy: 'semua orang sibuk',
-                    effective: 'setiap orang menghasilkan impact',
-                    activity_trap: 'growth untuk growth',
-                    value_creation: 'sustainable business model',
-                    monitoring: 'mengecek headcount growth',
-                    enablement: 'membangun fondasi yang kuat',
-                    admin_task: 'mengurus hiring',
-                    business_alignment: 'memastikan growth mendukung sustainability',
-                    external_factor: 'tekanan investor',
-                    people_factor: 'kemampuan untuk mempertahankan culture',
-                    function: 'fungsi people and organization',
-                    business_outcome: 'sustainable growth',
-                    people_practice: 'cara perusahaan scale dengan tetap menjaga kualitas',
-                    market_condition: 'tekanan pasar'
-                },
-                general: {
-                    surface: 'masalah yang terlihat di permukaan',
-                    root: 'sistem, struktur, dan fondasi yang belum diperbaiki di level fundamental',
-                    perception: 'masalah ini bisa diselesaikan dengan solusi cepat',
-                    reality: 'masalah ini adalah gejala dari fondasi yang perlu diperkuat',
-                    visible: 'output atau hasil yang tidak sesuai harapan',
-                    hidden: 'proses, kebiasaan, dan keputusan-keputusan kecil yang terakumulasi menjadi masalah besar',
-                    symptom: 'mencari solusi instan',
-                    cause: 'memahami dan memperbaiki sistem yang mendasari',
-                    obvious_cost: 'biaya yang terlihat langsung',
-                    hidden_cost: 'biaya opportunity, reputasi, dan energi manajemen yang terus terkuras',
-                    visible_expense: 'biaya operasional',
-                    invisible_drain: 'waktu, energi, dan potensi yang tidak pernah terealisasi',
-                    surface_issue: 'gejala yang terlihat',
-                    hidden_impact: 'dampak jangka panjang pada budaya, retensi, dan kemampuan bersaing',
-                    system: 'sistem yang terstruktur dan terukur',
-                    policy: 'kebijakan yang tertulis',
-                    mechanism: 'proses, check, dan balance yang berjalan',
-                    intention: 'mencapai tujuan bisnis',
-                    execution: 'menerjemahkan tujuan menjadi tindakan yang konsisten',
-                    foundation: 'pemahaman bisnis, people, dan sistem yang saling terkait',
-                    quantity: 'berapa banyak output',
-                    capability: 'kemampuan organisasi untuk beradaptasi dan berkembang',
-                    internal_limitation: 'keterbatasan pemahaman dan kapasitas',
-                    structure: 'kerangka kerja yang jelas',
-                    compliance: 'memenuhi standar dan regulasi',
-                    consequence: 'risiko operasional dan hukum',
-                    legal_aspect: 'pemenuhan kewajiban hukum',
-                    bureaucracy: 'proses administrasi',
-                    protection: 'perlindungan bagi semua pihak',
-                    surface_reason: 'alasan yang terlihat',
-                    deeper_issue: 'fondasi yang belum kuat',
-                    stated_reason: 'alasan yang dikemukakan',
-                    actual_reason: 'akar masalah yang sebenarnya',
-                    recruitment_cost: 'biaya langsung',
-                    knowledge_loss: 'kehilangan potensi dan opportunity',
-                    retention_tactic: 'solusi jangka pendek',
-                    root_solution: 'perbaikan sistem dan fondasi',
-                    hours: 'berapa lama waktu yang dihabiskan',
-                    output_quality: 'dampak dan value yang dihasilkan',
-                    busy: 'aktivitas yang padat',
-                    effective: 'hasil yang berarti',
-                    activity_trap: 'sibuk tanpa arah',
-                    value_creation: 'kontribusi nyata',
-                    monitoring: 'pengawasan tanpa pemahaman',
-                    enablement: 'memberikan alat dan kepercayaan',
-                    admin_task: 'tugas administratif',
-                    business_alignment: 'keselarasan dengan tujuan bisnis',
-                    external_factor: 'kondisi luar',
-                    people_factor: 'kemampuan manusia dalam organisasi',
-                    function: 'fungsi people management',
-                    business_outcome: 'hasil bisnis yang berkelanjutan',
-                    people_practice: 'cara mengelola orang',
-                    market_condition: 'kondisi pasar'
-                }
-            };
-            return contexts[topic] || contexts.general;
+        // Extract key phrases from post
+        function extractKeyPhrases(text) {
+            // Simple extraction - take first sentence or first 100 chars as topic
+            const sentences = text.split(/[.!?]/).filter(s => s.trim().length > 10);
+            const topic = sentences[0] ? sentences[0].trim().substring(0, 80) + "..." : "this topic";
+
+            // Extract some keywords
+            const words = text.toLowerCase().split(/\s+/);
+            const keyWords = ['growth', 'strategy', 'team', 'leadership', 'innovation', 'success', 'challenge', 'opportunity', 'future'];
+            const found = keyWords.filter(kw => words.includes(kw));
+
+            return { topic, keywords: found };
         }
 
-        function composeInsight(input, angle, length) {
-            const topic = detectTopic(input);
-            const ctx = getTopicContext(topic);
+        function generateComment() {
+            const postText = textarea.value.trim();
 
-            // Select pattern
-            const anglePatterns = patterns[angle] || patterns['root-cause'];
-            const pattern = anglePatterns[Math.floor(Math.random() * anglePatterns.length)];
-
-            // Fill pattern with context
-            let filled = pattern;
-            for (const [key, value] of Object.entries(ctx)) {
-                filled = filled.replace(new RegExp('{' + key + '}', 'g'), value);
+            if (!postText) {
+                alert('Please paste a LinkedIn post first!');
+                return;
             }
 
-            // Build opening based on input
-            const openings = [
-                `Setelah membaca ini, satu hal yang langsung terpikir: ${filled}`,
-                `Poin menarik. Tapi yang perlu diperhatikan: ${filled}`,
-                `Setuju dengan banyak hal di sini. Tapi ada satu sudut yang perlu ditambahkan: ${filled}`,
-                `Ini perspektif yang bagus. Kalau dari sisi HR & Legal, ${filled}`,
-                `Banyak yang fokus pada aspek yang terlihat. Padahal, ${filled}`
-            ];
-            const opening = openings[Math.floor(Math.random() * openings.length)];
+            // Show loading
+            document.getElementById('loadingState').classList.remove('hidden');
+            document.getElementById('outputSection').classList.add('hidden');
+            document.getElementById('generateBtn').disabled = true;
 
-            // Build body paragraphs based on length
-            let body = '';
+            // Simulate processing delay
+            setTimeout(() => {
+                const topic = detectTopic(postText);
+                const { topic: topicText } = extractKeyPhrases(postText);
 
-            if (length === 'short') {
-                const bodies = [
-                    `\n\nBanyak bisnis merasa ${ctx.perception}, padahal yang sebenarnya terjadi adalah ${ctx.reality}.\n\n${ctx.obvious_cost} memang terlihat, tapi ${ctx.hidden_cost} biasanya jauh lebih merusak dalam jangka panjang.`,
-                    `\n\nYang paling mahal bukan ${ctx.obvious_cost}, tetapi ${ctx.hidden_cost} yang terus membesar tanpa disadari.\n\nBanyak owner fokus pada ${ctx.visible_expense}, padahal ${ctx.invisible_drain} justru menggerus margin lebih dalam.`,
-                    `\n\nHR yang berantakan bukan hanya soal ${ctx.surface_issue}, tetapi juga ${ctx.hidden_impact} yang terus berlanjut.\n\n${ctx.system} adalah investasi, bukan biaya.`
+                const templates = commentTemplates[topic] || commentTemplates.general;
+                const template = templates[Math.floor(Math.random() * templates.length)];
+
+                // Generate contextual content
+                const insights = {
+                    hr: [
+                        "structured processes and clear role alignment make all the difference",
+                        "most turnover stems from unclear expectations, not bad hires",
+                        "building SOPs and KPIs creates clarity that drives performance"
+                    ],
+                    leadership: [
+                        "leading by example while building systems that outlast any individual",
+                        "the best leaders create frameworks, not dependencies",
+                        "clarity of vision must be matched by clarity of process"
+                    ],
+                    legal: [
+                        "proactive compliance saves businesses from costly disputes down the road",
+                        "many legal issues in SMEs start from informal agreements",
+                        "having proper documentation protects both the company and its people"
+                    ],
+                    business: [
+                        "sustainable scaling requires strong foundations in both people and processes",
+                        "growth without structure often leads to chaos that stalls momentum",
+                        "the businesses that scale successfully invest in systems early"
+                    ],
+                    general: [
+                        "practical insights like this drive real organizational change",
+                        "continuous learning and adaptation are key to staying relevant",
+                        "sharing knowledge elevates the entire professional community"
+                    ]
+                };
+
+                const actions = {
+                    hr: [
+                        "restructure HR foundations and implement clear KPI frameworks",
+                        "reduce turnover through better role alignment and structured feedback",
+                        "build scalable HR systems that grow with the organization"
+                    ],
+                    leadership: [
+                        "develop leadership pipelines that ensure continuity",
+                        "create decision-making frameworks that empower teams",
+                        "build cultures of accountability and continuous improvement"
+                    ],
+                    legal: [
+                        "audit existing agreements and establish compliant processes",
+                        "create documentation systems that protect the business",
+                        "implement preventive legal frameworks before issues arise"
+                    ],
+                    business: [
+                        "align HR strategy with business objectives for sustainable growth",
+                        "build end-to-end systems that reduce operational dependency",
+                        "create scalable frameworks within 60-90 days"
+                    ],
+                    general: [
+                        "apply these principles in our consulting practice",
+                        "share these insights with the SMEs we support",
+                        "integrate these perspectives into our ISLA Framework"
+                    ]
+                };
+
+                const questions = {
+                    hr: "how you're measuring the impact of your HR initiatives",
+                    leadership: "how you balance vision-setting with day-to-day execution",
+                    legal: "what compliance areas you're prioritizing this year",
+                    business: "what systems you're putting in place to support your next growth phase",
+                    general: "what other strategies you've found effective in this area"
+                };
+
+                const keyPoints = {
+                    hr: "clarity in roles, expectations, and feedback loops",
+                    leadership: "building systems that enable others to lead",
+                    legal: "prevention through proper documentation and process",
+                    business: "aligning people, process, and purpose",
+                    general: "consistent application of proven principles"
+                };
+
+                const insight = insights[topic][Math.floor(Math.random() * insights[topic].length)];
+                const action = actions[topic][Math.floor(Math.random() * actions[topic].length)];
+                const question = questions[topic];
+                const keyPoint = keyPoints[topic];
+
+                let comment = template
+                    .replace('{topic}', topicText)
+                    .replace('{insight}', insight)
+                    .replace('{action}', action)
+                    .replace('{question}', question)
+                    .replace('{key_point}', keyPoint)
+                    .replace('{benefit}', action);
+
+                // Add signature style closing
+                const closings = [
+                    "",
+                    "
+
+— Yanto Goutama, CHCM, CPLC
+Helping SMEs Scale Without HR & Legal Chaos",
+                    "
+
+Best regards,
+Yanto Goutama | HR & Legal Consultant | Forisa Impact"
                 ];
-                body = bodies[Math.floor(Math.random() * bodies.length)];
-            } else if (length === 'medium') {
-                const bodies = [
-                    `\n\nBanyak bisnis merasa ${ctx.perception}, padahal yang sebenarnya terjadi adalah ${ctx.reality}.\n\nYang terlihat di permukaan adalah ${ctx.visible}. Tapi yang sebenarnya memicu ini adalah ${ctx.hidden}.\n\n${ctx.obvious_cost} memang terlihat, tapi ${ctx.hidden_cost} biasanya jauh lebih merusak dalam jangka panjang. Banyak owner fokus pada ${ctx.visible_expense}, padahal ${ctx.invisible_drain} justru menggerus margin lebih dalam.`,
-                    `\n\nYang paling mahal bukan ${ctx.obvious_cost}, tetapi ${ctx.hidden_cost} yang terus membesar tanpa disadari.\n\nKita terlalu sibuk memperbaiki ${ctx.symptom}, sementara ${ctx.cause} tidak pernah disentuh.\n\n${ctx.system} bukan sekadar policy di atas kertas. Itu harus menjadi ${ctx.mechanism} yang berjalan setiap hari.`,
-                    `\n\nHR yang berantakan bukan hanya soal ${ctx.surface_issue}, tetapi juga ${ctx.hidden_impact} yang terus berlanjut.\n\nBanyak perusahaan punya ${ctx.policy}, tapi tidak punya ${ctx.mechanism} untuk menjalankannya. Gap antara ${ctx.intention} dan ${ctx.execution} adalah tempat di mana masalah-masalah besar lahir.\n\n${ctx.foundation} adalah fondasi yang tidak bisa ditawar.`
-                ];
-                body = bodies[Math.floor(Math.random() * bodies.length)];
-            } else {
-                const bodies = [
-                    `\n\nBanyak bisnis merasa ${ctx.perception}, padahal yang sebenarnya terjadi adalah ${ctx.reality}.\n\nYang terlihat di permukaan adalah ${ctx.visible}. Tapi yang sebenarnya memicu ini adalah ${ctx.hidden}.\n\nKita terlalu sibuk memperbaiki ${ctx.symptom}, sementara ${ctx.cause} tidak pernah disentuh.\n\nYang paling mahal bukan ${ctx.obvious_cost}, tetapi ${ctx.hidden_cost} yang terus membesar tanpa disadari. Banyak owner fokus pada ${ctx.visible_expense}, padahal ${ctx.invisible_drain} justru menggerus margin lebih dalam.\n\n${ctx.system} bukan sekadar policy di atas kertas. Itu harus menjadi ${ctx.mechanism} yang berjalan setiap hari. Gap antara ${ctx.intention} dan ${ctx.execution} adalah tempat di mana masalah-masalah besar lahir.`,
-                    `\n\nYang paling mahal bukan ${ctx.obvious_cost}, tetapi ${ctx.hidden_cost} yang terus membesar tanpa disadari.\n\nBanyak bisnis merasa ${ctx.perception}, padahal yang sebenarnya terjadi adalah ${ctx.reality}. Yang terlihat di permukaan adalah ${ctx.visible}. Tapi yang sebenarnya memicu ini adalah ${ctx.hidden}.\n\nKita terlalu sibuk memperbaiki ${ctx.symptom}, sementara ${ctx.cause} tidak pernah disentuh.\n\nBanyak perusahaan punya ${ctx.policy}, tapi tidak punya ${ctx.mechanism} untuk menjalankannya.\n\n${ctx.foundation} adalah fondasi yang tidak bisa ditawar. Bisnis yang tumbuh tanpa ${ctx.foundation} akan menghadapi bottleneck yang lebih mahal di kemudian hari.`
-                ];
-                body = bodies[Math.floor(Math.random() * bodies.length)];
-            }
+                comment += closings[Math.floor(Math.random() * closings.length)];
 
-            // Select closing
-            const angleClosings = closings[angle] || closings['root-cause'];
-            const closing = angleClosings[Math.floor(Math.random() * angleClosings.length)];
+                // Hide loading, show output
+                document.getElementById('loadingState').classList.add('hidden');
+                document.getElementById('outputSection').classList.remove('hidden');
+                document.getElementById('outputSection').classList.add('fade-in');
+                document.getElementById('commentOutput').textContent = comment;
+                document.getElementById('generateBtn').disabled = false;
 
-            // Combine
-            return opening + body + `\n\n` + closing;
+                // Reset copy button
+                const copyBtn = document.getElementById('copyBtn');
+                copyBtn.classList.remove('copied');
+                document.getElementById('copyText').textContent = 'Copy';
+
+            }, 1500);
         }
+
+        function regenerateComment() {
+            generateComment();
+        }
+
+        function copyComment() {
+            const commentText = document.getElementById('commentOutput').textContent;
+            navigator.clipboard.writeText(commentText).then(() => {
+                const copyBtn = document.getElementById('copyBtn');
+                const copyText = document.getElementById('copyText');
+                copyBtn.classList.add('copied');
+                copyText.textContent = 'Copied!';
+
+                setTimeout(() => {
+                    copyBtn.classList.remove('copied');
+                    copyText.textContent = 'Copy';
+                }, 2000);
+            });
+        }
+
+        // Allow Ctrl+Enter to generate
+        textarea.addEventListener('keydown', function(e) {
+            if (e.ctrlKey && e.key === 'Enter') {
+                generateComment();
+            }
+        });
     </script>
 </body>
 </html>
