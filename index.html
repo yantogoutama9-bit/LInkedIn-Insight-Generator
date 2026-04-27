@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LinkedIn Insight Generator — HR & Legal Consultant</title>
+    <title>LinkedIn Comment Generator — Yanto Goutama</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -17,13 +17,10 @@
             --card: #ffffff;
             --border: #e1e4e8;
             --success: #28a745;
+            --warning: #f59e0b;
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
@@ -59,6 +56,39 @@
             font-weight: 400;
         }
 
+        .profile-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            border-radius: 12px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 12px rgba(26, 26, 46, 0.15);
+        }
+
+        .profile-card h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .profile-card p {
+            font-size: 0.85rem;
+            line-height: 1.7;
+            opacity: 0.95;
+        }
+
+        .profile-card .tag {
+            display: inline-block;
+            background: rgba(255,255,255,0.15);
+            padding: 3px 10px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            margin: 2px 4px 2px 0;
+        }
+
         .card {
             background: var(--card);
             border-radius: 12px;
@@ -88,6 +118,7 @@
             align-items: center;
             justify-content: center;
             font-size: 0.85rem;
+            font-weight: 600;
         }
 
         label {
@@ -118,7 +149,7 @@
         }
 
         textarea {
-            min-height: 140px;
+            min-height: 160px;
             line-height: 1.6;
         }
 
@@ -181,14 +212,9 @@
             box-shadow: 0 4px 12px rgba(26, 26, 46, 0.2);
         }
 
-        .generate-btn:active {
-            transform: translateY(0);
-        }
+        .generate-btn:active { transform: translateY(0); }
 
-        .output-section {
-            display: none;
-        }
-
+        .output-section { display: none; }
         .output-section.visible {
             display: block;
             animation: fadeIn 0.4s ease;
@@ -204,6 +230,8 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 16px;
+            flex-wrap: wrap;
+            gap: 10px;
         }
 
         .output-header h3 {
@@ -261,6 +289,7 @@
             gap: 16px;
             font-size: 0.8rem;
             color: var(--text-light);
+            flex-wrap: wrap;
         }
 
         .output-meta span {
@@ -269,9 +298,7 @@
             gap: 4px;
         }
 
-        .template-section {
-            margin-top: 20px;
-        }
+        .template-section { margin-top: 20px; }
 
         .template-list {
             display: flex;
@@ -321,9 +348,7 @@
             padding: 40px;
         }
 
-        .loading.visible {
-            display: block;
-        }
+        .loading.visible { display: block; }
 
         .spinner {
             width: 40px;
@@ -335,9 +360,7 @@
             margin: 0 auto 16px;
         }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
         .tips-box {
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
@@ -361,20 +384,27 @@
             color: var(--text-light);
         }
 
-        .tips-box li {
-            margin-bottom: 4px;
+        .tips-box li { margin-bottom: 4px; }
+
+        .prompt-preview {
+            background: #f0f4f8;
+            border: 1.5px dashed var(--accent);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 16px;
+            font-size: 0.85rem;
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        .prompt-preview strong {
+            color: var(--accent);
         }
 
         @media (max-width: 600px) {
-            .container {
-                padding: 20px 16px;
-            }
-            header h1 {
-                font-size: 1.4rem;
-            }
-            .options-grid {
-                grid-template-columns: 1fr;
-            }
+            .container { padding: 20px 16px; }
+            header h1 { font-size: 1.4rem; }
+            .options-grid { grid-template-columns: 1fr; }
         }
     </style>
 <base target="_blank">
@@ -382,43 +412,64 @@
 <body>
     <div class="container">
         <header>
-            <h1>LinkedIn Insight Generator</h1>
-            <p>HR & Legal Consultant Style — Praktis, Strategis, Insight-Driven</p>
+            <h1>LinkedIn Comment Generator</h1>
+            <p>Generate English comments from your POV — Yanto Goutama, CHCM, CPLC</p>
         </header>
 
+        <div class="profile-card">
+            <h3>Your Profile POV</h3>
+            <p style="margin-bottom: 10px;">
+                <strong>Yanto Goutama, CHCM, CPLC</strong><br>
+                Helping SMEs & Companies Scale Without HR & Legal Chaos | HR & Legal Consultant | System Builder | ISLA Framework
+            </p>
+            <div>
+                <span class="tag">HR Systems</span>
+                <span class="tag">Legal Compliance</span>
+                <span class="tag">SME Scaling</span>
+                <span class="tag">Turnover Reduction</span>
+                <span class="tag">SOP & KPI</span>
+                <span class="tag">Business Strategy</span>
+            </div>
+        </div>
+
         <div class="tips-box">
-            <h4>Cara Penggunaan:</h4>
+            <h4>How to Use:</h4>
             <ul>
-                <li>Masukkan isi postingan atau konteks komentar LinkedIn di kolom bawah</li>
-                <li>Pilih angle insight yang sesuai dengan topik</li>
-                <li>Klik "Generate Insight" untuk mendapatkan komentar yang siap diposting</li>
-                <li>Edit hasil jika diperlukan sebelum diposting</li>
+                <li>Paste the LinkedIn post content below</li>
+                <li>Select the insight angle that fits the topic</li>
+                <li>Click "Generate Comment" to get a ready-to-post English comment</li>
+                <li>Edit the result if needed before posting</li>
             </ul>
         </div>
 
         <div class="card">
             <div class="card-title">
                 <div class="icon">1</div>
-                Konten LinkedIn
+                LinkedIn Post Content
             </div>
-            <label for="inputContent">Tempel isi postingan atau topik yang ingin dikomentari:</label>
+            <label for="inputContent">Paste the post content you want to comment on:</label>
             <textarea 
                 id="inputContent" 
-                placeholder="Contoh:
-Postingan tentang karyawan resign massal di startup...
-Atau:
-Diskusi tentang UU Cipta Kerja dan PHK..."
+                placeholder="Example:
+A post about mass layoffs at tech startups...
+Or:
+A discussion about employee retention strategies..."
                 oninput="updateCharCount()"
             ></textarea>
-            <div class="char-count" id="charCount">0 karakter</div>
+            <div class="char-count" id="charCount">0 characters</div>
+
+            <div class="prompt-preview">
+                <strong>Prompt that will be used:</strong><br>
+                "Give a comment in <strong>English</strong> from the post below with <strong>POV according to Yanto Goutama's profile</strong> — HR & Legal Consultant, System Builder, ISLA Framework, focused on helping SMEs scale without HR & legal chaos."
+            </div>
         </div>
 
         <div class="card">
             <div class="card-title">
                 <div class="icon">2</div>
-                Pilih Angle Insight
+                Select Insight Angle
             </div>
-            <label>Pilih sudut pandang yang paling relevan:</label>
+            <label>Choose the most relevant perspective:</label>
             <div class="options-grid" id="angleOptions">
                 <button class="option-btn active" data-angle="root-cause">Root Cause Analysis</button>
                 <button class="option-btn" data-angle="hidden-cost">Hidden Cost & Risk</button>
@@ -434,70 +485,70 @@ Diskusi tentang UU Cipta Kerja dan PHK..."
         <div class="card">
             <div class="card-title">
                 <div class="icon">3</div>
-                Panjang Komentar
+                Comment Length
             </div>
-            <label>Pilih panjang komentar:</label>
+            <label>Select comment length:</label>
             <div class="options-grid" id="lengthOptions">
-                <button class="option-btn active" data-length="short">Singkat & Tajam (2-3 paragraf)</button>
-                <button class="option-btn" data-length="medium">Sedang & Berbobot (3-5 paragraf)</button>
-                <button class="option-btn" data-length="long">Mendalam & Komprehensif (5+ paragraf)</button>
+                <button class="option-btn active" data-length="short">Short & Sharp (2-3 paragraphs)</button>
+                <button class="option-btn" data-length="medium">Substantial (3-5 paragraphs)</button>
+                <button class="option-btn" data-length="long">In-Depth (5+ paragraphs)</button>
             </div>
         </div>
 
         <button class="generate-btn" onclick="generateInsight()">
-            Generate Insight
+            Generate Comment
         </button>
 
         <div class="loading" id="loadingSection">
             <div class="spinner"></div>
-            <p style="color: var(--text-light); font-size: 0.9rem;">Menyusun insight...</p>
+            <p style="color: var(--text-light); font-size: 0.9rem;">Composing your insight...</p>
         </div>
 
         <div class="output-section" id="outputSection">
             <div class="card">
                 <div class="output-header">
-                    <h3>Hasil Insight</h3>
+                    <h3>Generated Comment</h3>
                     <div class="output-actions">
-                        <button class="action-btn" onclick="copyOutput()" id="copyBtn">Salin</button>
-                        <button class="action-btn" onclick="regenerate()">Generate Ulang</button>
+                        <button class="action-btn" onclick="copyOutput()" id="copyBtn">Copy</button>
+                        <button class="action-btn" onclick="regenerate()">Regenerate</button>
                     </div>
                 </div>
                 <div class="output-content" id="outputContent"></div>
                 <div class="output-meta">
                     <span id="metaAngle">Angle: Root Cause</span>
-                    <span id="metaLength">Panjang: Singkat</span>
-                    <span id="metaWords">~0 kata</span>
+                    <span id="metaLength">Length: Short</span>
+                    <span id="metaWords">~0 words</span>
                 </div>
             </div>
 
             <div class="card template-section">
                 <div class="card-title">
                     <div class="icon">💡</div>
-                    Template Cepat (Klik untuk Gunakan)
+                    Quick Templates (Click to Use)
                 </div>
                 <div class="template-list">
                     <div class="template-item" onclick="useTemplate('phk')">
-                        <span>Topik: PHK, Pemutusan Hubungan Kerja</span>
-                        <span class="tag">PHK</span>
+                        <span>Topic: Layoffs, Termination, Workforce Reduction</span>
+                        <span class="tag">Layoff</span>
                     </div>
                     <div class="template-item" onclick="useTemplate('turnover')">
-                        <span>Topik: Turnover Tinggi, Karyawan Resign</span>
+                        <span>Topic: High Turnover, Employee Resignation</span>
                         <span class="tag">Turnover</span>
                     </div>
                     <div class="template-item" onclick="useTemplate('compliance')">
-                        <span>Topik: Legal Compliance, Peraturan Ketenagakerjaan</span>
+                        <span>Topic: Legal Compliance, Labor Regulations</span>
                         <span class="tag">Legal</span>
                     </div>
                     <div class="template-item" onclick="useTemplate('performance')">
-                        <span>Topik: Produktivitas, Performance Management</span>
-                        <span class="tag">Produktivitas</span>
+                        <span>Topic: Productivity, Performance Management</span>
+                        <span class="tag">Productivity</span>
                     </div>
                     <div class="template-item" onclick="useTemplate('remote')">
-                        <span>Topik: Remote Work, Hybrid, Work From Home</span>
+                        <span>Topic: Remote Work, Hybrid, WFH</span>
                         <span class="tag">Remote</span>
                     </div>
                     <div class="template-item" onclick="useTemplate('startup')">
-                        <span>Topik: Startup, Scale-up, Pertumbuhan Bisnis</span>
+                        <span>Topic: Startup, Scale-up, Business Growth</span>
                         <span class="tag">Startup</span>
                     </div>
                 </div>
@@ -530,17 +581,17 @@ Diskusi tentang UU Cipta Kerja dan PHK..."
 
         function updateCharCount() {
             const count = document.getElementById('inputContent').value.length;
-            document.getElementById('charCount').textContent = count + ' karakter';
+            document.getElementById('charCount').textContent = count + ' characters';
         }
 
         function useTemplate(type) {
             const templates = {
-                phk: "Startup di Indonesia mulai melakukan PHK massal. Banyak yang bilang ini karena funding kering, tapi apakah itu satu-satunya alasan? Bagaimana dengan kewajiban hukum perusahaan terhadap karyawan yang di-PHK?",
-                turnover: "Perusahaan kami mengalami turnover tinggi di divisi sales. Sudah coba naikkan gaji, tapi karyawan tetap pergi. Apakah masalahnya memang soal uang, atau ada yang lebih fundamental?",
-                compliance: "Banyak UMKM yang belum memahami pentingnya PKB (Perjanjian Kerja Bersama) dan SOP ketenagakerjaan. Apakah ini benar-benar penting, atau hanya formalitas belaka?",
-                performance: "Karyawan kami terlihat sibuk dari pagi sampai malam, tapi target tidak tercapai. Bagaimana membedakan antara sibuk yang produktif dan sibuk yang hanya menciptakan ilusi kerja?",
-                remote: "Setelah pandemi, perusahaan kami menerapkan hybrid work. Tapi koordinasi jadi berantakan, dan beberapa karyawan sulit dihubungi. Apakah remote work benar-benar efektif untuk semua jenis bisnis?",
-                startup: "Startup kami tumbuh dari 5 orang menjadi 50 orang dalam setahun. Tiba-tiba banyak konflik internal, komunikasi tidak jelas, dan founder merasa kehilangan kendali. Apakah ini normal?"
+                phk: "Tech startups in Indonesia are starting mass layoffs. Many say it's because funding dried up, but is that the only reason? What about the legal obligations companies have toward employees being laid off?",
+                turnover: "Our company is experiencing high turnover in the sales division. We've tried raising salaries, but employees still leave. Is the problem really about money, or is there something more fundamental?",
+                compliance: "Many SMEs still don't understand the importance of PKB (Collective Labor Agreement) and HR SOPs. Is this really important, or just a formality?",
+                performance: "Our employees look busy from morning to night, but targets aren't met. How do we distinguish between busy-productive and busy-creating an illusion of work?",
+                remote: "After the pandemic, our company implemented hybrid work. But coordination became chaotic, and some employees are hard to reach. Is remote work really effective for all types of businesses?",
+                startup: "Our startup grew from 5 to 50 people in a year. Suddenly there are many internal conflicts, unclear communication, and the founder feels losing control. Is this normal?"
             };
             document.getElementById('inputContent').value = templates[type];
             updateCharCount();
@@ -550,25 +601,23 @@ Diskusi tentang UU Cipta Kerja dan PHK..."
         function generateInsight() {
             const input = document.getElementById('inputContent').value.trim();
             if (!input) {
-                alert('Silakan masukkan konten LinkedIn terlebih dahulu.');
+                alert('Please enter the LinkedIn post content first.');
                 return;
             }
 
-            // Show loading
             document.getElementById('loadingSection').classList.add('visible');
             document.getElementById('outputSection').classList.remove('visible');
 
-            // Simulate processing
             setTimeout(() => {
                 const result = composeInsight(input, selectedAngle, selectedLength);
                 document.getElementById('outputContent').textContent = result;
                 document.getElementById('metaAngle').textContent = 'Angle: ' + getAngleLabel(selectedAngle);
-                document.getElementById('metaLength').textContent = 'Panjang: ' + getLengthLabel(selectedLength);
-                document.getElementById('metaWords').textContent = '~' + result.split(/\s+/).length + ' kata';
+                document.getElementById('metaLength').textContent = 'Length: ' + getLengthLabel(selectedLength);
+                document.getElementById('metaWords').textContent = '~' + result.split(/\s+/).length + ' words';
 
                 document.getElementById('loadingSection').classList.remove('visible');
                 document.getElementById('outputSection').classList.add('visible');
-                document.getElementById('copyBtn').textContent = 'Salin';
+                document.getElementById('copyBtn').textContent = 'Copy';
                 document.getElementById('copyBtn').classList.remove('copied');
             }, 1200);
         }
@@ -581,10 +630,10 @@ Diskusi tentang UU Cipta Kerja dan PHK..."
             const text = document.getElementById('outputContent').textContent;
             navigator.clipboard.writeText(text).then(() => {
                 const btn = document.getElementById('copyBtn');
-                btn.textContent = 'Tersalin!';
+                btn.textContent = 'Copied!';
                 btn.classList.add('copied');
                 setTimeout(() => {
-                    btn.textContent = 'Salin';
+                    btn.textContent = 'Copy';
                     btn.classList.remove('copied');
                 }, 2000);
             });
@@ -606,113 +655,113 @@ Diskusi tentang UU Cipta Kerja dan PHK..."
 
         function getLengthLabel(length) {
             const labels = {
-                'short': 'Singkat',
-                'medium': 'Sedang',
-                'long': 'Mendalam'
+                'short': 'Short',
+                'medium': 'Medium',
+                'long': 'Long'
             };
             return labels[length] || length;
         }
 
         // ============================================
-        // CORE INSIGHT ENGINE
+        // CORE INSIGHT ENGINE — Yanto Goutama POV
         // ============================================
 
         const patterns = {
             'root-cause': [
-                "Masalahnya sering kali bukan pada {surface}, tetapi pada {root}.",
-                "Banyak bisnis merasa {perception}, padahal yang sebenarnya terjadi adalah {reality}.",
-                "Yang terlihat di permukaan adalah {visible}. Tapi yang sebenarnya memicu ini adalah {hidden}.",
-                "Kita terlalu sibuk memperbaiki {symptom}, sementara {cause} tidak pernah disentuh."
+                "The real issue is rarely {surface}. It's usually {root}.",
+                "Many businesses think {perception}, but what's actually happening is {reality}.",
+                "What you see on the surface is {visible}. But what's really driving this is {hidden}.",
+                "We spend too much time fixing {symptom}, while {cause} remains untouched."
             ],
             'hidden-cost': [
-                "Yang paling mahal bukan {obvious_cost}, tetapi {hidden_cost} yang terus membesar tanpa disadari.",
-                "Biaya tersembunyi dari {issue} biasanya 3x lebih besar dari biaya yang terlihat.",
-                "Banyak owner fokus pada {visible_expense}, padahal {invisible_drain} justru menggerus margin lebih dalam.",
-                "HR yang berantakan bukan hanya soal {surface_issue}, tetapi juga {hidden_impact} yang terus berlanjut."
+                "The most expensive thing isn't {obvious_cost}. It's {hidden_cost} that keeps growing unnoticed.",
+                "The hidden cost of {issue} is usually 3x larger than what's visible.",
+                "Many owners focus on {visible_expense}, while {invisible_drain} quietly erodes margins.",
+                "Messy HR isn't just about {surface_issue}. It's also about {hidden_impact} that keeps compounding."
             ],
             'system-gap': [
-                "Strategi tanpa {system} adalah rencana yang hanya tinggal di slide presentasi.",
-                "Yang paling mahal bukan kesalahan strategi, tetapi menjalankan strategi tanpa sistem yang jelas.",
-                "Banyak perusahaan punya {policy}, tapi tidak punya {mechanism} untuk menjalankannya.",
-                "Gap antara {intention} dan {execution} adalah tempat di mana masalah-masalah besar lahir."
+                "Strategy without {system} is a plan that stays on presentation slides.",
+                "The most expensive mistake isn't bad strategy. It's executing strategy without a clear system.",
+                "Many companies have {policy} on paper, but lack {mechanism} to run it.",
+                "The gap between {intention} and {execution} is where big problems are born."
             ],
             'scalability': [
-                "Bisnis yang tumbuh tanpa {foundation} akan menghadapi bottleneck yang lebih mahal di kemudian hari.",
-                "Scalability bukan soal {quantity}, tapi soal {capability} untuk menyerap pertumbuhan.",
-                "Yang membuat startup gagal scale bukan pasar, tetapi {internal_limitation} yang tidak diperbaiki.",
-                "Pertumbuhan tanpa {structure} adalah jalan cepat menuju chaos operasional."
+                "A business that grows without {foundation} will hit a bottleneck that's far more expensive later.",
+                "Scalability isn't about {quantity}. It's about {capability} to absorb growth.",
+                "What kills a startup's scale isn't the market. It's {internal_limitation} that never gets fixed.",
+                "Growth without {structure} is a fast track to operational chaos."
             ],
             'legal-compliance': [
-                "Legal compliance yang diabaikan hari ini biasanya menjadi masalah besar di kemudian hari.",
-                "Banyak bisnis merasa {compliance} hanya formalitas, sampai {consequence} datang.",
-                "Biaya pencegahan {legal_aspect} jauh lebih murah dibanding biaya penanganan ketika sudah terjadi.",
-                "Yang terlihat sebagai {bureaucracy} sebenarnya adalah {protection} untuk bisnis dan karyawan."
+                "Legal compliance ignored today usually becomes a massive problem down the road.",
+                "Many businesses treat {compliance} as a formality — until {consequence} arrives.",
+                "The cost of preventing {legal_aspect} is far cheaper than handling it after it happens.",
+                "What looks like {bureaucracy} is actually {protection} for both the business and the people."
             ],
             'turnover': [
-                "Turnover tinggi bukan hanya soal {surface_reason}, tetapi juga {deeper_issue} yang tidak teratasi.",
-                "Karyawan resign bukan karena {stated_reason}, tapi karena {actual_reason} yang terus terabaikan.",
-                "Biaya turnover sebenarnya bukan {recruitment_cost} semata, tapi {knowledge_loss} yang sulit diukur.",
-                "Banyak perusahaan fokus pada {retention_tactic}, padahal yang dibutuhkan adalah {root_solution}."
+                "High turnover isn't just about {surface_reason}. It's also about {deeper_issue} that never gets addressed.",
+                "Employees don't leave because of {stated_reason}. They leave because of {actual_reason} that keeps being ignored.",
+                "The real cost of turnover isn't {recruitment_cost}. It's {knowledge_loss} that's hard to measure.",
+                "Many companies focus on {retention_tactic}, when what they actually need is {root_solution}."
             ],
             'productivity': [
-                "Produktivitas bukan soal {hours}, tapi soal {output_quality} yang dihasilkan.",
-                "Sibuk dan produktif adalah dua hal berbeda. Yang terlihat {busy} belum tentu {effective}.",
-                "Banyak tim terjebak dalam {activity_trap}, sementara {value_creation} tertinggal.",
-                "Performance management yang baik bukan soal {monitoring}, tapi soal {enablement}."
+                "Productivity isn't about {hours}. It's about {output_quality} delivered.",
+                "Busy and productive are two different things. What looks {busy} isn't necessarily {effective}.",
+                "Many teams get trapped in {activity_trap}, while {value_creation} falls behind.",
+                "Good performance management isn't about {monitoring}. It's about {enablement}."
             ],
             'strategic-hr': [
-                "HR yang strategis bukan soal {admin_task}, tapi soal {business_alignment}.",
-                "Bisnis gagal bukan karena {external_factor}, tapi karena {people_factor} tidak dikelola dengan benar.",
-                "HR bukan cost center ketika {function} dihubungkan langsung dengan {business_outcome}.",
-                "Yang membedakan bisnis yang sustain dan yang tidak adalah {people_practice}, bukan {market_condition} semata."
+                "Strategic HR isn't about {admin_task}. It's about {business_alignment}.",
+                "Businesses don't fail because of {external_factor}. They fail because {people_factor} isn't managed properly.",
+                "HR isn't a cost center when {function} is directly tied to {business_outcome}.",
+                "What separates sustainable businesses from those that aren't is {people_practice}, not just {market_condition}."
             ]
         };
 
         const closings = {
             'root-cause': [
-                "Identifikasi akar masalah lebih penting daripada solusi cepat yang hanya menutupi gejala.",
-                "Perbaiki fondasinya. Sisanya akan mengikuti."
+                "Identifying the root cause matters more than quick fixes that only mask symptoms.",
+                "Fix the foundation. The rest follows."
             ],
             'hidden-cost': [
-                "Hitung biaya tersembunyinya. Angka itu biasanya mengubah perspektif.",
-                "Yang tidak terlihat seringkali lebih merusak daripada yang terlihat."
+                "Calculate the hidden costs. That number usually changes the perspective entirely.",
+                "What you don't see often damages more than what you do."
             ],
             'system-gap': [
-                "Sistem yang baik membuat orang biasa bisa menghasilkan has luar biasa. Sistem yang buruk membuat orang hebat frustrasi.",
-                "Jangan bangun bisnis di atas fondasi yang rapuh."
+                "A good system makes average people deliver outstanding results. A bad system frustrates even the best people.",
+                "Don't build a business on a shaky foundation."
             ],
             'scalability': [
-                "Scale dengan fondasi yang kuat, atau siap-siap memperbaiki kerusakan yang lebih mahal nanti.",
-                "Pertumbuhan tanpa kesiapan adalah undangan untuk chaos."
+                "Scale with a strong foundation, or be prepared to pay a much higher price fixing the damage later.",
+                "Growth without readiness is an invitation to chaos."
             ],
             'legal-compliance': [
-                "Compliance bukan beban. Itu investasi untuk tidur nyenyak di malam hari.",
-                "Lebih baik mencegah sekarang daripada membayar mahal nanti."
+                "Compliance isn't a burden. It's an investment in sleeping well at night.",
+                "Better to prevent now than pay dearly later."
             ],
             'turnover': [
-                "Retention dimulai dari pemahaman, bukan dari taktik.",
-                "Karyawan yang dihargai dengan benar tidak perlu dipaksa untuk tinggal."
+                "Retention starts with understanding, not tactics.",
+                "Employees who are truly valued don't need to be forced to stay."
             ],
             'productivity': [
-                "Fokus pada outcome, bukan activity. Itu perbedaan antara busy dan effective.",
-                "Produktivitas sejati terlihat dari hasil, bukan dari jam kerja."
+                "Focus on outcome, not activity. That's the difference between busy and effective.",
+                "True productivity is measured by results, not hours."
             ],
             'strategic-hr': [
-                "HR yang ditempatkan di level strategis bukan luxury. Itu necessity untuk bisnis yang mau sustain.",
+                "HR placed at the strategic level isn't a luxury. It's a necessity for any business that wants to sustain.",
                 "People strategy IS business strategy."
             ]
         };
 
         const topicKeywords = {
-            phk: ['PHK', 'pemutusan hubungan kerja', 'pemecatan', 'layoff', 'redundancy'],
-            turnover: ['resign', 'turnover', 'keluar', 'mundur', 'berhenti', 'rotasi karyawan'],
-            compliance: ['UU', 'peraturan', 'legal', 'hukum', 'PKB', 'PKWT', 'PKWTT', 'BPJS', 'compliance'],
-            performance: ['produktivitas', 'kinerja', 'target', 'KPI', 'performance', 'evaluasi'],
-            remote: ['remote', 'WFH', 'hybrid', 'work from home', 'jarak jauh', 'virtual'],
-            startup: ['startup', 'scale', 'pertumbuhan', 'funding', 'investor', 'venture'],
-            salary: ['gaji', 'upah', 'kompensasi', 'remunerasi', 'benefit', 'payroll'],
-            culture: ['budaya', 'culture', 'nilai', 'value', 'lingkungan kerja', 'toxic'],
-            recruitment: ['rekrutmen', 'hiring', 'seleksi', 'interview', 'talent acquisition']
+            phk: ['layoff', 'termination', 'fired', 'redundancy', 'PHK', 'pemutusan', 'pemecatan', 'downsizing', 'workforce reduction'],
+            turnover: ['resign', 'turnover', 'quit', 'leave', 'exit', 'keluar', 'mundur', 'berhenti', 'attrition'],
+            compliance: ['UU', 'regulation', 'legal', 'law', 'compliance', 'PKB', 'PKWT', 'PKWTT', 'BPJS', 'peraturan', 'hukum'],
+            performance: ['productivity', 'performance', 'KPI', 'target', 'output', 'kinerja', 'produktivitas', 'evaluasi'],
+            remote: ['remote', 'WFH', 'hybrid', 'work from home', 'virtual', 'jarak jauh'],
+            startup: ['startup', 'scale', 'growth', 'funding', 'investor', 'venture', 'pertumbuhan'],
+            salary: ['salary', 'wage', 'compensation', 'payroll', 'gaji', 'upah', 'benefit', 'remuneration'],
+            culture: ['culture', 'toxic', 'values', 'environment', 'budaya', 'lingkungan kerja'],
+            recruitment: ['recruitment', 'hiring', 'selection', 'interview', 'rekrutmen', 'seleksi']
         };
 
         function detectTopic(input) {
@@ -728,389 +777,389 @@ Diskusi tentang UU Cipta Kerja dan PHK..."
         function getTopicContext(topic) {
             const contexts = {
                 phk: {
-                    surface: 'karyawan yang kinerjanya buruk',
-                    root: 'sistem rekrutmen, onboarding, dan manajemen kinerja yang tidak berjalan',
-                    perception: 'PHK adalah solusi untuk masalah kinerja',
-                    reality: 'PHK adalah indikator bahwa sistem people management gagal di tahap sebelumnya',
-                    visible: 'karyawan yang tidak memenuhi ekspektasi',
-                    hidden: 'proses hiring yang tidak sesuai kebutuhan, job description yang kabur, dan ekspektasi yang tidak dikomunikasikan dengan jelas',
-                    symptom: 'konsekuensi di ujung (PHK)',
-                    cause: 'sumber masalah di awal (rekrutmen dan alignment)',
-                    obvious_cost: 'pesangon dan biaya administrasi PHK',
-                    hidden_cost: 'dampak moral pada tim yang tersisa, kehilangan institutional knowledge, dan reputasi employer brand',
-                    visible_expense: 'biaya rekrutmen pengganti',
-                    invisible_drain: 'waktu onboarding, learning curve, dan gangguan operasional selama transisi',
-                    surface_issue: 'proses administrasi pemutusan',
-                    hidden_impact: 'trauma psikologis tim, penurunan engagement, dan meningkatnya risk aversion dalam pengambilan keputusan',
-                    system: 'proses offboarding yang terstruktur dan dokumentasi yang lengkap',
-                    policy: 'kebijakan PHK di atas kertas',
-                    mechanism: 'proses coaching, peringatan tertulis, dan dokumentasi kinerja yang konsisten',
-                    intention: 'menjaga kualitas tim',
-                    execution: 'proses evaluasi dan perbaikan yang berkelanjutan',
-                    foundation: 'kebijakan ketenagakerjaan yang jelas dan konsisten',
-                    quantity: 'jumlah karyawan yang di-PHK',
-                    capability: 'kemampuan manajemen untuk mengidentifikasi masalah sejak dini',
-                    internal_limitation: 'keterbatasan sistem people management',
-                    structure: 'proses dokumentasi dan due diligence',
-                    compliance: 'mematuhi prosedur PHK sesuai UU',
-                    consequence: 'sengketa ketenagakerjaan, denda, dan reputasi buruk di industri',
-                    legal_aspect: 'proses PHK sesuai UU Cipta Kerja',
-                    bureaucracy: 'proses administrasi PHK yang panjang',
-                    protection: 'perlindungan hukum bagi perusahaan dan karyawan',
-                    surface_reason: 'gaji atau benefit yang tidak kompetitif',
-                    deeper_issue: 'kepemimpinan, growth path, dan rasa dihargai yang tidak terpenuhi',
-                    stated_reason: 'alasan pribadi atau gaji',
-                    actual_reason: 'kekecewaan terhadap manajemen, stagnasi karir, atau budaya kerja yang tidak sehat',
-                    recruitment_cost: 'biaya hire pengganti',
-                    knowledge_loss: 'kehilangan know-how, relasi klien, dan stabilitas tim',
-                    retention_tactic: 'naikkan gaji di detik terakhir',
-                    root_solution: 'memperbaiki pengalaman kerja sejak hari pertama',
-                    hours: 'berapa lama karyawan di kantor',
-                    output_quality: 'value yang dihasilkan bagi bisnis',
-                    busy: 'aktif dan responsif',
-                    effective: 'menyelesaikan masalah bisnis yang penting',
-                    activity_trap: 'meeting tanpa agenda jelas dan laporan tanpa action item',
-                    value_creation: 'penyelesaian masalah klien dan inovasi proses',
-                    monitoring: 'mengejar deadline dan mengisi timesheet',
-                    enablement: 'memberikan clarity, resources, dan autonomy',
-                    admin_task: 'mengurus absensi dan payroll',
-                    business_alignment: 'memastikan setiap keputusan people mendukung tujuan bisnis',
-                    external_factor: 'persaingan pasar',
-                    people_factor: 'kemampuan organisasi untuk menarik, mengembangkan, dan mempertahankan talenta',
-                    function: 'fungsi people and culture',
-                    business_outcome: 'revenue, retensi klien, dan operational excellence',
-                    people_practice: 'cara perusahaan mengelola orang',
-                    market_condition: 'kondisi pasar atau funding'
+                    surface: 'underperforming employees',
+                    root: 'broken recruitment, onboarding, and performance management systems upstream',
+                    perception: 'layoffs are the solution to performance problems',
+                    reality: 'layoffs are an indicator that the people management system failed at earlier stages',
+                    visible: 'employees not meeting expectations',
+                    hidden: 'hiring processes mismatched to actual needs, vague job descriptions, and expectations never communicated clearly',
+                    symptom: 'consequences at the end (layoffs)',
+                    cause: 'source problems at the beginning (recruitment and alignment)',
+                    obvious_cost: 'severance and administrative costs of termination',
+                    hidden_cost: 'morale impact on remaining team, loss of institutional knowledge, and employer brand damage',
+                    visible_expense: 'cost of hiring replacements',
+                    invisible_drain: 'onboarding time, learning curve, and operational disruption during transition',
+                    surface_issue: 'termination administration process',
+                    hidden_impact: 'team trauma, engagement drop, and increased risk aversion in decision-making',
+                    system: 'structured offboarding and complete documentation',
+                    policy: 'termination policy on paper',
+                    mechanism: 'coaching process, written warnings, and consistent performance documentation',
+                    intention: 'maintaining team quality',
+                    execution: 'ongoing evaluation and improvement process',
+                    foundation: 'clear and consistent labor policies',
+                    quantity: 'how many people get laid off',
+                    capability: 'management ability to identify problems early',
+                    internal_limitation: 'limited people management capability',
+                    structure: 'documentation and due diligence process',
+                    compliance: 'following termination procedures per labor law',
+                    consequence: 'labor disputes, fines, and industry reputation damage',
+                    legal_aspect: 'termination process per Job Creation Law',
+                    bureaucracy: 'lengthy termination administration',
+                    protection: 'legal protection for both company and employees',
+                    surface_reason: 'performance issues',
+                    deeper_issue: 'systems that allow poor performance to go unaddressed until it becomes a crisis',
+                    stated_reason: 'restructuring or performance',
+                    actual_reason: 'failure of early intervention and people development systems',
+                    recruitment_cost: 'cost of replacement hire',
+                    knowledge_loss: 'loss of know-how, client relationships, and team stability',
+                    retention_tactic: 'last-minute counter offers',
+                    root_solution: 'fixing the employee experience from day one',
+                    hours: 'how long employees stay in office',
+                    output_quality: 'value delivered to the business',
+                    busy: 'active and responsive',
+                    effective: 'solving important business problems',
+                    activity_trap: 'meetings without clear agenda and reports without action items',
+                    value_creation: 'solving client problems and process innovation',
+                    monitoring: 'chasing deadlines and filling timesheets',
+                    enablement: 'providing clarity, resources, and autonomy',
+                    admin_task: 'managing attendance and payroll',
+                    business_alignment: 'ensuring every people decision supports business goals',
+                    external_factor: 'market competition',
+                    people_factor: 'organizational ability to attract, develop, and retain talent',
+                    function: 'people and culture function',
+                    business_outcome: 'revenue, client retention, and operational excellence',
+                    people_practice: 'how the company manages people',
+                    market_condition: 'market or funding conditions'
                 },
                 turnover: {
-                    surface: 'gaji yang tidak kompetitif',
-                    root: 'sistem pengembangan karir, recognition, dan kepemimpinan yang tidak membuat karyawan merasa dihargai',
-                    perception: 'karyawan resign karena uang',
-                    reality: 'karyawan resign karena tidak melihat masa depan yang jelas dan tidak merasa dihargai atas kontribusinya',
-                    visible: 'tingkat turnover yang tinggi',
-                    hidden: 'kepemimpinan yang tidak mendengarkan, growth path yang kabur, dan budaya kerja yang membuat orang lelah secara emosional',
-                    symptom: 'mengejar karyawan yang mau resign dengan counter offer',
-                    cause: 'mengapa mereka tidak ingin bertahan sejak awal',
-                    obvious_cost: 'biaya rekrutmen pengganti',
-                    hidden_cost: 'kehilangan knowledge, gangguan tim, dan penurunan morale yang sulit dihitung',
-                    visible_expense: 'biaya iklan lowongan dan agency fee',
-                    invisible_drain: 'waktu onboarding, kesalahan operasional selama learning curve, dan beban kerja berlebih pada tim yang tersisa',
-                    surface_issue: 'angka turnover di dashboard HR',
-                    hidden_impact: 'kehilangan trust pada leadership dan budaya kerja yang semakin terkikis',
-                    system: 'employee journey mapping dari hiring sampai exit interview yang benar-benar digunakan',
-                    policy: 'kebijakan retensi di handbook',
-                    mechanism: '1-on-1 rutin, career pathing, dan feedback loop yang berjalan',
-                    intention: 'mempertahankan talenta terbaik',
-                    execution: 'pengalaman kerja sehari-hari yang membuat orang ingin tinggal',
-                    foundation: 'employee value proposition yang jelas dan kepemimpinan yang konsisten',
-                    quantity: 'berapa banyak karyawan yang resign',
-                    capability: 'kemampuan manajemen untuk membaca tanda-tanda sejak dini',
-                    internal_limitation: 'keterbatasan people analytics dan exit interview yang hanya formalitas',
-                    structure: 'sistem feedback dan perbaikan berkelanjutan',
-                    compliance: 'memenuhi hak karyawan sesuai kontrak',
-                    consequence: 'sengketa, klaim, dan reputasi buruk sebagai tempat kerja',
-                    legal_aspect: 'pemenuhan hak karyawan yang resign',
-                    bureaucracy: 'proses administrasi resign yang panjang',
-                    protection: 'perlindungan data dan aset perusahaan',
-                    surface_reason: 'tawaran gaji lebih tinggi di luar',
-                    deeper_issue: 'kekosongan dalam growth, recognition, dan rasa memiliki',
-                    stated_reason: 'kesempatan lebih baik',
-                    actual_reason: 'kelelahan akibat beban kerja tidak proporsional, kepemimpinan yang tidak mendukung, atau stagnasi',
-                    recruitment_cost: 'biaya hire baru',
-                    knowledge_loss: 'kehilangan tacit knowledge dan relasi internal yang sudah dibangun bertahun-tahun',
-                    retention_tactic: 'memberikan kenaikan gaji mendadak',
-                    root_solution: 'membangun employee experience yang membuat orang tidak ingin mencari di luar',
-                    hours: 'berapa lama karyawan stay di kantor',
-                    output_quality: 'kontribusi berkelanjutan dan inovasi yang mereka bawa',
-                    busy: 'responsif dan selalu online',
-                    effective: 'menyelesaikan pekerjaan yang berdampak',
-                    activity_trap: 'meeting tanpa outcome dan email tanpa action',
-                    value_creation: 'penyelesaian masalah nyata bagi bisnis',
-                    monitoring: 'mengecek kehadiran dan jam kerja',
-                    enablement: 'memberikan clarity, resources, dan trust',
-                    admin_task: 'mengurus administrasi SDM',
-                    business_alignment: 'memastikan people strategy mendukung revenue dan growth',
-                    external_factor: 'pasar kerja yang kompetitif',
-                    people_factor: 'kemampuan perusahaan untuk membuat karyawan merasa berkembang',
-                    function: 'fungsi talent management',
-                    business_outcome: 'retention rate dan employee NPS',
-                    people_practice: 'cara perusahaan memperlakukan karyawan',
-                    market_condition: 'kondisi pasar kerja'
+                    surface: 'non-competitive salaries',
+                    root: 'broken career development, recognition, and leadership systems that make employees feel undervalued',
+                    perception: 'employees leave for money',
+                    reality: 'employees leave because they don't see a clear future and don't feel appreciated for their contribution',
+                    visible: 'high turnover rate',
+                    hidden: 'leadership that doesn't listen, unclear growth paths, and a work culture that emotionally exhausts people',
+                    symptom: 'chasing resigning employees with counter offers',
+                    cause: 'why they didn't want to stay in the first place',
+                    obvious_cost: 'cost of hiring replacements',
+                    hidden_cost: 'knowledge loss, team disruption, and morale decline that's hard to quantify',
+                    visible_expense: 'job ad costs and agency fees',
+                    invisible_drain: 'onboarding time, operational mistakes during learning curve, and overload on remaining team',
+                    surface_issue: 'turnover numbers on the HR dashboard',
+                    hidden_impact: 'loss of trust in leadership and eroding work culture',
+                    system: 'employee journey mapping from hiring to exit interview that actually gets used',
+                    policy: 'retention policy in the handbook',
+                    mechanism: 'regular 1-on-1s, career pathing, and functioning feedback loops',
+                    intention: 'retaining top talent',
+                    execution: 'day-to-day work experience that makes people want to stay',
+                    foundation: 'clear employee value proposition and consistent leadership',
+                    quantity: 'how many employees resign',
+                    capability: 'management ability to read early warning signs',
+                    internal_limitation: 'limited people analytics and exit interviews that are just formalities',
+                    structure: 'feedback system and continuous improvement',
+                    compliance: 'fulfilling employee rights per contract',
+                    consequence: 'disputes, claims, and reputation damage as an employer',
+                    legal_aspect: 'fulfilling rights of resigning employees',
+                    bureaucracy: 'lengthy resignation administration',
+                    protection: 'data and asset protection for the company',
+                    surface_reason: 'better offer outside',
+                    deeper_issue: 'emptiness in growth, recognition, and sense of ownership',
+                    stated_reason: 'better opportunity',
+                    actual_reason: 'exhaustion from disproportionate workload, unsupportive leadership, or stagnation',
+                    recruitment_cost: 'cost of new hire',
+                    knowledge_loss: 'loss of tacit knowledge and internal relationships built over years',
+                    retention_tactic: 'sudden salary increases',
+                    root_solution: 'building an employee experience that makes people not look outside',
+                    hours: 'how long employees stay at the office',
+                    output_quality: 'sustained contribution and innovation they bring',
+                    busy: 'responsive and always online',
+                    effective: 'completing impactful work',
+                    activity_trap: 'meetings without outcome and emails without action',
+                    value_creation: 'solving real business problems',
+                    monitoring: 'checking attendance and work hours',
+                    enablement: 'providing clarity, resources, and trust',
+                    admin_task: 'managing HR administration',
+                    business_alignment: 'ensuring people strategy supports revenue and growth',
+                    external_factor: 'competitive job market',
+                    people_factor: 'company ability to make employees feel they are growing',
+                    function: 'talent management function',
+                    business_outcome: 'retention rate and employee NPS',
+                    people_practice: 'how the company treats employees',
+                    market_condition: 'job market conditions'
                 },
                 compliance: {
-                    surface: 'dokumen dan perizinan yang lengkap',
-                    root: 'pemahaman manajemen bahwa compliance bukan beban, tapi fondasi operasional yang memungkinkan bisnis berjalan tanpa gangguan',
-                    perception: 'legal compliance hanya soal administrasi dan biaya tambahan',
-                    reality: 'compliance yang baik adalah asuransi operasional yang mencegah kerugian jauh lebih besar di masa depan',
-                    visible: 'sertifikat dan dokumen yang tersusun rapi',
-                    hidden: 'budaya compliance di setiap level, pemahaman manajer akan konsekuensi hukum, dan sistem audit internal yang berjalan',
-                    symptom: 'memperbaiki dokumen ketika ada inspeksi',
-                    cause: 'tidak adanya sistem compliance yang terintegrasi dalam operasional sehari-hari',
-                    obvious_cost: 'biaya konsultan hukum dan perizinan',
-                    hidden_cost: 'downtime operasional, denda, dan reputasi ketika ada pelanggaran',
-                    visible_expense: 'biaya legal retainer',
-                    invisible_drain: 'waktu manajemen untuk menangani sengketa, investigasi, dan perbaikan darurat',
-                    surface_issue: 'kelengkapan dokumen',
-                    hidden_impact: 'kehilangan trust dari investor, klien, dan regulator',
-                    system: 'compliance framework yang terintegrasi dengan operasional',
-                    policy: 'kebijakan di atas kertas',
-                    mechanism: 'training berkala, audit internal, dan escalation path yang jelas',
-                    intention: 'memenuhi regulasi',
-                    execution: 'membangun budaya compliance di setiap level organisasi',
-                    foundation: 'pemahaman hukum ketenagakerjaan yang mendalam',
-                    quantity: 'berapa banyak peraturan yang dipatuhi',
-                    capability: 'kemampuan organisasi untuk mengadaptasi perubahan regulasi',
-                    internal_limitation: 'keterbatasan legal knowledge di internal',
-                    structure: 'legal framework dan SOP yang terdokumentasi',
-                    compliance: 'memenuhi UU Ketenagakerjaan dan peraturan turunannya',
-                    consequence: 'sengketa, denda, dan bahkan penghentian operasional',
-                    legal_aspect: 'ketenagakerjaan, perpajakan, dan perlindungan data',
-                    bureaucracy: 'proses perizinan dan pelaporan',
-                    protection: 'perlindungan hukum bagi perusahaan, karyawan, dan stakeholder',
-                    surface_reason: 'ketidaktahuan akan regulasi',
-                    deeper_issue: 'tidak adanya komitmen manajemen untuk investasi pada legal infrastructure',
-                    stated_reason: 'kompleksitas regulasi',
-                    actual_reason: 'prioritasi short-term cost cutting di atas long-term risk management',
-                    recruitment_cost: 'biaya legal officer',
-                    knowledge_loss: 'kehilangan kredibilitas dan kesempatan bisnis',
-                    retention_tactic: 'memperbaiki dokumen ketika terdesak',
-                    root_solution: 'membangun legal awareness sejak awal dan mengintegrasikannya dalam DNA bisnis',
-                    hours: 'berapa lama proses legal review',
-                    output_quality: 'kepastian hukum dan perlindungan risiko',
-                    busy: 'menyusun dokumen tanpa pemahaman konteks',
-                    effective: 'mencegah masalah sebelum terjadi',
-                    activity_trap: 'compliance untuk compliance, tanpa memahami why',
-                    value_creation: 'keamanan operasional dan trust dari stakeholder',
-                    monitoring: 'mengecek checklist dokumen',
-                    enablement: 'membangun kemampuan tim untuk mengidentifikasi risk sendiri',
-                    admin_task: 'mengurus perizinan',
-                    business_alignment: 'memastikan setiap keputusan legal mendukung tujuan bisnis',
-                    external_factor: 'perubahan regulasi',
-                    people_factor: 'legal literacy di seluruh organisasi',
-                    function: 'fungsi legal dan compliance',
-                    business_outcome: 'risk mitigation dan operational continuity',
-                    people_practice: 'cara perusahaan memahami dan menerapkan hukum',
-                    market_condition: 'lingkungan regulasi'
+                    surface: 'complete permits and documentation',
+                    root: 'management understanding that compliance isn't a burden but an operational foundation that allows business to run without disruption',
+                    perception: 'legal compliance is just administration and extra cost',
+                    reality: 'good compliance is operational insurance that prevents far greater losses in the future',
+                    visible: 'certificates and neatly organized documents',
+                    hidden: 'compliance culture at every level, manager understanding of legal consequences, and functioning internal audit system',
+                    symptom: 'fixing documents when inspection comes',
+                    cause: 'lack of compliance system integrated into daily operations',
+                    obvious_cost: 'legal consultant and permit costs',
+                    hidden_cost: 'operational downtime, fines, and reputation when violations occur',
+                    visible_expense: 'legal retainer fees',
+                    invisible_drain: 'management time handling disputes, investigations, and emergency fixes',
+                    surface_issue: 'document completeness',
+                    hidden_impact: 'loss of investor, client, and regulator trust',
+                    system: 'compliance framework integrated with operations',
+                    policy: 'policy on paper',
+                    mechanism: 'regular training, internal audit, and clear escalation paths',
+                    intention: 'meeting regulations',
+                    execution: 'building compliance culture at every organizational level',
+                    foundation: 'deep understanding of labor law',
+                    quantity: 'how many regulations are followed',
+                    capability: 'organizational ability to adapt to regulatory changes',
+                    internal_limitation: 'limited internal legal knowledge',
+                    structure: 'documented legal framework and SOPs',
+                    compliance: 'compliance with Labor Law and implementing regulations',
+                    consequence: 'disputes, fines, and even operational shutdown',
+                    legal_aspect: 'labor, taxation, and data protection',
+                    bureaucracy: 'permit and reporting processes',
+                    protection: 'legal protection for company, employees, and stakeholders',
+                    surface_reason: 'unawareness of regulations',
+                    deeper_issue: 'lack of management commitment to invest in legal infrastructure',
+                    stated_reason: 'regulatory complexity',
+                    actual_reason: 'prioritizing short-term cost cutting over long-term risk management',
+                    recruitment_cost: 'cost of legal officer',
+                    knowledge_loss: 'loss of credibility and business opportunities',
+                    retention_tactic: 'fixing documents when pressured',
+                    root_solution: 'building legal awareness from the start and integrating it into business DNA',
+                    hours: 'how long legal review takes',
+                    output_quality: 'legal certainty and risk protection',
+                    busy: 'preparing documents without understanding context',
+                    effective: 'preventing problems before they happen',
+                    activity_trap: 'compliance for compliance, without understanding why',
+                    value_creation: 'operational security and stakeholder trust',
+                    monitoring: 'checking document checklists',
+                    enablement: 'building team capability to identify risks independently',
+                    admin_task: 'managing permits',
+                    business_alignment: 'ensuring every legal decision supports business goals',
+                    external_factor: 'regulatory changes',
+                    people_factor: 'legal literacy across the organization',
+                    function: 'legal and compliance function',
+                    business_outcome: 'risk mitigation and operational continuity',
+                    people_practice: 'how the company understands and applies law',
+                    market_condition: 'regulatory environment'
                 },
                 performance: {
-                    surface: 'target dan KPI yang tidak tercapai',
-                    root: 'clarity ekspektasi, resources yang memadai, dan kepemimpinan yang mampu mengarahkan tanpa micromanaging',
-                    perception: 'karyawan tidak bekerja cukup keras',
-                    reality: 'sistem kerja, alur approval, dan struktur tim yang justru menghambat produktivitas',
-                    visible: 'output yang tidak sesuai target',
-                    hidden: 'proses kerja yang tidak efisien, distraksi tanpa batas, dan keputusan yang terlalu terpusat',
-                    symptom: 'menambah jam kerja dan tekanan',
-                    cause: 'memperbaiki proses dan memberikan clarity',
-                    obvious_cost: 'waktu yang terbuang',
-                    hidden_cost: 'kelelahan karyawan, kreativitas yang terkikis, dan inovasi yang tidak pernah lahir',
+                    surface: 'unmet targets and KPIs',
+                    root: 'expectation clarity, adequate resources, and leadership capable of directing without micromanaging',
+                    perception: 'employees aren't working hard enough',
+                    reality: 'work systems, approval flows, and team structures that actually hinder productivity',
+                    visible: 'output not matching targets',
+                    hidden: 'inefficient work processes, endless distractions, and overly centralized decision-making',
+                    symptom: 'adding work hours and pressure',
+                    cause: 'fixing processes and providing clarity',
+                    obvious_cost: 'wasted time',
+                    hidden_cost: 'employee exhaustion, eroded creativity, and innovations that never emerge',
                     visible_expense: 'overtime pay',
-                    invisible_drain: 'burnout, turnover, dan opportunity cost dari ide-ide yang tidak pernah dieksekusi',
-                    surface_issue: 'angka produktivitas di laporan',
-                    hidden_impact: 'budaya kerja yang membuat orang hanya survive, bukan thrive',
-                    system: 'performance management yang berkelanjutan, bukan hanya evaluasi akhir tahun',
-                    policy: 'kebijakan KPI di handbook',
-                    mechanism: 'coaching rutin, feedback real-time, dan resource allocation yang responsif',
-                    intention: 'mencapai target bisnis',
-                    execution: 'memastikan setiap orang tahu prioritasnya dan punya wewenang untuk mengeksekusi',
-                    foundation: 'goal clarity dan role definition yang tepat',
-                    quantity: 'berapa banyak task yang diselesaikan',
-                    capability: 'kemampuan organisasi untuk memfokuskan energi pada hal yang benar-benar penting',
-                    internal_limitation: 'struktur organisasi yang membingungkan dan decision-making yang lambat',
-                    structure: 'clear accountability dan decision rights',
-                    compliance: 'memenuhi standar kerja yang ditetapkan',
-                    consequence: 'penurunan kualitas output dan kehilangan kompetitif',
-                    legal_aspect: 'pemenuhan kontrak kerja dan hak karyawan',
-                    bureaucracy: 'proses evaluasi yang panjang',
-                    protection: 'perlindungan bagi karyawan dan perusahaan',
-                    surface_reason: 'karyawan tidak kompeten',
-                    deeper_issue: 'sistem yang tidak memungkinkan kompetensi untuk berkembang dan berkontribusi optimal',
-                    stated_reason: 'target yang tidak realistis',
-                    actual_reason: 'misalignment antara strategi, resources, dan ekspektasi di lapangan',
-                    recruitment_cost: 'biaya training',
-                    knowledge_loss: 'potensi karyawan yang tidak pernah tergali',
-                    retention_tactic: 'memberikan insentif jangka pendek',
-                    root_solution: 'membangun sistem kerja yang memungkinkan orang untuk berkinerja terbaik',
-                    hours: 'berapa lama karyawan bekerja',
-                    output_quality: 'impact yang dihasilkan bagi bisnis',
-                    busy: 'penuh dengan aktivitas',
-                    effective: 'menyelesaikan hal yang benar-benar penting',
-                    activity_trap: 'meeting maraton dan laporan tanpa action',
-                    value_creation: 'solusi nyata bagi masalah klien dan bisnis',
-                    monitoring: 'mengecek jam kerja dan kehadiran',
-                    enablement: 'memberikan clarity, tools, dan autonomy',
-                    admin_task: 'mengurus timesheet dan laporan',
-                    business_alignment: 'memastikan setiap aktivitas mendukung tujuan strategis',
-                    external_factor: 'tekanan pasar',
-                    people_factor: 'kemampuan organisasi untuk memfokuskan energi',
-                    function: 'fungsi performance management',
-                    business_outcome: 'revenue dan customer satisfaction',
-                    people_practice: 'cara perusahaan mengelola kinerja',
-                    market_condition: 'tekanan kompetitif'
+                    invisible_drain: 'burnout, turnover, and opportunity cost of ideas never executed',
+                    surface_issue: 'productivity numbers on reports',
+                    hidden_impact: 'work culture that makes people just survive, not thrive',
+                    system: 'continuous performance management, not just year-end evaluation',
+                    policy: 'KPI policy in handbook',
+                    mechanism: 'regular coaching, real-time feedback, and responsive resource allocation',
+                    intention: 'achieving business targets',
+                    execution: 'ensuring everyone knows their priorities and has authority to execute',
+                    foundation: 'goal clarity and proper role definition',
+                    quantity: 'how many tasks get completed',
+                    capability: 'organizational ability to focus energy on what truly matters',
+                    internal_limitation: 'confusing organizational structure and slow decision-making',
+                    structure: 'clear accountability and decision rights',
+                    compliance: 'meeting established work standards',
+                    consequence: 'quality decline and competitive loss',
+                    legal_aspect: 'fulfilling employment contract and employee rights',
+                    bureaucracy: 'lengthy evaluation process',
+                    protection: 'protection for employees and company',
+                    surface_reason: 'incompetent employees',
+                    deeper_issue: 'systems that don't allow competence to develop and contribute optimally',
+                    stated_reason: 'unrealistic targets',
+                    actual_reason: 'misalignment between strategy, resources, and field expectations',
+                    recruitment_cost: 'training costs',
+                    knowledge_loss: 'employee potential never tapped',
+                    retention_tactic: 'short-term incentives',
+                    root_solution: 'building work systems that enable people to perform at their best',
+                    hours: 'how long employees work',
+                    output_quality: 'impact delivered to the business',
+                    busy: 'full of activities',
+                    effective: 'completing what truly matters',
+                    activity_trap: 'meeting marathons and reports without action',
+                    value_creation: 'real solutions for client and business problems',
+                    monitoring: 'checking work hours and attendance',
+                    enablement: 'providing clarity, tools, and autonomy',
+                    admin_task: 'managing timesheets and reports',
+                    business_alignment: 'ensuring every activity supports strategic goals',
+                    external_factor: 'market pressure',
+                    people_factor: 'organizational ability to focus energy',
+                    function: 'performance management function',
+                    business_outcome: 'revenue and customer satisfaction',
+                    people_practice: 'how the company manages performance',
+                    market_condition: 'competitive pressure'
                 },
                 remote: {
-                    surface: 'karyawan yang sulit dihubungi atau koordinasi yang berantakan',
-                    root: 'sistem komunikasi, ekspektasi availability, dan outcome-based management yang belum dibangun dengan jelas',
-                    perception: 'remote work mengurangi produktivitas',
-                    reality: 'remote work memperlihatkan kelemahan sistem manajemen yang sebelumnya tertutupi oleh kehadiran fisik',
-                    visible: 'kesulitan koordinasi dan komunikasi',
-                    hidden: 'tidak adanya clarity tentang waktu respons, ekspektasi output, dan trust antara manajer dan tim',
-                    symptom: 'memaksa karyawan untuk kembali ke kantor',
-                    cause: 'membangun sistem manajemen jarak jauh yang efektif',
-                    obvious_cost: 'biaya infrastruktur teknologi',
-                    hidden_cost: 'kehilangan karyawan berbakat yang menginginkan fleksibilitas dan biaya rekrutmen pengganti',
-                    visible_expense: 'biaya software kolaborasi',
-                    invisible_drain: 'waktu yang terbuang karena komunikasi tidak efisien dan keputusan yang tertunda',
-                    surface_issue: 'karyawan yang tidak responsif',
-                    hidden_impact: 'budaya micromanagement yang muncul karena tidak adanya trust',
-                    system: 'async communication protocol dan outcome-based evaluation',
-                    policy: 'kebijakan remote work di handbook',
-                    mechanism: 'check-in rutin, dokumentasi keputusan, dan clear escalation path',
-                    intention: 'memberikan fleksibilitas',
-                    execution: 'memastikan produktivitas tidak terkorbankan',
-                    foundation: 'trust dan clarity ekspektasi',
-                    quantity: 'berapa banyak hari WFH',
-                    capability: 'kemampuan manajemen untuk memimpin tanpa mengandalkan presence',
-                    internal_limitation: 'kebiasaan manajemen tradisional yang mengandalkan visual supervision',
-                    structure: 'clear communication protocol dan documentation habit',
-                    compliance: 'memenuhi ketentuan keselamatan kerja dan jam kerja',
-                    consequence: 'penurunan produktivitas dan sengketa ketenagakerjaan',
-                    legal_aspect: 'pemenuhan hak karyawan remote dan keselamatan kerja',
-                    bureaucracy: 'proses approval remote work',
-                    protection: 'perlindungan data dan aset perusahaan',
-                    surface_reason: 'karyawan tidak disiplin',
-                    deeper_issue: 'tidak adanya sistem manajemen yang memungkinkan remote work untuk berhasil',
-                    stated_reason: 'kebutuhan kolaborasi tatap muka',
-                    actual_reason: 'ketidakmampuan manajemen untuk memimpin secara remote',
-                    recruitment_cost: 'biaya infrastruktur remote',
-                    knowledge_loss: 'kehilangan talenta yang memilih perusahaan dengan fleksibilitas lebih baik',
-                    retention_tactic: 'memaksa karyawan ke kantor',
-                    root_solution: 'membangun sistem manajemen yang berbasis outcome, bukan presence',
-                    hours: 'berapa lama karyawan online',
-                    output_quality: 'deliverable yang dihasilkan',
-                    busy: 'selalu responsif di chat',
-                    effective: 'menyelesaikan pekerjaan dengan kualitas tinggi',
-                    activity_trap: 'chat dan meeting tanpa outcome',
-                    value_creation: 'output yang berdampak',
-                    monitoring: 'mengecek status online',
-                    enablement: 'memberikan clarity dan trust',
-                    admin_task: 'mengatur jadwal WFH',
-                    business_alignment: 'memastikan remote work mendukung tujuan bisnis',
-                    external_factor: 'tren kerja global',
-                    people_factor: 'kemampuan organisasi untuk adaptasi',
-                    function: 'fungsi people operations',
-                    business_outcome: 'produktivitas dan retensi',
-                    people_practice: 'cara perusahaan mengelola kerja jarak jauh',
-                    market_condition: 'tren talent market'
+                    surface: 'employees hard to reach or chaotic coordination',
+                    root: 'communication systems, availability expectations, and outcome-based management not yet built clearly',
+                    perception: 'remote work reduces productivity',
+                    reality: 'remote work exposes management system weaknesses previously hidden by physical presence',
+                    visible: 'coordination and communication difficulties',
+                    hidden: 'lack of clarity about response times, output expectations, and trust between managers and teams',
+                    symptom: 'forcing employees back to office',
+                    cause: 'building effective remote management systems',
+                    obvious_cost: 'technology infrastructure costs',
+                    hidden_cost: 'loss of talented employees wanting flexibility and replacement recruitment costs',
+                    visible_expense: 'collaboration software costs',
+                    invisible_drain: 'time wasted from inefficient communication and delayed decisions',
+                    surface_issue: 'unresponsive employees',
+                    hidden_impact: 'micromanagement culture emerging from lack of trust',
+                    system: 'async communication protocol and outcome-based evaluation',
+                    policy: 'remote work policy in handbook',
+                    mechanism: 'regular check-ins, decision documentation, and clear escalation paths',
+                    intention: 'providing flexibility',
+                    execution: 'ensuring productivity isn't sacrificed',
+                    foundation: 'trust and expectation clarity',
+                    quantity: 'how many WFH days',
+                    capability: 'management ability to lead without relying on presence',
+                    internal_limitation: 'traditional management habits depending on visual supervision',
+                    structure: 'clear communication protocol and documentation habit',
+                    compliance: 'meeting work safety and working hours requirements',
+                    consequence: 'productivity decline and labor disputes',
+                    legal_aspect: 'fulfilling remote employee rights and work safety',
+                    bureaucracy: 'remote work approval process',
+                    protection: 'data and asset protection for the company',
+                    surface_reason: 'employee indiscipline',
+                    deeper_issue: 'lack of management systems that allow remote work to succeed',
+                    stated_reason: 'need for face-to-face collaboration',
+                    actual_reason: 'management inability to lead remotely',
+                    recruitment_cost: 'remote infrastructure costs',
+                    knowledge_loss: 'loss of talent choosing companies with better flexibility',
+                    retention_tactic: 'forcing employees to office',
+                    root_solution: 'building outcome-based management systems, not presence-based',
+                    hours: 'how long employees are online',
+                    output_quality: 'deliverables produced',
+                    busy: 'always responsive in chat',
+                    effective: 'completing high-quality work',
+                    activity_trap: 'chat and meetings without outcome',
+                    value_creation: 'impactful output',
+                    monitoring: 'checking online status',
+                    enablement: 'providing clarity and trust',
+                    admin_task: 'arranging WFH schedules',
+                    business_alignment: 'ensuring remote work supports business goals',
+                    external_factor: 'global work trends',
+                    people_factor: 'organizational adaptation capability',
+                    function: 'people operations function',
+                    business_outcome: 'productivity and retention',
+                    people_practice: 'how the company manages remote work',
+                    market_condition: 'talent market trends'
                 },
                 startup: {
-                    surface: 'pertumbuhan tim yang cepat',
-                    root: 'readiness organisasi untuk menyerap pertumbuhan dalam bentuk struktur, proses, dan kepemimpinan',
-                    perception: 'pertumbuhan tim adalah tanda kesuksesan',
-                    reality: 'pertumbuhan tanpa fondasi adalah jalan cepat menuju chaos dan culture degradation',
-                    visible: 'jumlah karyawan yang bertambah',
-                    hidden: 'kompleksitas komunikasi, fragmentasi budaya, dan kehilangan agility yang sebelumnya menjadi kekuatan',
-                    symptom: 'menambah orang untuk menyelesaikan masalah',
-                    cause: 'memperbaiki proses dan struktur sebelum scale',
-                    obvious_cost: 'biaya payroll yang membengkak',
-                    hidden_cost: 'slow decision-making, loss of accountability, dan kultur yang terkikis',
-                    visible_expense: 'biaya rekrutmen dan office space',
-                    invisible_drain: 'waktu founder untuk menangani konflik internal dan proses yang tidak efisien',
-                    surface_issue: 'jumlah headcount',
-                    hidden_impact: 'kehilangan DNA perusahaan dan penurunan kualitas hiring',
-                    system: 'organizational design yang scalable',
-                    policy: 'kebijakan pertumbuhan di rencana bisnis',
-                    mechanism: 'hiring rubric, onboarding terstruktur, dan clear org chart',
-                    intention: 'mempercepat pertumbuhan',
-                    execution: 'memastikan setiap orang yang masuk memperkuat fondasi, bukan membebaninya',
-                    foundation: 'culture, values, dan sistem kerja yang jelas',
-                    quantity: 'berapa banyak karyawan baru',
-                    capability: 'kemampuan organisasi untuk menyerap pertumbuhan tanpa kehilangan dirinya',
-                    internal_limitation: 'founder yang masih terjebak dalam mode operasional',
-                    structure: 'clear hierarchy dan decision-making framework',
-                    compliance: 'memenuhi kewajiban ketenagakerjaan saat scale',
-                    consequence: 'sengketa, turnover massal, dan kehilangan investor trust',
-                    legal_aspect: 'pemenuhan regulasi ketenagakerjaan saat tim besar',
-                    bureaucracy: 'proses hiring dan onboarding',
-                    protection: 'perlindungan hukum dan aset intelektual',
-                    surface_reason: 'kebutuhan bisnis untuk tumbuh',
-                    deeper_issue: 'tidak adanya rencana organisasi yang matang sebelum scale',
+                    surface: 'fast team growth',
+                    root: 'organizational readiness to absorb growth in the form of structure, process, and leadership',
+                    perception: 'team growth is a sign of success',
+                    reality: 'growth without foundation is a fast track to chaos and culture degradation',
+                    visible: 'increasing headcount',
+                    hidden: 'communication complexity, culture fragmentation, and loss of agility that was previously a strength',
+                    symptom: 'adding people to solve problems',
+                    cause: 'fixing processes and structure before scaling',
+                    obvious_cost: 'ballooning payroll costs',
+                    hidden_cost: 'slow decision-making, loss of accountability, and eroding culture',
+                    visible_expense: 'recruitment and office space costs',
+                    invisible_drain: 'founder time handling internal conflicts and inefficient processes',
+                    surface_issue: 'headcount numbers',
+                    hidden_impact: 'loss of company DNA and declining hiring quality',
+                    system: 'scalable organizational design',
+                    policy: 'growth policy in business plan',
+                    mechanism: 'hiring rubric, structured onboarding, and clear org chart',
+                    intention: 'accelerating growth',
+                    execution: 'ensuring every new hire strengthens the foundation, not burdens it',
+                    foundation: 'culture, values, and clear work systems',
+                    quantity: 'how many new employees',
+                    capability: 'organizational ability to absorb growth without losing itself',
+                    internal_limitation: 'founders still trapped in operational mode',
+                    structure: 'clear hierarchy and decision-making framework',
+                    compliance: 'fulfilling labor obligations when scaling',
+                    consequence: 'disputes, mass turnover, and loss of investor trust',
+                    legal_aspect: 'labor regulation compliance at larger team size',
+                    bureaucracy: 'hiring and onboarding processes',
+                    protection: 'legal and intellectual property protection',
+                    surface_reason: 'business need to grow',
+                    deeper_issue: 'lack of mature organizational plan before scaling',
                     stated_reason: 'market demand',
-                    actual_reason: 'FOMO growth tanpa mempersiapkan organisasi',
-                    recruitment_cost: 'biaya hire',
-                    knowledge_loss: 'kehilangan culture dan agility',
-                    retention_tactic: 'menambah benefit',
-                    root_solution: 'membangun organisasi yang siap scale sebelum scale terjadi',
-                    hours: 'berapa lama tim bekerja',
-                    output_quality: 'value delivery yang konsisten',
-                    busy: 'semua orang sibuk',
-                    effective: 'setiap orang menghasilkan impact',
-                    activity_trap: 'growth untuk growth',
+                    actual_reason: 'FOMO growth without preparing the organization',
+                    recruitment_cost: 'hiring costs',
+                    knowledge_loss: 'loss of culture and agility',
+                    retention_tactic: 'adding benefits',
+                    root_solution: 'building an organization ready to scale before scaling happens',
+                    hours: 'how long the team works',
+                    output_quality: 'consistent value delivery',
+                    busy: 'everyone is busy',
+                    effective: 'everyone delivers impact',
+                    activity_trap: 'growth for growth's sake',
                     value_creation: 'sustainable business model',
-                    monitoring: 'mengecek headcount growth',
-                    enablement: 'membangun fondasi yang kuat',
-                    admin_task: 'mengurus hiring',
-                    business_alignment: 'memastikan growth mendukung sustainability',
-                    external_factor: 'tekanan investor',
-                    people_factor: 'kemampuan untuk mempertahankan culture',
-                    function: 'fungsi people and organization',
+                    monitoring: 'checking headcount growth',
+                    enablement: 'building a strong foundation',
+                    admin_task: 'managing hiring',
+                    business_alignment: 'ensuring growth supports sustainability',
+                    external_factor: 'investor pressure',
+                    people_factor: 'ability to maintain culture',
+                    function: 'people and organization function',
                     business_outcome: 'sustainable growth',
-                    people_practice: 'cara perusahaan scale dengan tetap menjaga kualitas',
-                    market_condition: 'tekanan pasar'
+                    people_practice: 'how the company scales while maintaining quality',
+                    market_condition: 'market pressure'
                 },
                 general: {
-                    surface: 'masalah yang terlihat di permukaan',
-                    root: 'sistem, struktur, dan fondasi yang belum diperbaiki di level fundamental',
-                    perception: 'masalah ini bisa diselesaikan dengan solusi cepat',
-                    reality: 'masalah ini adalah gejala dari fondasi yang perlu diperkuat',
-                    visible: 'output atau hasil yang tidak sesuai harapan',
-                    hidden: 'proses, kebiasaan, dan keputusan-keputusan kecil yang terakumulasi menjadi masalah besar',
-                    symptom: 'mencari solusi instan',
-                    cause: 'memahami dan memperbaiki sistem yang mendasari',
-                    obvious_cost: 'biaya yang terlihat langsung',
-                    hidden_cost: 'biaya opportunity, reputasi, dan energi manajemen yang terus terkuras',
-                    visible_expense: 'biaya operasional',
-                    invisible_drain: 'waktu, energi, dan potensi yang tidak pernah terealisasi',
-                    surface_issue: 'gejala yang terlihat',
-                    hidden_impact: 'dampak jangka panjang pada budaya, retensi, dan kemampuan bersaing',
-                    system: 'sistem yang terstruktur dan terukur',
-                    policy: 'kebijakan yang tertulis',
-                    mechanism: 'proses, check, dan balance yang berjalan',
-                    intention: 'mencapai tujuan bisnis',
-                    execution: 'menerjemahkan tujuan menjadi tindakan yang konsisten',
-                    foundation: 'pemahaman bisnis, people, dan sistem yang saling terkait',
-                    quantity: 'berapa banyak output',
-                    capability: 'kemampuan organisasi untuk beradaptasi dan berkembang',
-                    internal_limitation: 'keterbatasan pemahaman dan kapasitas',
-                    structure: 'kerangka kerja yang jelas',
-                    compliance: 'memenuhi standar dan regulasi',
-                    consequence: 'risiko operasional dan hukum',
-                    legal_aspect: 'pemenuhan kewajiban hukum',
-                    bureaucracy: 'proses administrasi',
-                    protection: 'perlindungan bagi semua pihak',
-                    surface_reason: 'alasan yang terlihat',
-                    deeper_issue: 'fondasi yang belum kuat',
-                    stated_reason: 'alasan yang dikemukakan',
-                    actual_reason: 'akar masalah yang sebenarnya',
-                    recruitment_cost: 'biaya langsung',
-                    knowledge_loss: 'kehilangan potensi dan opportunity',
-                    retention_tactic: 'solusi jangka pendek',
-                    root_solution: 'perbaikan sistem dan fondasi',
-                    hours: 'berapa lama waktu yang dihabiskan',
-                    output_quality: 'dampak dan value yang dihasilkan',
-                    busy: 'aktivitas yang padat',
-                    effective: 'hasil yang berarti',
-                    activity_trap: 'sibuk tanpa arah',
-                    value_creation: 'kontribusi nyata',
-                    monitoring: 'pengawasan tanpa pemahaman',
-                    enablement: 'memberikan alat dan kepercayaan',
-                    admin_task: 'tugas administratif',
-                    business_alignment: 'keselarasan dengan tujuan bisnis',
-                    external_factor: 'kondisi luar',
-                    people_factor: 'kemampuan manusia dalam organisasi',
-                    function: 'fungsi people management',
-                    business_outcome: 'hasil bisnis yang berkelanjutan',
-                    people_practice: 'cara mengelola orang',
-                    market_condition: 'kondisi pasar'
+                    surface: 'the visible problem',
+                    root: 'systems, structures, and foundations that haven't been fixed at the fundamental level',
+                    perception: 'this problem can be solved with a quick fix',
+                    reality: 'this problem is a symptom of foundations that need strengthening',
+                    visible: 'output or results not meeting expectations',
+                    hidden: 'processes, habits, and small decisions that accumulate into big problems',
+                    symptom: 'looking for instant solutions',
+                    cause: 'understanding and fixing the underlying system',
+                    obvious_cost: 'directly visible costs',
+                    hidden_cost: 'opportunity cost, reputation, and management energy continuously drained',
+                    visible_expense: 'operational costs',
+                    invisible_drain: 'time, energy, and potential never realized',
+                    surface_issue: 'visible symptoms',
+                    hidden_impact: 'long-term impact on culture, retention, and competitive ability',
+                    system: 'structured and measurable system',
+                    policy: 'written policy',
+                    mechanism: 'processes, checks, and balances that run',
+                    intention: 'achieving business goals',
+                    execution: 'translating goals into consistent actions',
+                    foundation: 'understanding of business, people, and interconnected systems',
+                    quantity: 'how much output',
+                    capability: 'organizational ability to adapt and grow',
+                    internal_limitation: 'limited understanding and capacity',
+                    structure: 'clear framework',
+                    compliance: 'meeting standards and regulations',
+                    consequence: 'operational and legal risk',
+                    legal_aspect: 'fulfilling legal obligations',
+                    bureaucracy: 'administrative processes',
+                    protection: 'protection for all parties',
+                    surface_reason: 'visible reasons',
+                    deeper_issue: 'weak foundations',
+                    stated_reason: 'stated reasons',
+                    actual_reason: 'actual root cause',
+                    recruitment_cost: 'direct costs',
+                    knowledge_loss: 'loss of potential and opportunity',
+                    retention_tactic: 'short-term solutions',
+                    root_solution: 'system and foundation improvement',
+                    hours: 'how long time is spent',
+                    output_quality: 'impact and value produced',
+                    busy: 'packed with activities',
+                    effective: 'meaningful results',
+                    activity_trap: 'busy without direction',
+                    value_creation: 'real contribution',
+                    monitoring: 'supervision without understanding',
+                    enablement: 'providing tools and trust',
+                    admin_task: 'administrative tasks',
+                    business_alignment: 'alignment with business goals',
+                    external_factor: 'external conditions',
+                    people_factor: 'human capability in the organization',
+                    function: 'people management function',
+                    business_outcome: 'sustainable business results',
+                    people_practice: 'how to manage people',
+                    market_condition: 'market conditions'
                 }
             };
             return contexts[topic] || contexts.general;
@@ -1120,56 +1169,50 @@ Diskusi tentang UU Cipta Kerja dan PHK..."
             const topic = detectTopic(input);
             const ctx = getTopicContext(topic);
 
-            // Select pattern
             const anglePatterns = patterns[angle] || patterns['root-cause'];
             const pattern = anglePatterns[Math.floor(Math.random() * anglePatterns.length)];
 
-            // Fill pattern with context
             let filled = pattern;
             for (const [key, value] of Object.entries(ctx)) {
                 filled = filled.replace(new RegExp('{' + key + '}', 'g'), value);
             }
 
-            // Build opening based on input
             const openings = [
-                `Setelah membaca ini, satu hal yang langsung terpikir: ${filled}`,
-                `Poin menarik. Tapi yang perlu diperhatikan: ${filled}`,
-                `Setuju dengan banyak hal di sini. Tapi ada satu sudut yang perlu ditambahkan: ${filled}`,
-                `Ini perspektif yang bagus. Kalau dari sisi HR & Legal, ${filled}`,
-                `Banyak yang fokus pada aspek yang terlihat. Padahal, ${filled}`
+                `After reading this, one thing comes to mind: ${filled}`,
+                `Interesting point. But here's what needs attention: ${filled}`,
+                `I agree with much of this. But there's an angle worth adding: ${filled}`,
+                `This is a good perspective. From an HR & Legal standpoint, ${filled}`,
+                `Many focus on what's visible. Yet, ${filled}`
             ];
             const opening = openings[Math.floor(Math.random() * openings.length)];
 
-            // Build body paragraphs based on length
             let body = '';
 
             if (length === 'short') {
                 const bodies = [
-                    `\n\nBanyak bisnis merasa ${ctx.perception}, padahal yang sebenarnya terjadi adalah ${ctx.reality}.\n\n${ctx.obvious_cost} memang terlihat, tapi ${ctx.hidden_cost} biasanya jauh lebih merusak dalam jangka panjang.`,
-                    `\n\nYang paling mahal bukan ${ctx.obvious_cost}, tetapi ${ctx.hidden_cost} yang terus membesar tanpa disadari.\n\nBanyak owner fokus pada ${ctx.visible_expense}, padahal ${ctx.invisible_drain} justru menggerus margin lebih dalam.`,
-                    `\n\nHR yang berantakan bukan hanya soal ${ctx.surface_issue}, tetapi juga ${ctx.hidden_impact} yang terus berlanjut.\n\n${ctx.system} adalah investasi, bukan biaya.`
+                    `\n\nMany businesses think ${ctx.perception}, but what's actually happening is ${ctx.reality}.\n\n${ctx.obvious_cost} is visible, but ${ctx.hidden_cost} usually does far more damage long-term.`,
+                    `\n\nThe most expensive thing isn't ${ctx.obvious_cost}. It's ${ctx.hidden_cost} that keeps growing unnoticed.\n\nMany owners focus on ${ctx.visible_expense}, while ${ctx.invisible_drain} quietly erodes margins.`,
+                    `\n\nMessy HR isn't just about ${ctx.surface_issue}. It's also about ${ctx.hidden_impact} that keeps compounding.\n\n${ctx.system} is an investment, not a cost.`
                 ];
                 body = bodies[Math.floor(Math.random() * bodies.length)];
             } else if (length === 'medium') {
                 const bodies = [
-                    `\n\nBanyak bisnis merasa ${ctx.perception}, padahal yang sebenarnya terjadi adalah ${ctx.reality}.\n\nYang terlihat di permukaan adalah ${ctx.visible}. Tapi yang sebenarnya memicu ini adalah ${ctx.hidden}.\n\n${ctx.obvious_cost} memang terlihat, tapi ${ctx.hidden_cost} biasanya jauh lebih merusak dalam jangka panjang. Banyak owner fokus pada ${ctx.visible_expense}, padahal ${ctx.invisible_drain} justru menggerus margin lebih dalam.`,
-                    `\n\nYang paling mahal bukan ${ctx.obvious_cost}, tetapi ${ctx.hidden_cost} yang terus membesar tanpa disadari.\n\nKita terlalu sibuk memperbaiki ${ctx.symptom}, sementara ${ctx.cause} tidak pernah disentuh.\n\n${ctx.system} bukan sekadar policy di atas kertas. Itu harus menjadi ${ctx.mechanism} yang berjalan setiap hari.`,
-                    `\n\nHR yang berantakan bukan hanya soal ${ctx.surface_issue}, tetapi juga ${ctx.hidden_impact} yang terus berlanjut.\n\nBanyak perusahaan punya ${ctx.policy}, tapi tidak punya ${ctx.mechanism} untuk menjalankannya. Gap antara ${ctx.intention} dan ${ctx.execution} adalah tempat di mana masalah-masalah besar lahir.\n\n${ctx.foundation} adalah fondasi yang tidak bisa ditawar.`
+                    `\n\nMany businesses think ${ctx.perception}, but what's actually happening is ${ctx.reality}.\n\nWhat you see on the surface is ${ctx.visible}. But what's really driving this is ${ctx.hidden}.\n\n${ctx.obvious_cost} is visible, but ${ctx.hidden_cost} usually does far more damage long-term. Many owners focus on ${ctx.visible_expense}, while ${ctx.invisible_drain} quietly erodes margins.`,
+                    `\n\nThe most expensive thing isn't ${ctx.obvious_cost}. It's ${ctx.hidden_cost} that keeps growing unnoticed.\n\nWe spend too much time fixing ${ctx.symptom}, while ${ctx.cause} remains untouched.\n\n${ctx.system} isn't just policy on paper. It needs to become ${ctx.mechanism} that runs every day.`,
+                    `\n\nMessy HR isn't just about ${ctx.surface_issue}. It's also about ${ctx.hidden_impact} that keeps compounding.\n\nMany companies have ${ctx.policy} on paper, but lack ${ctx.mechanism} to run it. The gap between ${ctx.intention} and ${ctx.execution} is where big problems are born.\n\n${ctx.foundation} is a non-negotiable foundation.`
                 ];
                 body = bodies[Math.floor(Math.random() * bodies.length)];
             } else {
                 const bodies = [
-                    `\n\nBanyak bisnis merasa ${ctx.perception}, padahal yang sebenarnya terjadi adalah ${ctx.reality}.\n\nYang terlihat di permukaan adalah ${ctx.visible}. Tapi yang sebenarnya memicu ini adalah ${ctx.hidden}.\n\nKita terlalu sibuk memperbaiki ${ctx.symptom}, sementara ${ctx.cause} tidak pernah disentuh.\n\nYang paling mahal bukan ${ctx.obvious_cost}, tetapi ${ctx.hidden_cost} yang terus membesar tanpa disadari. Banyak owner fokus pada ${ctx.visible_expense}, padahal ${ctx.invisible_drain} justru menggerus margin lebih dalam.\n\n${ctx.system} bukan sekadar policy di atas kertas. Itu harus menjadi ${ctx.mechanism} yang berjalan setiap hari. Gap antara ${ctx.intention} dan ${ctx.execution} adalah tempat di mana masalah-masalah besar lahir.`,
-                    `\n\nYang paling mahal bukan ${ctx.obvious_cost}, tetapi ${ctx.hidden_cost} yang terus membesar tanpa disadari.\n\nBanyak bisnis merasa ${ctx.perception}, padahal yang sebenarnya terjadi adalah ${ctx.reality}. Yang terlihat di permukaan adalah ${ctx.visible}. Tapi yang sebenarnya memicu ini adalah ${ctx.hidden}.\n\nKita terlalu sibuk memperbaiki ${ctx.symptom}, sementara ${ctx.cause} tidak pernah disentuh.\n\nBanyak perusahaan punya ${ctx.policy}, tapi tidak punya ${ctx.mechanism} untuk menjalankannya.\n\n${ctx.foundation} adalah fondasi yang tidak bisa ditawar. Bisnis yang tumbuh tanpa ${ctx.foundation} akan menghadapi bottleneck yang lebih mahal di kemudian hari.`
+                    `\n\nMany businesses think ${ctx.perception}, but what's actually happening is ${ctx.reality}.\n\nWhat you see on the surface is ${ctx.visible}. But what's really driving this is ${ctx.hidden}.\n\nWe spend too much time fixing ${ctx.symptom}, while ${ctx.cause} remains untouched.\n\nThe most expensive thing isn't ${ctx.obvious_cost}. It's ${ctx.hidden_cost} that keeps growing unnoticed. Many owners focus on ${ctx.visible_expense}, while ${ctx.invisible_drain} quietly erodes margins.\n\n${ctx.system} isn't just policy on paper. It needs to become ${ctx.mechanism} that runs every day. The gap between ${ctx.intention} and ${ctx.execution} is where big problems are born.`,
+                    `\n\nThe most expensive thing isn't ${ctx.obvious_cost}. It's ${ctx.hidden_cost} that keeps growing unnoticed.\n\nMany businesses think ${ctx.perception}, but what's actually happening is ${ctx.reality}. What you see on the surface is ${ctx.visible}. But what's really driving this is ${ctx.hidden}.\n\nWe spend too much time fixing ${ctx.symptom}, while ${ctx.cause} remains untouched.\n\nMany companies have ${ctx.policy} on paper, but lack ${ctx.mechanism} to run it.\n\n${ctx.foundation} is a non-negotiable foundation. A business that grows without ${ctx.foundation} will hit a bottleneck that's far more expensive later.`
                 ];
                 body = bodies[Math.floor(Math.random() * bodies.length)];
             }
 
-            // Select closing
             const angleClosings = closings[angle] || closings['root-cause'];
             const closing = angleClosings[Math.floor(Math.random() * angleClosings.length)];
 
-            // Combine
             return opening + body + `\n\n` + closing;
         }
     </script>
