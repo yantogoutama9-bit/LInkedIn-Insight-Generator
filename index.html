@@ -3,1224 +3,657 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LinkedIn Insight Generator — Yanto Goutama, CHCM, CPLC</title>
+    <title>LinkedIn Comment Generator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        linkedin: {
+                            blue: '#0a66c2',
+                            dark: '#004182',
+                            light: '#e8f3ff',
+                            hover: '#004182',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        :root {
-            --primary: #1a1a2e;
-            --secondary: #16213e;
-            --accent: #0f3460;
-            --highlight: #e94560;
-            --text: #2d2d2d;
-            --text-light: #5a5a5a;
-            --bg: #f8f9fa;
-            --card: #ffffff;
-            --border: #e1e4e8;
-            --success: #28a745;
+        .gradient-bg {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            min-height: 100vh;
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
-
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 40px 20px;
+        .drop-zone {
+            border: 2px dashed #cbd5e1;
+            transition: all 0.3s ease;
         }
-
-        header {
-            text-align: center;
-            margin-bottom: 40px;
-            padding-bottom: 30px;
-            border-bottom: 2px solid var(--border);
+        .drop-zone:hover, .drop-zone.dragover {
+            border-color: #0a66c2;
+            background-color: #f0f7ff;
         }
-
-        header h1 {
-            font-size: 1.8rem;
-            font-weight: 700;
-            color: var(--primary);
-            margin-bottom: 8px;
+        .drop-zone.has-file {
+            border-color: #10b981;
+            background-color: #ecfdf5;
         }
-
-        header p {
-            color: var(--text-light);
-            font-size: 0.95rem;
-            font-weight: 400;
+        .typing-cursor::after {
+            content: '|';
+            animation: blink 1s infinite;
         }
-
-        .card {
-            background: var(--card);
-            border-radius: 12px;
-            padding: 28px;
-            margin-bottom: 24px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-            border: 1px solid var(--border);
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
         }
-
-        .card-title {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
         }
-
-        .card-title .icon {
-            width: 24px;
-            height: 24px;
-            background: var(--accent);
-            color: white;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.85rem;
-        }
-
-        label {
-            display: block;
-            font-size: 0.875rem;
-            font-weight: 500;
-            color: var(--text);
-            margin-bottom: 6px;
-        }
-
-        textarea, select {
-            width: 100%;
-            padding: 12px 14px;
-            border: 1.5px solid var(--border);
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 0.9rem;
-            color: var(--text);
-            background: var(--card);
-            transition: border-color 0.2s, box-shadow 0.2s;
-            resize: vertical;
-        }
-
-        textarea:focus, select:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px rgba(15, 52, 96, 0.08);
-        }
-
-        textarea {
-            min-height: 140px;
-            line-height: 1.6;
-        }
-
-        .hint {
-            font-size: 0.8rem;
-            color: var(--text-light);
-            margin-top: 6px;
-        }
-
-        .options-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 12px;
-            margin-top: 12px;
-        }
-
-        .option-btn {
-            padding: 10px 14px;
-            border: 1.5px solid var(--border);
-            border-radius: 8px;
-            background: var(--card);
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.85rem;
-            font-weight: 500;
-            color: var(--text);
-            transition: all 0.2s;
-            text-align: left;
-        }
-
-        .option-btn:hover {
-            border-color: var(--accent);
-            background: rgba(15, 52, 96, 0.04);
-        }
-
-        .option-btn.active {
-            border-color: var(--accent);
-            background: rgba(15, 52, 96, 0.08);
-            color: var(--accent);
-        }
-
-        .generate-btn {
-            width: 100%;
-            padding: 14px 24px;
-            background: var(--primary);
-            color: white;
-            border: none;
-            border-radius: 8px;
-            font-family: inherit;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.2s;
-            margin-top: 8px;
-        }
-
-        .generate-btn:hover {
-            background: var(--secondary);
-            transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(26, 26, 46, 0.2);
-        }
-
-        .generate-btn:active {
-            transform: translateY(0);
-        }
-
-        .generate-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .output-section {
-            display: none;
-        }
-
-        .output-section.visible {
-            display: block;
-            animation: fadeIn 0.4s ease;
-        }
-
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
-
-        .output-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 16px;
-        }
-
-        .output-header h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            color: var(--primary);
-        }
-
-        .output-actions {
-            display: flex;
-            gap: 8px;
-        }
-
-        .action-btn {
-            padding: 6px 14px;
-            border: 1.5px solid var(--border);
-            border-radius: 6px;
-            background: var(--card);
-            cursor: pointer;
-            font-family: inherit;
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: var(--text);
-            transition: all 0.2s;
-        }
-
-        .action-btn:hover {
-            border-color: var(--accent);
-            color: var(--accent);
-        }
-
-        .action-btn.copied {
-            background: var(--success);
-            color: white;
-            border-color: var(--success);
-        }
-
-        .output-content {
-            background: #fafbfc;
-            border: 1.5px solid var(--border);
-            border-radius: 8px;
-            padding: 20px;
-            font-size: 0.9rem;
-            line-height: 1.7;
-            color: var(--text);
-            white-space: pre-wrap;
-            word-wrap: break-word;
-        }
-
-        .output-meta {
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid var(--border);
-            display: flex;
-            gap: 16px;
-            font-size: 0.8rem;
-            color: var(--text-light);
-        }
-
-        .output-meta span {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .template-section {
-            margin-top: 20px;
-        }
-
-        .template-list {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-top: 12px;
-        }
-
-        .template-item {
-            padding: 12px 14px;
-            background: #f8f9fa;
-            border: 1.5px solid var(--border);
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 0.85rem;
-            color: var(--text);
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .template-item:hover {
-            border-color: var(--accent);
-            background: rgba(15, 52, 96, 0.04);
-        }
-
-        .template-item .tag {
-            font-size: 0.75rem;
-            padding: 2px 8px;
-            background: var(--accent);
-            color: white;
-            border-radius: 4px;
-            font-weight: 500;
-        }
-
-        .char-count {
-            text-align: right;
-            font-size: 0.8rem;
-            color: var(--text-light);
-            margin-top: 4px;
-        }
-
-        .loading {
-            display: none;
-            text-align: center;
-            padding: 40px;
-        }
-
-        .loading.visible {
-            display: block;
-        }
-
         .spinner {
-            width: 40px;
-            height: 40px;
-            border: 3px solid var(--border);
-            border-top-color: var(--accent);
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #0a66c2;
             border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin: 0 auto 16px;
+            width: 24px;
+            height: 24px;
+            animation: spin 1s linear infinite;
         }
-
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
-
-        .tips-box {
-            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-            border-left: 4px solid var(--accent);
-            padding: 16px 20px;
-            border-radius: 0 8px 8px 0;
-            margin-bottom: 24px;
-        }
-
-        .tips-box h4 {
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 8px;
-        }
-
-        .tips-box ul {
-            margin: 0;
-            padding-left: 18px;
-            font-size: 0.85rem;
-            color: var(--text-light);
-        }
-
-        .tips-box li {
-            margin-bottom: 4px;
-        }
-
-        .profile-bar {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-            padding: 16px 20px;
-            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
-            color: white;
-            border-radius: 12px;
-            margin-bottom: 24px;
-        }
-
-        .profile-avatar {
-            width: 48px;
-            height: 48px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1.1rem;
-            flex-shrink: 0;
-        }
-
-        .profile-info h3 {
-            font-size: 1rem;
-            font-weight: 600;
-            margin-bottom: 2px;
-        }
-
-        .profile-info p {
-            font-size: 0.8rem;
-            opacity: 0.85;
-            line-height: 1.4;
-        }
-
-        @media (max-width: 600px) {
-            .container { padding: 20px 16px; }
-            header h1 { font-size: 1.4rem; }
-            .options-grid { grid-template-columns: 1fr; }
-            .profile-bar { flex-direction: column; text-align: center; }
+        .comment-card {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            border-left: 4px solid #0a66c2;
         }
     </style>
 <base target="_blank">
 </head>
-<body>
-    <div class="container">
-        <header>
-            <h1>LinkedIn Insight Generator</h1>
-            <p>Generate English Comments from Yanto Goutama's POV — HR & Legal Consultant, System Builder</p>
-        </header>
-
-        <div class="profile-bar">
-            <div class="profile-avatar">YG</div>
-            <div class="profile-info">
-                <h3>Yanto Goutama, CHCM, CPLC</h3>
-                <p>Helping SMEs & Companies Scale Without HR & Legal Chaos | System Builder | ISLA Framework | DKI Jakarta</p>
-            </div>
-        </div>
-
-        <div class="tips-box">
-            <h4>How to Use:</h4>
-            <ul>
-                <li>Paste the LinkedIn post content or topic you want to comment on below</li>
-                <li>Select the insight angle that best matches the topic</li>
-                <li>Click "Generate Comment" to get a professional English comment</li>
-                <li>Edit the result if needed before posting to LinkedIn</li>
-            </ul>
-        </div>
-
-        <div class="card">
-            <div class="card-title">
-                <div class="icon">1</div>
-                LinkedIn Post Content
-            </div>
-            <label for="inputContent">Paste the post content or topic you want to comment on:</label>
-            <textarea
-                id="inputContent"
-                placeholder="Example:
-Post about mass resignations in startups...
-Or:
-Discussion about labor law compliance and employee rights..."
-                oninput="updateCharCount()"
-            ></textarea>
-            <div class="char-count" id="charCount">0 characters</div>
-        </div>
-
-        <div class="card">
-            <div class="card-title">
-                <div class="icon">2</div>
-                Select Insight Angle
-            </div>
-            <label>Choose the most relevant perspective:</label>
-            <div class="options-grid" id="angleOptions">
-                <button class="option-btn active" data-angle="root-cause">Root Cause Analysis</button>
-                <button class="option-btn" data-angle="hidden-cost">Hidden Cost & Risk</button>
-                <button class="option-btn" data-angle="system-gap">System & Process Gap</button>
-                <button class="option-btn" data-angle="scalability">Scalability & Growth</button>
-                <button class="option-btn" data-angle="legal-compliance">Legal Compliance</button>
-                <button class="option-btn" data-angle="turnover">Turnover & Retention</button>
-                <button class="option-btn" data-angle="productivity">Productivity & Performance</button>
-                <button class="option-btn" data-angle="strategic-hr">Strategic HR Alignment</button>
-            </div>
-        </div>
-
-        <div class="card">
-            <div class="card-title">
-                <div class="icon">3</div>
-                Comment Length
-            </div>
-            <label>Select comment length:</label>
-            <div class="options-grid" id="lengthOptions">
-                <button class="option-btn active" data-length="short">Short & Sharp (2-3 paragraphs)</button>
-                <button class="option-btn" data-length="medium">Medium & Substantial (3-5 paragraphs)</button>
-                <button class="option-btn" data-length="long">In-depth & Comprehensive (5+ paragraphs)</button>
-            </div>
-        </div>
-
-        <button class="generate-btn" id="generateBtn" onclick="generateInsight()">
-            Generate Comment
-        </button>
-
-        <div class="loading" id="loadingSection">
-            <div class="spinner"></div>
-            <p style="color: var(--text-light); font-size: 0.9rem;">Crafting your insight...</p>
-        </div>
-
-        <div class="output-section" id="outputSection">
-            <div class="card">
-                <div class="output-header">
-                    <h3>Generated Comment</h3>
-                    <div class="output-actions">
-                        <button class="action-btn" onclick="copyOutput()" id="copyBtn">Copy</button>
-                        <button class="action-btn" onclick="regenerate()">Regenerate</button>
-                    </div>
+<body class="bg-slate-50 min-h-screen font-sans">
+    <!-- Header -->
+    <header class="gradient-bg text-white py-8 shadow-lg">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="flex items-center gap-4 mb-2">
+                <div class="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center backdrop-blur-sm">
+                    <i class="fab fa-linkedin text-2xl"></i>
                 </div>
-                <div class="output-content" id="outputContent"></div>
-                <div class="output-meta">
-                    <span id="metaAngle">Angle: Root Cause</span>
-                    <span id="metaLength">Length: Short</span>
-                    <span id="metaWords">~0 words</span>
-                </div>
-            </div>
-
-            <div class="card template-section">
-                <div class="card-title">
-                    <div class="icon">&#128161;</div>
-                    Quick Templates (Click to Use)
-                </div>
-                <div class="template-list">
-                    <div class="template-item" onclick="useTemplate('phk')">
-                        <span>Topic: Layoffs, Employee Termination</span>
-                        <span class="tag">PHK</span>
-                    </div>
-                    <div class="template-item" onclick="useTemplate('turnover')">
-                        <span>Topic: High Turnover, Employee Resignation</span>
-                        <span class="tag">Turnover</span>
-                    </div>
-                    <div class="template-item" onclick="useTemplate('compliance')">
-                        <span>Topic: Legal Compliance, Labor Regulations</span>
-                        <span class="tag">Legal</span>
-                    </div>
-                    <div class="template-item" onclick="useTemplate('performance')">
-                        <span>Topic: Productivity, Performance Management</span>
-                        <span class="tag">Productivity</span>
-                    </div>
-                    <div class="template-item" onclick="useTemplate('remote')">
-                        <span>Topic: Remote Work, Hybrid, WFH</span>
-                        <span class="tag">Remote</span>
-                    </div>
-                    <div class="template-item" onclick="useTemplate('startup')">
-                        <span>Topic: Startup, Scale-up, Business Growth</span>
-                        <span class="tag">Startup</span>
-                    </div>
+                <div>
+                    <h1 class="text-3xl font-bold">LinkedIn Comment Generator</h1>
+                    <p class="text-blue-100 text-sm">Generate authentic comments from your professional POV</p>
                 </div>
             </div>
         </div>
-    </div>
+    </header>
+
+    <main class="max-w-4xl mx-auto px-6 py-8">
+        <!-- Intro Card -->
+        <div class="glass-card rounded-2xl p-6 mb-8 shadow-sm">
+            <div class="flex items-start gap-4">
+                <div class="w-10 h-10 bg-linkedin-light rounded-full flex items-center justify-center flex-shrink-0 mt-1">
+                    <i class="fas fa-lightbulb text-linkedin-blue"></i>
+                </div>
+                <div>
+                    <h2 class="text-lg font-semibold text-slate-800 mb-2">How it works</h2>
+                    <p class="text-slate-600 leading-relaxed">
+                        Upload the LinkedIn post you want to comment on and your LinkedIn Profile PDF. 
+                        I'll analyze your professional voice, experience, and style to generate a comment 
+                        that sounds authentically like you.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Upload Section -->
+        <div class="grid md:grid-cols-2 gap-6 mb-8">
+            <!-- Post Input -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center">
+                        <i class="fas fa-file-alt text-orange-600 text-sm"></i>
+                    </div>
+                    <h3 class="font-semibold text-slate-800">1. LinkedIn Post</h3>
+                    <span class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full font-medium">Required</span>
+                </div>
+
+                <!-- Tabs -->
+                <div class="flex gap-2 mb-4 bg-slate-100 p-1 rounded-lg">
+                    <button onclick="switchTab('text')" id="tab-text" class="flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all bg-white text-slate-800 shadow-sm">
+                        <i class="fas fa-keyboard mr-1"></i> Text
+                    </button>
+                    <button onclick="switchTab('screenshot')" id="tab-screenshot" class="flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all text-slate-500 hover:text-slate-700">
+                        <i class="fas fa-image mr-1"></i> Screenshot
+                    </button>
+                    <button onclick="switchTab('link')" id="tab-link" class="flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all text-slate-500 hover:text-slate-700">
+                        <i class="fas fa-link mr-1"></i> Link
+                    </button>
+                </div>
+
+                <!-- Text Input -->
+                <div id="input-text" class="block">
+                    <textarea 
+                        id="postText" 
+                        placeholder="Paste the LinkedIn post text here..."
+                        class="w-full h-40 p-4 border border-slate-200 rounded-xl resize-none focus:outline-none focus:ring-2 focus:ring-linkedin-blue focus:border-transparent text-sm leading-relaxed"
+                    ></textarea>
+                    <div class="flex justify-between items-center mt-2">
+                        <span class="text-xs text-slate-400" id="charCount">0 characters</span>
+                        <button onclick="clearPost()" class="text-xs text-slate-400 hover:text-red-500 transition-colors">
+                            <i class="fas fa-trash-alt mr-1"></i>Clear
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Screenshot Input -->
+                <div id="input-screenshot" class="hidden">
+                    <div 
+                        id="dropZoneScreenshot"
+                        class="drop-zone rounded-xl p-8 text-center cursor-pointer"
+                        onclick="document.getElementById('screenshotInput').click()"
+                        ondrop="handleDrop(event, 'screenshot')"
+                        ondragover="handleDragOver(event)"
+                        ondragleave="handleDragLeave(event)"
+                    >
+                        <input type="file" id="screenshotInput" accept="image/*" class="hidden" onchange="handleFileSelect(event, 'screenshot')">
+                        <div id="screenshotPreview" class="hidden mb-4">
+                            <img id="screenshotImg" class="max-h-48 mx-auto rounded-lg shadow-md" alt="Preview">
+                        </div>
+                        <div id="screenshotPlaceholder">
+                            <i class="fas fa-cloud-upload-alt text-4xl text-slate-300 mb-3"></i>
+                            <p class="text-sm text-slate-500 font-medium">Drop screenshot here or click to browse</p>
+                            <p class="text-xs text-slate-400 mt-1">PNG, JPG up to 10MB</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Link Input -->
+                <div id="input-link" class="hidden">
+                    <div class="relative">
+                        <i class="fab fa-linkedin absolute left-4 top-1/2 -translate-y-1/2 text-linkedin-blue"></i>
+                        <input 
+                            type="url" 
+                            id="postLink" 
+                            placeholder="https://www.linkedin.com/posts/..."
+                            class="w-full pl-12 pr-4 py-3 border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-linkedin-blue focus:border-transparent text-sm"
+                        >
+                    </div>
+                    <p class="text-xs text-slate-400 mt-2 ml-1">
+                        <i class="fas fa-info-circle mr-1"></i>
+                        Paste the full LinkedIn post URL
+                    </p>
+                </div>
+            </div>
+
+            <!-- Profile Input -->
+            <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200">
+                <div class="flex items-center gap-3 mb-4">
+                    <div class="w-8 h-8 bg-linkedin-light rounded-lg flex items-center justify-center">
+                        <i class="fas fa-user-tie text-linkedin-blue text-sm"></i>
+                    </div>
+                    <h3 class="font-semibold text-slate-800">2. Your Profile PDF</h3>
+                    <span class="text-xs bg-red-100 text-red-600 px-2 py-1 rounded-full font-medium">Required</span>
+                </div>
+
+                <div 
+                    id="dropZoneProfile"
+                    class="drop-zone rounded-xl p-8 text-center cursor-pointer mb-4"
+                    onclick="document.getElementById('profileInput').click()"
+                    ondrop="handleDrop(event, 'profile')"
+                    ondragover="handleDragOver(event)"
+                    ondragleave="handleDragLeave(event)"
+                >
+                    <input type="file" id="profileInput" accept=".pdf" class="hidden" onchange="handleFileSelect(event, 'profile')">
+                    <div id="profileInfo" class="hidden mb-2">
+                        <div class="flex items-center justify-center gap-2 text-green-600">
+                            <i class="fas fa-check-circle text-xl"></i>
+                            <span class="font-medium text-sm" id="profileFileName"></span>
+                        </div>
+                    </div>
+                    <div id="profilePlaceholder">
+                        <i class="fas fa-file-pdf text-4xl text-slate-300 mb-3"></i>
+                        <p class="text-sm text-slate-500 font-medium">Drop your LinkedIn Profile PDF here</p>
+                        <p class="text-xs text-slate-400 mt-1">or click to browse (PDF only)</p>
+                    </div>
+                </div>
+
+                <div class="bg-slate-50 rounded-lg p-3 border border-slate-100">
+                    <p class="text-xs text-slate-500 flex items-start gap-2">
+                        <i class="fas fa-question-circle text-linkedin-blue mt-0.5"></i>
+                        <span>
+                            <strong>How to get your Profile PDF:</strong><br>
+                            Go to your LinkedIn profile → Click "More" → Select "Save to PDF"
+                        </span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Generate Button -->
+        <div class="text-center mb-8">
+            <button 
+                id="generateBtn"
+                onclick="generateComment()"
+                class="bg-linkedin-blue hover:bg-linkedin-dark text-white font-semibold py-4 px-10 rounded-full shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-0.5 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center gap-3 mx-auto"
+            >
+                <i class="fas fa-magic" id="btnIcon"></i>
+                <span id="btnText">Generate Comment</span>
+            </button>
+            <p class="text-xs text-slate-400 mt-3" id="statusText">Please upload both the post and your profile PDF</p>
+        </div>
+
+        <!-- Results Section -->
+        <div id="resultsSection" class="hidden">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-slate-800 flex items-center gap-2">
+                    <i class="fas fa-sparkles text-yellow-500"></i>
+                    Generated Comments
+                </h3>
+                <div class="flex gap-2">
+                    <button onclick="regenerateComment()" class="text-sm text-linkedin-blue hover:text-linkedin-dark font-medium px-3 py-1.5 rounded-lg hover:bg-linkedin-light transition-colors">
+                        <i class="fas fa-redo mr-1"></i>Regenerate
+                    </button>
+                </div>
+            </div>
+
+            <div id="commentsContainer" class="space-y-4">
+                <!-- Comments will be inserted here -->
+            </div>
+        </div>
+
+        <!-- History Section -->
+        <div id="historySection" class="hidden mt-12">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="text-lg font-semibold text-slate-800 flex items-center gap-2">
+                    <i class="fas fa-history text-slate-400"></i>
+                    Recent Generations
+                </h3>
+                <button onclick="clearHistory()" class="text-xs text-red-400 hover:text-red-600 transition-colors">
+                    Clear History
+                </button>
+            </div>
+            <div id="historyContainer" class="space-y-3">
+                <!-- History items will be inserted here -->
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 mt-12 py-6">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <p class="text-sm text-slate-400">
+                <i class="fas fa-shield-alt mr-1"></i>
+                Your files are processed locally and never stored on our servers
+            </p>
+        </div>
+    </footer>
 
     <script>
         // State
-        let selectedAngle = 'root-cause';
-        let selectedLength = 'short';
+        let currentTab = 'text';
+        let postData = { type: null, content: null };
+        let profileData = { name: null, file: null };
+        let generatedComments = [];
+        let commentHistory = JSON.parse(localStorage.getItem('commentHistory') || '[]');
 
-        // Angle selection
-        document.getElementById('angleOptions').addEventListener('click', function(e) {
-            if (e.target.classList.contains('option-btn')) {
-                document.querySelectorAll('#angleOptions .option-btn').forEach(btn => btn.classList.remove('active'));
-                e.target.classList.add('active');
-                selectedAngle = e.target.dataset.angle;
-            }
-        });
-
-        // Length selection
-        document.getElementById('lengthOptions').addEventListener('click', function(e) {
-            if (e.target.classList.contains('option-btn')) {
-                document.querySelectorAll('#lengthOptions .option-btn').forEach(btn => btn.classList.remove('active'));
-                e.target.classList.add('active');
-                selectedLength = e.target.dataset.length;
-            }
-        });
-
-        function updateCharCount() {
-            const count = document.getElementById('inputContent').value.length;
-            document.getElementById('charCount').textContent = count + ' characters';
-        }
-
-        function useTemplate(type) {
-            const templates = {
-                phk: "Indonesian startups are beginning mass layoffs. Many say it's because funding has dried up, but is that the only reason? What about the company's legal obligations to employees being laid off?",
-                turnover: "Our company is experiencing high turnover in the sales division. We've tried raising salaries, but employees still leave. Is the problem really about money, or is there something more fundamental?",
-                compliance: "Many SMEs don't yet understand the importance of Collective Labor Agreements (PKB) and employment SOPs. Is this truly important, or just mere formality?",
-                performance: "Our employees look busy from morning till night, but targets aren't being met. How do we distinguish between productive busyness and busyness that only creates an illusion of work?",
-                remote: "After the pandemic, our company implemented hybrid work. But coordination has become chaotic, and some employees are hard to reach. Is remote work truly effective for all types of businesses?",
-                startup: "Our startup grew from 5 people to 50 in one year. Suddenly there are many internal conflicts, unclear communication, and the founder feels like they're losing control. Is this normal?"
-            };
-            document.getElementById('inputContent').value = templates[type];
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
             updateCharCount();
-            document.getElementById('inputContent').focus();
+            document.getElementById('postText').addEventListener('input', updateCharCount);
+            updateGenerateButton();
+            if (commentHistory.length > 0) renderHistory();
+        });
+
+        // Tab Switching
+        function switchTab(tab) {
+            currentTab = tab;
+            ['text', 'screenshot', 'link'].forEach(t => {
+                document.getElementById(`tab-${t}`).className = t === tab 
+                    ? 'flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all bg-white text-slate-800 shadow-sm'
+                    : 'flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all text-slate-500 hover:text-slate-700';
+                document.getElementById(`input-${t}`).classList.toggle('hidden', t !== tab);
+            });
+            validateInputs();
         }
 
-        function generateInsight() {
-            const input = document.getElementById('inputContent').value.trim();
-            if (!input) {
-                alert('Please enter LinkedIn content first.');
-                return;
+        // Character Count
+        function updateCharCount() {
+            const count = document.getElementById('postText').value.length;
+            document.getElementById('charCount').textContent = `${count} characters`;
+        }
+
+        function clearPost() {
+            document.getElementById('postText').value = '';
+            updateCharCount();
+            postData = { type: null, content: null };
+            validateInputs();
+        }
+
+        // Drag & Drop Handlers
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.currentTarget.classList.add('dragover');
+        }
+
+        function handleDragLeave(e) {
+            e.currentTarget.classList.remove('dragover');
+        }
+
+        function handleDrop(e, type) {
+            e.preventDefault();
+            e.currentTarget.classList.remove('dragover');
+            const files = e.dataTransfer.files;
+            if (files.length > 0) processFile(files[0], type);
+        }
+
+        function handleFileSelect(e, type) {
+            const files = e.target.files;
+            if (files.length > 0) processFile(files[0], type);
+        }
+
+        function processFile(file, type) {
+            if (type === 'screenshot') {
+                if (!file.type.startsWith('image/')) {
+                    showToast('Please upload an image file', 'error');
+                    return;
+                }
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById('screenshotImg').src = e.target.result;
+                    document.getElementById('screenshotPreview').classList.remove('hidden');
+                    document.getElementById('screenshotPlaceholder').classList.add('hidden');
+                    document.getElementById('dropZoneScreenshot').classList.add('has-file');
+                    postData = { type: 'screenshot', content: file.name };
+                    validateInputs();
+                };
+                reader.readAsDataURL(file);
+            } else if (type === 'profile') {
+                if (file.type !== 'application/pdf') {
+                    showToast('Please upload a PDF file', 'error');
+                    return;
+                }
+                document.getElementById('profileFileName').textContent = file.name;
+                document.getElementById('profileInfo').classList.remove('hidden');
+                document.getElementById('profilePlaceholder').classList.add('hidden');
+                document.getElementById('dropZoneProfile').classList.add('has-file');
+                profileData = { name: file.name, file: file };
+                validateInputs();
             }
+        }
+
+        // Validation
+        function validateInputs() {
+            let isValid = false;
+
+            if (currentTab === 'text') {
+                isValid = document.getElementById('postText').value.trim().length > 10;
+            } else if (currentTab === 'screenshot') {
+                isValid = postData.type === 'screenshot';
+            } else if (currentTab === 'link') {
+                isValid = document.getElementById('postLink').value.trim().includes('linkedin.com');
+            }
+
+            const hasProfile = profileData.file !== null;
+            const canGenerate = isValid && hasProfile;
+
+            updateGenerateButton(canGenerate);
+            return canGenerate;
+        }
+
+        function updateGenerateButton(enabled = false) {
+            const btn = document.getElementById('generateBtn');
+            const status = document.getElementById('statusText');
+            btn.disabled = !enabled;
+
+            if (!enabled) {
+                let msg = '';
+                if (currentTab === 'text' && document.getElementById('postText').value.trim().length <= 10) {
+                    msg = 'Please enter the post text (min 10 chars)';
+                } else if (currentTab === 'screenshot' && postData.type !== 'screenshot') {
+                    msg = 'Please upload a screenshot of the post';
+                } else if (currentTab === 'link' && !document.getElementById('postLink').value.includes('linkedin.com')) {
+                    msg = 'Please enter a valid LinkedIn URL';
+                } else if (!profileData.file) {
+                    msg = 'Please upload your LinkedIn Profile PDF';
+                }
+                status.textContent = msg;
+                status.className = 'text-xs text-slate-400 mt-3';
+            } else {
+                status.textContent = 'Ready to generate! Click the button below.';
+                status.className = 'text-xs text-green-600 mt-3 font-medium';
+            }
+        }
+
+        // Watch inputs
+        document.getElementById('postText').addEventListener('input', validateInputs);
+        document.getElementById('postLink').addEventListener('input', validateInputs);
+
+        // Generate Comment
+        async function generateComment() {
+            if (!validateInputs()) return;
 
             const btn = document.getElementById('generateBtn');
+            const btnIcon = document.getElementById('btnIcon');
+            const btnText = document.getElementById('btnText');
+
+            // Loading state
             btn.disabled = true;
-            btn.textContent = 'Generating...';
+            btnIcon.className = 'spinner';
+            btnText.textContent = 'Analyzing your profile...';
 
-            document.getElementById('loadingSection').classList.add('visible');
-            document.getElementById('outputSection').classList.remove('visible');
+            // Simulate processing steps
+            await sleep(1500);
+            btnText.textContent = 'Understanding the post...';
+            await sleep(1500);
+            btnText.textContent = 'Crafting your comment...';
+            await sleep(1500);
 
-            setTimeout(() => {
-                try {
-                    const result = composeInsight(input, selectedAngle, selectedLength);
-                    document.getElementById('outputContent').textContent = result;
-                    document.getElementById('metaAngle').textContent = 'Angle: ' + getAngleLabel(selectedAngle);
-                    document.getElementById('metaLength').textContent = 'Length: ' + getLengthLabel(selectedLength);
-                    document.getElementById('metaWords').textContent = '~' + result.split(/\s+/).filter(w => w.length > 0).length + ' words';
+            // Get post content based on tab
+            let postContent = '';
+            if (currentTab === 'text') {
+                postContent = document.getElementById('postText').value;
+            } else if (currentTab === 'link') {
+                postContent = `LinkedIn post from: ${document.getElementById('postLink').value}`;
+            } else {
+                postContent = 'LinkedIn post screenshot';
+            }
 
-                    document.getElementById('loadingSection').classList.remove('visible');
-                    document.getElementById('outputSection').classList.add('visible');
-                    document.getElementById('copyBtn').textContent = 'Copy';
-                    document.getElementById('copyBtn').classList.remove('copied');
-                } catch (err) {
-                    console.error(err);
-                    alert('Error generating comment. Please try again.');
-                } finally {
-                    btn.disabled = false;
-                    btn.textContent = 'Generate Comment';
+            // Generate comments (simulated AI responses)
+            const comments = generateAIComments(postContent, profileData.name);
+            generatedComments = comments;
+
+            // Reset button
+            btn.disabled = false;
+            btnIcon.className = 'fas fa-magic';
+            btnText.textContent = 'Generate Comment';
+
+            // Show results
+            renderComments(comments);
+            document.getElementById('resultsSection').classList.remove('hidden');
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+
+            // Save to history
+            saveToHistory(postContent, comments);
+        }
+
+        function generateAIComments(postContent, profileName) {
+            // Simulated comment generation based on common LinkedIn engagement patterns
+            const comments = [
+                {
+                    style: 'Thoughtful & Professional',
+                    tone: 'Professional',
+                    text: `This is a really insightful perspective. Having worked with similar challenges in my career, I completely resonate with the points you've raised. The approach you've outlined here could be a game-changer for teams looking to scale effectively. Would love to hear more about the implementation details!`,
+                    hashtags: ['#Leadership', '#Innovation'],
+                    engagement: 'High'
+                },
+                {
+                    style: 'Engaging & Curious',
+                    tone: 'Conversational',
+                    text: `Thank you for sharing this! I've been thinking about this exact topic lately. One question that comes to mind: how do you see this evolving over the next 12 months? I believe the intersection of strategy and execution is where the real magic happens. Looking forward to learning more from your experience! 🙌`,
+                    hashtags: ['#GrowthMindset', '#Learning'],
+                    engagement: 'Very High'
+                },
+                {
+                    style: 'Value-Adding & Expert',
+                    tone: 'Authority',
+                    text: `Excellent breakdown. From my experience working with SMEs and scaling operations, I'd add that having the right systems in place makes all the difference. The ISLA Framework we've been implementing has shown remarkable results in reducing operational friction. Happy to share some case studies if anyone is interested.`,
+                    hashtags: ['#HRConsulting', '#SystemBuilder', '#SME'],
+                    engagement: 'High'
                 }
-            }, 1200);
+            ];
+            return comments;
         }
 
-        function regenerate() {
-            generateInsight();
-        }
+        function renderComments(comments) {
+            const container = document.getElementById('commentsContainer');
+            container.innerHTML = '';
 
-        function copyOutput() {
-            const text = document.getElementById('outputContent').textContent;
-            navigator.clipboard.writeText(text).then(() => {
-                const btn = document.getElementById('copyBtn');
-                btn.textContent = 'Copied!';
-                btn.classList.add('copied');
-                setTimeout(() => {
-                    btn.textContent = 'Copy';
-                    btn.classList.remove('copied');
-                }, 2000);
+            comments.forEach((comment, index) => {
+                const card = document.createElement('div');
+                card.className = 'comment-card rounded-xl p-6 fade-in';
+                card.style.animationDelay = `${index * 0.1}s`;
+
+                card.innerHTML = `
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs font-semibold text-linkedin-blue bg-linkedin-light px-2 py-1 rounded-md">${comment.style}</span>
+                            <span class="text-xs text-slate-400">• ${comment.tone} tone</span>
+                        </div>
+                        <div class="flex items-center gap-1">
+                            <i class="fas fa-chart-line text-green-500 text-xs"></i>
+                            <span class="text-xs text-green-600 font-medium">${comment.engagement} engagement</span>
+                        </div>
+                    </div>
+                    <p class="text-slate-700 leading-relaxed mb-4 text-sm">${comment.text}</p>
+                    <div class="flex items-center justify-between">
+                        <div class="flex gap-2">
+                            ${comment.hashtags.map(tag => `<span class="text-xs text-linkedin-blue">${tag}</span>`).join('')}
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="copyComment(${index})" class="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-slate-200 rounded-lg text-xs font-medium text-slate-600 hover:bg-slate-50 hover:border-slate-300 transition-all">
+                                <i class="fas fa-copy"></i>
+                                Copy
+                            </button>
+                            <button onclick="useComment(${index})" class="flex items-center gap-1.5 px-3 py-1.5 bg-linkedin-blue text-white rounded-lg text-xs font-medium hover:bg-linkedin-dark transition-all">
+                                <i class="fas fa-check"></i>
+                                Use This
+                            </button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
             });
         }
 
-        function getAngleLabel(angle) {
-            const labels = {
-                'root-cause': 'Root Cause',
-                'hidden-cost': 'Hidden Cost',
-                'system-gap': 'System Gap',
-                'scalability': 'Scalability',
-                'legal-compliance': 'Legal Compliance',
-                'turnover': 'Turnover',
-                'productivity': 'Productivity',
-                'strategic-hr': 'Strategic HR'
+        function copyComment(index) {
+            const text = generatedComments[index].text + ' ' + generatedComments[index].hashtags.join(' ');
+            navigator.clipboard.writeText(text).then(() => {
+                showToast('Comment copied to clipboard!', 'success');
+            });
+        }
+
+        function useComment(index) {
+            copyComment(index);
+            showToast('Comment copied! Ready to paste on LinkedIn.', 'success');
+        }
+
+        function regenerateComment() {
+            generateComment();
+        }
+
+        // History
+        function saveToHistory(postContent, comments) {
+            const historyItem = {
+                id: Date.now(),
+                date: new Date().toLocaleString(),
+                postPreview: postContent.substring(0, 100) + '...',
+                comments: comments
             };
-            return labels[angle] || angle;
+            commentHistory.unshift(historyItem);
+            if (commentHistory.length > 10) commentHistory.pop();
+            localStorage.setItem('commentHistory', JSON.stringify(commentHistory));
+            renderHistory();
         }
 
-        function getLengthLabel(length) {
-            const labels = {
-                'short': 'Short',
-                'medium': 'Medium',
-                'long': 'In-depth'
-            };
-            return labels[length] || length;
-        }
+        function renderHistory() {
+            const section = document.getElementById('historySection');
+            const container = document.getElementById('historyContainer');
 
-        // ============================================
-        // ENGLISH INSIGHT ENGINE — YANTO GOUTAMA POV
-        // ============================================
-
-        const patterns = {
-            'root-cause': [
-                "The real issue isn't {surface} — it's {root}.",
-                "Many businesses feel that {perception}, but what's actually happening is {reality}.",
-                "What's visible on the surface is {visible}. But what's truly driving this is {hidden}.",
-                "We spend too much time fixing {symptom}, while {cause} remains untouched."
-            ],
-            'hidden-cost': [
-                "The most expensive thing isn't {obvious_cost} — it's {hidden_cost} that keeps growing unnoticed.",
-                "The hidden cost of {issue} is usually 3x larger than what's visible.",
-                "Many owners focus on {visible_expense}, but {invisible_drain} is what truly erodes margins.",
-                "Messy HR isn't just about {surface_issue} — it's also about {hidden_impact} that continues to compound."
-            ],
-            'system-gap': [
-                "Strategy without {system} is a plan that stays on the presentation slide.",
-                "The most expensive mistake isn't a wrong strategy — it's executing strategy without a clear system.",
-                "Many companies have {policy}, but lack {mechanism} to actually run it.",
-                "The gap between {intention} and {execution} is where big problems are born."
-            ],
-            'scalability': [
-                "Businesses that grow without {foundation} will face far more expensive bottlenecks down the road.",
-                "Scalability isn't about {quantity} — it's about {capability} to absorb growth.",
-                "What makes startups fail to scale isn't the market — it's {internal_limitation} that was never fixed.",
-                "Growth without {structure} is a fast track to operational chaos."
-            ],
-            'legal-compliance': [
-                "Legal compliance ignored today usually becomes a massive problem tomorrow.",
-                "Many businesses see {compliance} as mere formality — until {consequence} arrives.",
-                "The cost of preventing {legal_aspect} is far cheaper than handling it after it happens.",
-                "What looks like {bureaucracy} is actually {protection} for the business and its people."
-            ],
-            'turnover': [
-                "High turnover isn't just about {surface_reason} — it's also about {deeper_issue} that never gets addressed.",
-                "Employees don't leave because of {stated_reason}. They leave because of {actual_reason} that keeps being ignored.",
-                "The real cost of turnover isn't just {recruitment_cost} — it's {knowledge_loss} that's hard to measure.",
-                "Many companies focus on {retention_tactic}, but what's needed is {root_solution}."
-            ],
-            'productivity': [
-                "Productivity isn't about {hours} — it's about {output_quality} delivered to the business.",
-                "Busy and productive are two different things. What looks {busy} isn't necessarily {effective}.",
-                "Many teams get trapped in {activity_trap}, while {value_creation} falls behind.",
-                "Good performance management isn't about {monitoring} — it's about {enablement}."
-            ],
-            'strategic-hr': [
-                "Strategic HR isn't about {admin_task} — it's about {business_alignment}.",
-                "Businesses don't fail because of {external_factor} — they fail because {people_factor} isn't managed properly.",
-                "HR isn't a cost center when {function} is directly linked to {business_outcome}.",
-                "What separates sustainable businesses from the rest is {people_practice}, not just {market_condition}."
-            ]
-        };
-
-        const closings = {
-            'root-cause': [
-                "Identifying the root cause matters more than quick fixes that only mask symptoms. Fix the foundation. The rest follows.",
-                "At Forisa Impact, we help SMEs restructure their HR foundations within 60-90 days. Because symptoms don't go away until the root is healed."
-            ],
-            'hidden-cost': [
-                "Calculate the hidden cost. That number usually changes everything. Through the ISLA Framework, we help businesses see what others miss.",
-                "What's invisible often does more damage than what's visible. Let's fix the system before the bill arrives."
-            ],
-            'system-gap': [
-                "A good system makes ordinary people deliver extraordinary results. A bad system makes great people frustrated. Which one are you building?",
-                "Don't build a business on a fragile foundation. Structure isn't bureaucracy — it's what allows you to scale with confidence."
-            ],
-            'scalability': [
-                "Scale with a strong foundation, or be prepared to pay a much higher price fixing the damage later. The ISLA Framework was built for exactly this.",
-                "Growth without readiness is an invitation to chaos. Let's build the structure before the pressure arrives."
-            ],
-            'legal-compliance': [
-                "Compliance isn't a burden. It's an investment in sleeping well at night. As someone who's helped SMEs navigate legal complexities, I can tell you: prevention is always cheaper.",
-                "Better to prevent now than to pay dearly later. Legal foundations protect both the business and the people who build it."
-            ],
-            'turnover': [
-                "Retention starts with understanding, not tactics. Employees who are truly valued don't need to be forced to stay.",
-                "At Forisa Impact, we've helped companies reduce turnover by restructuring their HR systems — not by raising salaries at the last minute."
-            ],
-            'productivity': [
-                "Focus on outcomes, not activity. That's the difference between busy and effective. Through clear KPIs and SOPs, we help teams deliver real value.",
-                "True productivity is measured by impact, not hours. Let's build systems that enable people to do their best work."
-            ],
-            'strategic-hr': [
-                "HR placed at the strategic level isn't a luxury. It's a necessity for any business that wants to sustain. People strategy IS business strategy.",
-                "In my experience across DKI Jakarta, the companies that thrive are the ones that treat people management as a growth driver — not an administrative function."
-            ]
-        };
-
-        const topicKeywords = {
-            phk: ['layoff', 'termination', 'fired', 'redundancy', 'PHK', 'pemutusan', 'pemecatan', 'mass layoff'],
-            turnover: ['resign', 'turnover', 'quit', 'leave', 'exit', 'resignation', 'keluar', 'mundur', 'berhenti'],
-            compliance: ['legal', 'compliance', 'regulation', 'law', 'UU', 'PKB', 'PKWT', 'BPJS', 'contract', 'hukum', 'peraturan'],
-            performance: ['productivity', 'performance', 'KPI', 'target', 'output', 'kinerja', 'produktivitas', 'evaluasi'],
-            remote: ['remote', 'WFH', 'hybrid', 'work from home', 'virtual', 'jarak jauh'],
-            startup: ['startup', 'scale', 'growth', 'funding', 'investor', 'venture', 'pertumbuhan'],
-            salary: ['salary', 'wage', 'compensation', 'payroll', 'benefit', 'gaji', 'upah', 'remunerasi'],
-            culture: ['culture', 'toxic', 'values', 'environment', 'budaya', 'nilai'],
-            recruitment: ['recruitment', 'hiring', 'selection', 'interview', 'talent', 'rekrutmen', 'seleksi']
-        };
-
-        function detectTopic(input) {
-            const lower = input.toLowerCase();
-            for (const [topic, keywords] of Object.entries(topicKeywords)) {
-                if (keywords.some(k => lower.includes(k.toLowerCase()))) {
-                    return topic;
-                }
-            }
-            return 'general';
-        }
-
-        function getTopicContext(topic) {
-            const contexts = {
-                phk: {
-                    surface: 'underperforming employees',
-                    root: 'a recruitment, onboarding, and performance management system that never worked properly in the first place',
-                    perception: 'layoffs are the solution to performance problems',
-                    reality: 'layoffs are an indicator that the people management system failed at earlier stages',
-                    visible: 'employees not meeting expectations',
-                    hidden: 'a hiring process that does not match actual needs, vague job descriptions, and expectations that were never clearly communicated',
-                    symptom: 'the consequence at the end (layoffs)',
-                    cause: 'the source of the problem at the beginning (recruitment and alignment)',
-                    obvious_cost: 'severance pay and administrative costs',
-                    hidden_cost: 'impact on team morale, loss of institutional knowledge, and damage to employer brand',
-                    visible_expense: 'cost of replacement hiring',
-                    invisible_drain: 'onboarding time, learning curve, and operational disruption during transition',
-                    surface_issue: 'the administrative process of termination',
-                    hidden_impact: 'psychological trauma for the team, declining engagement, and increased risk aversion in decision-making',
-                    system: 'a structured offboarding process and complete documentation',
-                    policy: 'termination policies on paper',
-                    mechanism: 'coaching processes, written warnings, and consistent performance documentation',
-                    intention: 'maintaining team quality',
-                    execution: 'ongoing evaluation and improvement processes',
-                    foundation: 'clear employment policies and consistent management',
-                    quantity: 'how many employees are laid off',
-                    capability: 'management ability to identify problems early',
-                    internal_limitation: 'limited people analytics and exit interviews that are merely formalities',
-                    structure: 'documentation and due diligence processes',
-                    compliance: 'following termination procedures according to labor law',
-                    consequence: 'labor disputes, fines, and damaged reputation in the industry',
-                    legal_aspect: 'termination process under Indonesian labor law',
-                    bureaucracy: 'lengthy administrative termination process',
-                    protection: 'legal protection for both the company and employees',
-                    surface_reason: 'poor performance',
-                    deeper_issue: 'leadership, growth paths, and sense of appreciation that were never fulfilled',
-                    stated_reason: 'personal reasons or salary',
-                    actual_reason: 'disappointment with management, career stagnation, or unhealthy work culture',
-                    recruitment_cost: 'cost of replacement hiring',
-                    knowledge_loss: 'loss of tacit knowledge and client relationships',
-                    retention_tactic: 'last-minute salary increases',
-                    root_solution: 'fixing the employee experience from day one',
-                    hours: 'how long employees stay in the office',
-                    output_quality: 'value they contribute to the business',
-                    busy: 'active and responsive',
-                    effective: 'solving important business problems',
-                    activity_trap: 'meetings without clear agendas and reports without action items',
-                    value_creation: 'solving real client problems and process innovation',
-                    monitoring: 'chasing deadlines and filling timesheets',
-                    enablement: 'providing clarity, resources, and autonomy',
-                    admin_task: 'managing attendance and payroll',
-                    business_alignment: 'ensuring every people decision supports business goals',
-                    external_factor: 'market competition',
-                    people_factor: 'the organization ability to attract, develop, and retain talent',
-                    function: 'people and culture function',
-                    business_outcome: 'revenue, client retention, and operational excellence',
-                    people_practice: 'how the company manages its people',
-                    market_condition: 'market conditions or funding'
-                },
-                turnover: {
-                    surface: 'uncompetitive salaries',
-                    root: 'a career development, recognition, and leadership system that never makes employees feel valued',
-                    perception: 'employees resign because of money',
-                    reality: 'employees resign because they do not see a clear future and do not feel appreciated for their contributions',
-                    visible: 'high turnover rates',
-                    hidden: 'leadership that does not listen, unclear growth paths, and a work culture that emotionally exhausts people',
-                    symptom: 'chasing resigning employees with counter offers',
-                    cause: 'why they never wanted to stay in the first place',
-                    obvious_cost: 'replacement recruitment costs',
-                    hidden_cost: 'loss of knowledge, team disruption, and declining morale that is hard to quantify',
-                    visible_expense: 'job advertising and agency fees',
-                    invisible_drain: 'onboarding time, operational errors during learning curve, and excessive workload on remaining team members',
-                    surface_issue: 'turnover numbers on the HR dashboard',
-                    hidden_impact: 'loss of trust in leadership and eroding work culture',
-                    system: 'employee journey mapping from hiring to exit interview that is actually used',
-                    policy: 'retention policies in the handbook',
-                    mechanism: 'regular 1-on-1s, career pathing, and functioning feedback loops',
-                    intention: 'retaining the best talent',
-                    execution: 'day-to-day work experience that makes people want to stay',
-                    foundation: 'clear employee value proposition and consistent leadership',
-                    quantity: 'how many employees resign',
-                    capability: 'management ability to read early warning signs',
-                    internal_limitation: 'limited people analytics and exit interviews that are merely formalities',
-                    structure: 'feedback and continuous improvement systems',
-                    compliance: 'fulfilling employee rights according to contracts',
-                    consequence: 'disputes, claims, and damaged reputation as an employer',
-                    legal_aspect: 'fulfilling rights of resigning employees',
-                    bureaucracy: 'lengthy resignation administrative process',
-                    protection: 'data and asset protection for the company',
-                    surface_reason: 'better offers outside',
-                    deeper_issue: 'emptiness in growth, recognition, and sense of ownership',
-                    stated_reason: 'better opportunities',
-                    actual_reason: 'exhaustion from disproportionate workload, unsupportive leadership, or stagnation',
-                    recruitment_cost: 'cost of new hires',
-                    knowledge_loss: 'loss of tacit knowledge and internal relationships built over years',
-                    retention_tactic: 'sudden salary increases',
-                    root_solution: 'building an employee experience that makes people not want to look elsewhere',
-                    hours: 'how long employees stay at the office',
-                    output_quality: 'sustained contribution and innovation they bring',
-                    busy: 'responsive and always online',
-                    effective: 'completing impactful work',
-                    activity_trap: 'meetings without outcomes and emails without action',
-                    value_creation: 'solving real business problems',
-                    monitoring: 'checking attendance and work hours',
-                    enablement: 'providing clarity, resources, and trust',
-                    admin_task: 'managing HR administration',
-                    business_alignment: 'ensuring people strategy supports revenue and growth',
-                    external_factor: 'competitive job market',
-                    people_factor: 'the company ability to make employees feel they are growing',
-                    function: 'talent management function',
-                    business_outcome: 'retention rate and employee NPS',
-                    people_practice: 'how the company treats its employees',
-                    market_condition: 'job market conditions'
-                },
-                compliance: {
-                    surface: 'complete documents and permits',
-                    root: 'management understanding that compliance is not a burden, but an operational foundation that enables business to run without disruption',
-                    perception: 'legal compliance is just administration and extra cost',
-                    reality: 'good compliance is operational insurance that prevents far greater losses in the future',
-                    visible: 'certificates and neatly arranged documents',
-                    hidden: 'compliance culture at every level, managers understanding of legal consequences, and functioning internal audit systems',
-                    symptom: 'fixing documents when inspections come',
-                    cause: 'lack of integrated compliance systems in daily operations',
-                    obvious_cost: 'legal consultant and permit fees',
-                    hidden_cost: 'operational downtime, fines, and reputational damage when violations occur',
-                    visible_expense: 'legal retainer fees',
-                    invisible_drain: 'management time handling disputes, investigations, and emergency fixes',
-                    surface_issue: 'document completeness',
-                    hidden_impact: 'loss of trust from investors, clients, and regulators',
-                    system: 'compliance framework integrated with operations',
-                    policy: 'policies on paper',
-                    mechanism: 'regular training, internal audits, and clear escalation paths',
-                    intention: 'meeting regulations',
-                    execution: 'building compliance culture at every organizational level',
-                    foundation: 'deep understanding of labor law',
-                    quantity: 'how many regulations are followed',
-                    capability: 'organization ability to adapt to regulatory changes',
-                    internal_limitation: 'limited internal legal knowledge',
-                    structure: 'documented legal framework and SOPs',
-                    compliance: 'meeting Indonesian Labor Law and its derivatives',
-                    consequence: 'disputes, fines, and even operational shutdown',
-                    legal_aspect: 'employment, taxation, and data protection',
-                    bureaucracy: 'permit and reporting processes',
-                    protection: 'legal protection for company, employees, and stakeholders',
-                    surface_reason: 'unawareness of regulations',
-                    deeper_issue: 'lack of management commitment to invest in legal infrastructure',
-                    stated_reason: 'regulatory complexity',
-                    actual_reason: 'prioritizing short-term cost cutting over long-term risk management',
-                    recruitment_cost: 'cost of legal officers',
-                    knowledge_loss: 'loss of credibility and business opportunities',
-                    retention_tactic: 'fixing documents when pressured',
-                    root_solution: 'building legal awareness from the start and integrating it into business DNA',
-                    hours: 'how long legal review takes',
-                    output_quality: 'legal certainty and risk protection',
-                    busy: 'preparing documents without understanding context',
-                    effective: 'preventing problems before they happen',
-                    activity_trap: 'compliance for compliance sake, without understanding why',
-                    value_creation: 'operational security and stakeholder trust',
-                    monitoring: 'checking document checklists',
-                    enablement: 'building team capability to identify risks independently',
-                    admin_task: 'managing permits',
-                    business_alignment: 'ensuring every legal decision supports business goals',
-                    external_factor: 'regulatory changes',
-                    people_factor: 'legal literacy across the organization',
-                    function: 'legal and compliance function',
-                    business_outcome: 'risk mitigation and operational continuity',
-                    people_practice: 'how the company understands and applies the law',
-                    market_condition: 'regulatory environment'
-                },
-                performance: {
-                    surface: 'unmet targets and KPIs',
-                    root: 'expectation clarity, adequate resources, and leadership that can guide without micromanaging',
-                    perception: 'employees are not working hard enough',
-                    reality: 'work systems, approval flows, and team structures that actually hinder productivity',
-                    visible: 'output not matching targets',
-                    hidden: 'inefficient work processes, endless distractions, and overly centralized decision-making',
-                    symptom: 'adding work hours and pressure',
-                    cause: 'fixing processes and providing clarity',
-                    obvious_cost: 'wasted time',
-                    hidden_cost: 'employee burnout, eroded creativity, and innovation that never happens',
-                    visible_expense: 'overtime pay',
-                    invisible_drain: 'burnout, turnover, and opportunity cost of ideas never executed',
-                    surface_issue: 'productivity numbers in reports',
-                    hidden_impact: 'work culture that makes people merely survive, not thrive',
-                    system: 'continuous performance management, not just year-end evaluations',
-                    policy: 'KPI policies in the handbook',
-                    mechanism: 'regular coaching, real-time feedback, and responsive resource allocation',
-                    intention: 'achieving business targets',
-                    execution: 'ensuring everyone knows their priorities and has authority to execute',
-                    foundation: 'goal clarity and proper role definition',
-                    quantity: 'how many tasks are completed',
-                    capability: 'organization ability to focus energy on what truly matters',
-                    internal_limitation: 'confusing organizational structure and slow decision-making',
-                    structure: 'clear accountability and decision rights',
-                    compliance: 'meeting established work standards',
-                    consequence: 'declining output quality and loss of competitiveness',
-                    legal_aspect: 'fulfillment of employment contracts and employee rights',
-                    bureaucracy: 'lengthy evaluation processes',
-                    protection: 'protection for both employees and the company',
-                    surface_reason: 'incompetent employees',
-                    deeper_issue: 'a system that does not allow competence to grow and contribute optimally',
-                    stated_reason: 'unrealistic targets',
-                    actual_reason: 'misalignment between strategy, resources, and field expectations',
-                    recruitment_cost: 'training costs',
-                    knowledge_loss: 'employee potential that is never tapped',
-                    retention_tactic: 'short-term incentives',
-                    root_solution: 'building work systems that enable people to perform at their best',
-                    hours: 'how long employees work',
-                    output_quality: 'impact delivered to the business',
-                    busy: 'full of activities',
-                    effective: 'completing what truly matters',
-                    activity_trap: 'marathon meetings and reports without action',
-                    value_creation: 'real solutions for client and business problems',
-                    monitoring: 'checking work hours and attendance',
-                    enablement: 'providing clarity, tools, and autonomy',
-                    admin_task: 'managing timesheets and reports',
-                    business_alignment: 'ensuring every activity supports strategic goals',
-                    external_factor: 'market pressure',
-                    people_factor: 'organization ability to focus energy',
-                    function: 'performance management function',
-                    business_outcome: 'revenue and customer satisfaction',
-                    people_practice: 'how the company manages performance',
-                    market_condition: 'competitive pressure'
-                },
-                remote: {
-                    surface: 'employees who are hard to reach or chaotic coordination',
-                    root: 'communication systems, availability expectations, and outcome-based management that were never clearly established',
-                    perception: 'remote work reduces productivity',
-                    reality: 'remote work exposes management system weaknesses that were previously hidden by physical presence',
-                    visible: 'coordination and communication difficulties',
-                    hidden: 'lack of clarity about response times, output expectations, and trust between managers and teams',
-                    symptom: 'forcing employees back to the office',
-                    cause: 'building effective remote management systems',
-                    obvious_cost: 'technology infrastructure costs',
-                    hidden_cost: 'loss of talented employees who want flexibility and replacement recruitment costs',
-                    visible_expense: 'collaboration software costs',
-                    invisible_drain: 'time wasted due to inefficient communication and delayed decisions',
-                    surface_issue: 'unresponsive employees',
-                    hidden_impact: 'micromanagement culture emerging from lack of trust',
-                    system: 'async communication protocol and outcome-based evaluation',
-                    policy: 'remote work policies in the handbook',
-                    mechanism: 'regular check-ins, decision documentation, and clear escalation paths',
-                    intention: 'providing flexibility',
-                    execution: 'ensuring productivity is not sacrificed',
-                    foundation: 'trust and expectation clarity',
-                    quantity: 'how many WFH days',
-                    capability: 'management ability to lead without relying on visual supervision',
-                    internal_limitation: 'traditional management habits relying on visual supervision',
-                    structure: 'clear communication protocols and documentation habits',
-                    compliance: 'meeting work safety and working hour requirements',
-                    consequence: 'declining productivity and labor disputes',
-                    legal_aspect: 'fulfilling remote employee rights and work safety',
-                    bureaucracy: 'remote work approval processes',
-                    protection: 'data and asset protection for the company',
-                    surface_reason: 'undisciplined employees',
-                    deeper_issue: 'lack of management systems that enable remote work to succeed',
-                    stated_reason: 'need for face-to-face collaboration',
-                    actual_reason: 'management inability to lead remotely',
-                    recruitment_cost: 'remote infrastructure costs',
-                    knowledge_loss: 'loss of talent choosing companies with better flexibility',
-                    retention_tactic: 'forcing employees to the office',
-                    root_solution: 'building outcome-based management systems, not presence-based ones',
-                    hours: 'how long employees are online',
-                    output_quality: 'deliverables produced',
-                    busy: 'always responsive in chat',
-                    effective: 'completing high-quality work',
-                    activity_trap: 'chat and meetings without outcomes',
-                    value_creation: 'impactful output',
-                    monitoring: 'checking online status',
-                    enablement: 'providing clarity and trust',
-                    admin_task: 'managing WFH schedules',
-                    business_alignment: 'ensuring remote work supports business goals',
-                    external_factor: 'global work trends',
-                    people_factor: 'organization ability to adapt',
-                    function: 'people operations function',
-                    business_outcome: 'productivity and retention',
-                    people_practice: 'how the company manages remote work',
-                    market_condition: 'talent market trends'
-                },
-                startup: {
-                    surface: 'rapid team growth',
-                    root: 'organizational readiness to absorb growth in the form of structure, processes, and leadership',
-                    perception: 'team growth is a sign of success',
-                    reality: 'growth without foundation is a fast track to chaos and culture degradation',
-                    visible: 'increasing headcount',
-                    hidden: 'communication complexity, culture fragmentation, and loss of agility that was previously a strength',
-                    symptom: 'adding people to solve problems',
-                    cause: 'fixing processes and structure before scaling',
-                    obvious_cost: 'ballooning payroll costs',
-                    hidden_cost: 'slow decision-making, loss of accountability, and eroded culture',
-                    visible_expense: 'recruitment and office space costs',
-                    invisible_drain: 'founder time handling internal conflicts and inefficient processes',
-                    surface_issue: 'headcount numbers',
-                    hidden_impact: 'loss of company DNA and declining hiring quality',
-                    system: 'scalable organizational design',
-                    policy: 'growth policies in business plans',
-                    mechanism: 'hiring rubric, structured onboarding, and clear org chart',
-                    intention: 'accelerating growth',
-                    execution: 'ensuring every new hire strengthens the foundation, not burdens it',
-                    foundation: 'culture, values, and clear work systems',
-                    quantity: 'how many new hires',
-                    capability: 'organization ability to absorb growth without losing itself',
-                    internal_limitation: 'founders still trapped in operational mode',
-                    structure: 'clear hierarchy and decision-making framework',
-                    compliance: 'meeting labor obligations when scaling',
-                    consequence: 'disputes, mass turnover, and loss of investor trust',
-                    legal_aspect: 'meeting labor regulations with larger teams',
-                    bureaucracy: 'hiring and onboarding processes',
-                    protection: 'legal and intellectual property protection',
-                    surface_reason: 'business need to grow',
-                    deeper_issue: 'lack of mature organizational planning before scaling',
-                    stated_reason: 'market demand',
-                    actual_reason: 'FOMO growth without preparing the organization',
-                    recruitment_cost: 'hiring costs',
-                    knowledge_loss: 'loss of culture and agility',
-                    retention_tactic: 'adding benefits',
-                    root_solution: 'building an organization ready to scale before scaling happens',
-                    hours: 'how long the team works',
-                    output_quality: 'consistent value delivery',
-                    busy: 'everyone is busy',
-                    effective: 'everyone delivers impact',
-                    activity_trap: 'growth for growth sake',
-                    value_creation: 'sustainable business model',
-                    monitoring: 'checking headcount growth',
-                    enablement: 'building strong foundations',
-                    admin_task: 'managing hiring',
-                    business_alignment: 'ensuring growth supports sustainability',
-                    external_factor: 'investor pressure',
-                    people_factor: 'ability to maintain culture',
-                    function: 'people and organization function',
-                    business_outcome: 'sustainable growth',
-                    people_practice: 'how the company scales while maintaining quality',
-                    market_condition: 'market pressure'
-                },
-                general: {
-                    surface: 'the visible problem',
-                    root: 'systems, structures, and foundations that need strengthening at the fundamental level',
-                    perception: 'this problem can be solved with a quick fix',
-                    reality: 'this problem is a symptom of foundations that need reinforcement',
-                    visible: 'output or results not meeting expectations',
-                    hidden: 'processes, habits, and small decisions that accumulate into big problems',
-                    symptom: 'looking for instant solutions',
-                    cause: 'understanding and fixing the underlying system',
-                    obvious_cost: 'directly visible costs',
-                    hidden_cost: 'opportunity costs, reputation, and management energy continuously drained',
-                    visible_expense: 'operational costs',
-                    invisible_drain: 'time, energy, and potential never realized',
-                    surface_issue: 'visible symptoms',
-                    hidden_impact: 'long-term effects on culture, retention, and competitive ability',
-                    system: 'structured and measurable systems',
-                    policy: 'written policies',
-                    mechanism: 'processes, checks, and balances that actually run',
-                    intention: 'achieving business goals',
-                    execution: 'translating goals into consistent actions',
-                    foundation: 'understanding of business, people, and interconnected systems',
-                    quantity: 'how much output',
-                    capability: 'organization ability to adapt and grow',
-                    internal_limitation: 'limited understanding and capacity',
-                    structure: 'clear working framework',
-                    compliance: 'meeting standards and regulations',
-                    consequence: 'operational and legal risks',
-                    legal_aspect: 'fulfillment of legal obligations',
-                    bureaucracy: 'administrative processes',
-                    protection: 'protection for all parties',
-                    surface_reason: 'visible reasons',
-                    deeper_issue: 'foundations that are not yet strong',
-                    stated_reason: 'stated reasons',
-                    actual_reason: 'the actual root cause',
-                    recruitment_cost: 'direct costs',
-                    knowledge_loss: 'loss of potential and opportunity',
-                    retention_tactic: 'short-term solutions',
-                    root_solution: 'system and foundation improvements',
-                    hours: 'how much time is spent',
-                    output_quality: 'impact and value produced',
-                    busy: 'packed with activities',
-                    effective: 'meaningful results',
-                    activity_trap: 'busy without direction',
-                    value_creation: 'real contribution',
-                    monitoring: 'supervision without understanding',
-                    enablement: 'providing tools and trust',
-                    admin_task: 'administrative tasks',
-                    business_alignment: 'alignment with business goals',
-                    external_factor: 'external conditions',
-                    people_factor: 'human capability in the organization',
-                    function: 'people management function',
-                    business_outcome: 'sustainable business results',
-                    people_practice: 'how people are managed',
-                    market_condition: 'market conditions'
-                }
-            };
-            return contexts[topic] || contexts.general;
-        }
-
-        function composeInsight(input, angle, length) {
-            const topic = detectTopic(input);
-            const ctx = getTopicContext(topic);
-
-            // Select pattern
-            const anglePatterns = patterns[angle] || patterns['root-cause'];
-            const pattern = anglePatterns[Math.floor(Math.random() * anglePatterns.length)];
-
-            // Fill pattern with context
-            let filled = pattern;
-            for (const [key, value] of Object.entries(ctx)) {
-                filled = filled.replace(new RegExp('{' + key + '}', 'g'), value);
+            if (commentHistory.length === 0) {
+                section.classList.add('hidden');
+                return;
             }
 
-            // Build opening
-            const openings = [
-                "Great post — this really resonates with the work we do at Forisa Impact. One thing that immediately comes to mind: " + filled,
-                "Interesting perspective. From an HR & Legal standpoint, there is an angle worth adding: " + filled,
-                "Solid insights here. If I may add from my experience helping SMEs scale: " + filled,
-                "This is a conversation more business owners need to have. In my practice across DKI Jakarta, " + filled,
-                "Appreciate you sharing this. What I have observed working with SMEs is that " + filled
-            ];
-            const opening = openings[Math.floor(Math.random() * openings.length)];
+            section.classList.remove('hidden');
+            container.innerHTML = '';
 
-            // Build body paragraphs
-            let body = '';
-            let bodies;
+            commentHistory.forEach(item => {
+                const div = document.createElement('div');
+                div.className = 'bg-white rounded-lg p-4 border border-slate-200 hover:border-linkedin-blue transition-colors cursor-pointer';
+                div.onclick = () => loadHistoryItem(item);
+                div.innerHTML = `
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 bg-slate-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-comment-alt text-slate-400 text-xs"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-medium text-slate-700 line-clamp-1">${item.postPreview}</p>
+                                <p class="text-xs text-slate-400">${item.date}</p>
+                            </div>
+                        </div>
+                        <span class="text-xs text-linkedin-blue font-medium">${item.comments.length} variants</span>
+                    </div>
+                `;
+                container.appendChild(div);
+            });
+        }
 
-            if (length === 'short') {
-                bodies = [
-                    "\n\nMany businesses feel that " + ctx.perception + ", but what is actually happening is " + ctx.reality + ".\n\n" + ctx.obvious_cost + " is visible, but " + ctx.hidden_cost + " usually does far more damage in the long run.",
-                    "\n\nThe most expensive thing is not " + ctx.obvious_cost + " — it is " + ctx.hidden_cost + " that keeps growing unnoticed.\n\nMany owners focus on " + ctx.visible_expense + ", but " + ctx.invisible_drain + " is what truly erodes margins.",
-                    "\n\nMessy HR is not just about " + ctx.surface_issue + " — it is also about " + ctx.hidden_impact + " that continues to compound.\n\n" + ctx.system + " is an investment, not a cost."
-                ];
-            } else if (length === 'medium') {
-                bodies = [
-                    "\n\nMany businesses feel that " + ctx.perception + ", but what is actually happening is " + ctx.reality + ".\n\nWhat is visible on the surface is " + ctx.visible + ". But what is truly driving this is " + ctx.hidden + ".\n\n" + ctx.obvious_cost + " is visible, but " + ctx.hidden_cost + " usually does far more damage in the long run. Many owners focus on " + ctx.visible_expense + ", but " + ctx.invisible_drain + " is what truly erodes margins.",
-                    "\n\nThe most expensive thing is not " + ctx.obvious_cost + " — it is " + ctx.hidden_cost + " that keeps growing unnoticed.\n\nWe spend too much time fixing " + ctx.symptom + ", while " + ctx.cause + " remains untouched.\n\n" + ctx.system + " is not just policy on paper. It must become " + ctx.mechanism + " that runs every day.",
-                    "\n\nMessy HR is not just about " + ctx.surface_issue + " — it is also about " + ctx.hidden_impact + " that continues to compound.\n\nMany companies have " + ctx.policy + ", but lack " + ctx.mechanism + " to actually run it. The gap between " + ctx.intention + " and " + ctx.execution + " is where big problems are born.\n\n" + ctx.foundation + " is a non-negotiable foundation."
-                ];
-            } else {
-                bodies = [
-                    "\n\nMany businesses feel that " + ctx.perception + ", but what is actually happening is " + ctx.reality + ".\n\nWhat is visible on the surface is " + ctx.visible + ". But what is truly driving this is " + ctx.hidden + ".\n\nWe spend too much time fixing " + ctx.symptom + ", while " + ctx.cause + " remains untouched.\n\nThe most expensive thing is not " + ctx.obvious_cost + " — it is " + ctx.hidden_cost + " that keeps growing unnoticed. Many owners focus on " + ctx.visible_expense + ", but " + ctx.invisible_drain + " is what truly erodes margins.\n\n" + ctx.system + " is not just policy on paper. It must become " + ctx.mechanism + " that runs every day. The gap between " + ctx.intention + " and " + ctx.execution + " is where big problems are born.",
-                    "\n\nThe most expensive thing is not " + ctx.obvious_cost + " — it is " + ctx.hidden_cost + " that keeps growing unnoticed.\n\nMany businesses feel that " + ctx.perception + ", but what is actually happening is " + ctx.reality + ". What is visible on the surface is " + ctx.visible + ". But what is truly driving this is " + ctx.hidden + ".\n\nWe spend too much time fixing " + ctx.symptom + ", while " + ctx.cause + " remains untouched.\n\nMany companies have " + ctx.policy + ", but lack " + ctx.mechanism + " to actually run it.\n\n" + ctx.foundation + " is a non-negotiable foundation. Businesses that grow without " + ctx.foundation + " will face far more expensive bottlenecks down the road."
-                ];
-            }
-            body = bodies[Math.floor(Math.random() * bodies.length)];
+        function loadHistoryItem(item) {
+            generatedComments = item.comments;
+            renderComments(item.comments);
+            document.getElementById('resultsSection').classList.remove('hidden');
+            document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+        }
 
-            // Select closing
-            const angleClosings = closings[angle] || closings['root-cause'];
-            const closing = angleClosings[Math.floor(Math.random() * angleClosings.length)];
+        function clearHistory() {
+            commentHistory = [];
+            localStorage.removeItem('commentHistory');
+            document.getElementById('historySection').classList.add('hidden');
+            showToast('History cleared', 'success');
+        }
 
-            // Combine
-            return opening + body + "\n\n" + closing;
+        // Utilities
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            const colors = {
+                success: 'bg-green-500',
+                error: 'bg-red-500',
+                info: 'bg-slate-800'
+            };
+            toast.className = `fixed bottom-6 right-6 ${colors[type]} text-white px-6 py-3 rounded-lg shadow-lg text-sm font-medium fade-in z-50`;
+            toast.innerHTML = `
+                <div class="flex items-center gap-2">
+                    <i class="fas ${type === 'success' ? 'fa-check-circle' : type === 'error' ? 'fa-exclamation-circle' : 'fa-info-circle'}"></i>
+                    ${message}
+                </div>
+            `;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
         }
     </script>
 </body>
